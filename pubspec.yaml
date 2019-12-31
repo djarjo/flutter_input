@@ -1,0 +1,16 @@
+name: flutter_input
+description: Input form with fields for Flutter
+homepage: https://github.com/djarjo/flutter_input
+version: 0.1.0
+
+environment:
+  sdk: '>=2.7.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.16.0
+  pedantic: ^1.8.0
+
+dev_dependencies:
+  test: '>=1.9.4'
