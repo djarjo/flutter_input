@@ -1,15 +1,15 @@
-# Flutter Input Form with Fields &rarr; <i>flutter_input</i>
+# Flutter Input Fields standalone or within a Form &rarr; <i>flutter_input</i>
 This package provides an `InputForm` and a set of input fields.
 Each input field can be used standalone or as part of a form.
 
 This package is an early version of the architectural ideas
 described below.
 It still has issues especially concerning decoration.
-Any developers are highly welcome.
+Developers are highly welcomed :-)
 
 The main goal of this package is to provide ideas and input
 for data management with Flutter.
-My hope is, that it becomes maintained by the Flutter team or
+My hope is that it becomes maintained by the Flutter team or
 be integrated with other similar packages.
 
 Please see and vote issue https://github.com/flutter/flutter/issues/46073
@@ -24,6 +24,9 @@ Currently the following input fields are supported:
 * `InputFavorite` - A favorite button with selectable icon for data type `bool`
 * `InputRadio<T>` - Radio button to select one value of type `T`
 * `InputRating` - Rating widget with selectable icons and a range selector for data type `int`
+* `InputSlider` - Slider for data type `double` between a minimum and maximum value
+* `InputSpinner` - Spinner with buttons for data type `double` to decrease or increase a value
+ between a minimum and maximum
 * `InputSwitch` - Switch for data type `bool`
 * `InputText` - Text input for data type `String`
 
@@ -46,6 +49,9 @@ To achieve this, `path` must be `null` and `onChanged` must not.
 (requires attribute `path`).
 1. Each input widget should accept a list of reusable validators like
 'NotNull', 'Min', 'Max', 'Future', 'Past', ...
+1. Input fields do not have standard parameters for data type conversion.
+If this is required in some case, just use your converter on parameters
+`initialValue` and `onSave`.
 1. All input fields should have an ".adaptive" constructor
  allowing them to be used by Android and iOS. (Not implemented yet)
 
@@ -68,18 +74,17 @@ the value from the forms map.
  of the input field value
 * ValueSetter<T> onSaved - additionally invoked by `Form.save()`
 * String path - to access the form map
-* List<InputValidator<T>> validators - list of validators
+* List<InputValidator> validators - list of validators
 
 
 ## Development
-To create a new input field for data type `T`.
-1. Create a new stateful widget for type `T`:
-`class MyNewInputWidget extends InputField<T>`
-1. `FormState extends State<Form>`
-1. `abstract Field<T> extends StatefulWidget`
- Field itself is abstract and must be extended by a concrete
- implementation. `T` is the type of the value. 
-1. `FieldState extends State<Field>`
- contains the value of type `T`.
-1. `InputWidget extends Field<T>`
- where T is the value type of this input widget
+To create a new input field for data type `T` just copy one of the existing
+classes and modify it accordingly. Replace T with the type of the value of
+your new input field.
+1. Create a new stateful widget for type `T` with
+`class MyNewInputWidget extends InputField<T> {`
+1. `class MyNewInputState extends InputFieldState<T> {`
+ where T is replaced by the type of the value of the field.
+1. Write method `build( BuildContext context)` in the state class.
+ It must end with `return super.buildInputField( context, ...` where
+ `...` is the code to display your input field widget.

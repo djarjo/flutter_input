@@ -37,6 +37,7 @@ enum InputDateTimeFormat {
 class InputDateTime extends InputField<DateTime> {
   final DateTime firstDate, lastDate;
   final InputDateTimeFormat format;
+  final CupertinoDatePickerMode mode;
 
   InputDateTime({
     Key key,
@@ -47,6 +48,7 @@ class InputDateTime extends InputField<DateTime> {
     this.format = InputDateTimeFormat.ISO,
     DateTime initialValue,
     this.lastDate,
+    this.mode,
     ValueChanged<DateTime> onChanged,
     ValueSetter<DateTime> onSaved,
     String path,
@@ -79,6 +81,7 @@ class InputDateTime extends InputField<DateTime> {
       case InputDateTimeFormat.yyyy_dash_MM_dash_dd:
         return true;
     }
+    return false;
   }
 }
 

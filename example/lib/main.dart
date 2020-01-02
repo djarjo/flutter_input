@@ -1,8 +1,8 @@
 /// Flutter code sample for package `flutter_input`
 ///
-/// ![Flutter Input sample](https://github.com/djarjo/flutter/radio_list_tile.png)
+/// ![Flutter Input sample](https://github.com/djarjo/flutter_input/sample.gif)
 ///
-/// This app shows all input fields within a form.
+/// This app shows all available input fields within a form.
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(widget.data);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Example Form"),
+        title: Text('Example Form'),
         actions: inEditMode
             ? <Widget>[
                 IconButton(
@@ -107,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() {
                       inEditMode = false;
                       _formKey.currentState.enabled = false;
+                      _formKey.currentState.reset();
                     });
                   },
                   tooltip: 'Exit without any changes',
@@ -137,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
             InputText(
               decoration: InputDecoration(labelText: 'Name'),
               path: 'title',
+              validators: [(v) => MinLength(v, 6, message: 'Not less than 6 chars')],
             ),
             InputSwitch(
               decoration: InputDecoration(
@@ -190,6 +192,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: 'Country', hintText: '<Please select a country>'),
               items: countries,
               path: 'country',
+              validators: [
+                (v) => NotNull(v, message: 'You must live somewhere'),
+              ],
             ),
             InputRadio(
               // This input field is not attached to the form
@@ -206,6 +211,21 @@ class _MyHomePageState extends State<MyHomePage> {
             InputDate(
               decoration: InputDecoration(labelText: 'Somebodies birthday'),
               path: 'birthday',
+            ),
+            InputSlider(
+              decoration: InputDecoration(labelText: 'Coffee Temperatur [°C]'),
+              divisions: 373,
+              min: -273,
+              max: 120,
+              path: 'temperature',
+              validators: [
+                (v) => Max(v, 101, message: 'This is only steam'),
+                (v) => Min(v, 0, message: 'This is coffee ice'),
+              ],
+            ),
+            InputSpinner(
+              decoration: InputDecoration(labelText: 'Coffee order [l]'),
+              path: 'content',
             ),
           ],
         ),

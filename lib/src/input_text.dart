@@ -129,7 +129,7 @@ class InputText extends InputField<String> {
     this.textDirection,
     this.textInputAction,
     this.toolbarOptions,
-    List<InputValidator<String>> validators,
+    List<InputValidator> validators,
   })  : assert(autocorrect != null),
         assert(autofocus != null),
         assert(autovalidate != null),

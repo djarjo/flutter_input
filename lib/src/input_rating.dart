@@ -39,9 +39,9 @@ class InputRating extends InputField<double> {
     this.size = 25.0,
     List<InputValidator> validators,
   })  : assert(min < max),
-        this.iconEmpty = iconEmpty ?? Icons.star_border,
-        this.iconHalf = iconHalf ?? Icons.star_half,
-        this.iconFull = iconFull ?? Icons.star,
+        iconEmpty = iconEmpty ?? Icons.star_border,
+        iconHalf = iconHalf ?? Icons.star_half,
+        iconFull = iconFull ?? Icons.star,
         super(
           key: key,
           autovalidate: autovalidate,
@@ -55,7 +55,7 @@ class InputRating extends InputField<double> {
         );
 
   @override
-  createState() => _InputRatingState();
+  _InputRatingState createState() => _InputRatingState();
 }
 
 class _InputRatingState extends InputFieldState<double> {

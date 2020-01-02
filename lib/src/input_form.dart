@@ -149,7 +149,7 @@ class InputFormState extends State<InputForm> {
   int _generation = 0;
   final Set<InputFieldState<dynamic>> _fields = {};
 
-  get value => widget.value;
+  Map<String, dynamic> get value => widget.value;
 
   @override
   void initState() {
@@ -260,7 +260,7 @@ class _InputFormScope extends InheritedWidget {
 /// Returns an error string to display if the input is invalid, or null otherwise.
 ///
 /// Used by [InputField.validators].
-typedef InputValidator<T> = String Function(T value);
+typedef InputValidator = String Function(dynamic value);
 
 /// Signature for being notified when a form field changes value.
 ///
@@ -354,7 +354,7 @@ abstract class InputField<T> extends StatefulWidget {
   /// not an error is displayed, either wrap the  [InputText] in a fixed
   /// height parent like [SizedBox], or set the [InputText.helperText]
   /// parameter to a space.
-  final List<InputValidator<T>> validators;
+  final List<InputValidator> validators;
 
   @override
   InputFieldState<T> createState() => InputFieldState<T>();

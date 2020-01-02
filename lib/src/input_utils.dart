@@ -6,7 +6,6 @@ class InputUtils {
   ///
   /// @return [value] converted to [type] or `null` if [value] is `null` or just [value] if conversion failed
   static dynamic convertToType(Type type, dynamic value) {
-    print('"$value" is ${value.runtimeType} -> $type');
     if (value == null) {
       return null;
     }
@@ -64,11 +63,9 @@ class InputUtils {
   }
 
   static dynamic _readJsonFromList(List<dynamic> list, String key) {
-    dynamic result;
-
     if (key.contains(':')) {
       // --- path element is key:value. List elements must be objects {}
-      List<dynamic> keyValue = key.split(":");
+      List<dynamic> keyValue = key.split(':');
       String k = keyValue[0];
       String v = keyValue[1];
       Map<String, dynamic> entry;

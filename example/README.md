@@ -1,4 +1,3 @@
-An absolute bare-bones web app.
+Example app which uses package `flutter_input`.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Runs on Android, iOS and Web.

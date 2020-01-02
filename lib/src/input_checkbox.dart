@@ -34,7 +34,7 @@ class InputCheckbox extends InputField<bool> {
             validators: validators);
 
   @override
-  createState() => _InputCheckboxState();
+  _InputCheckboxState createState() => _InputCheckboxState();
 }
 
 class _InputCheckboxState extends InputFieldState<bool> {
