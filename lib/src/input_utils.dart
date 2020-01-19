@@ -2,9 +2,10 @@
 // Please see the LICENSE file for details.
 
 class InputUtils {
-  /// Converts the given [value] to [type].
+  /// Converts [value] to [type].
   ///
-  /// @return [value] converted to [type] or `null` if [value] is `null` or just [value] if conversion failed
+  /// Returns `null` if [value] is `null` else [value] converted to [type]
+  /// or just [value] if conversion failed.
   static dynamic convertToType(Type type, dynamic value) {
     if (value == null) {
       return null;
@@ -23,6 +24,13 @@ class InputUtils {
         }
         return false;
       }
+    } else if (type == int) {
+      if (value.runtimeType == String) {
+        return int.tryParse(value);
+      } else if (value.runtimeType == double) {
+        double dval = value;
+        return dval.floor();
+      }
     } else if (type == double) {
       if (value.runtimeType == int) {
         int intVal = value;
@@ -39,6 +47,12 @@ class InputUtils {
     return value;
   }
 
+  /// Reads a value from a nested map ([json]) with a dot separated string ([path]).
+  ///
+  /// ```dart
+  /// Map<String, dynamic> json = { 'user' : { 'name' : 'Hajo', 'bday' : '1964-09-21' },};
+  /// DateTime birthday = Datetime.parse( readJson( json, 'user.bday' ));
+  /// ```
   static dynamic readJson(Map<String, dynamic> json, String path) {
     if (json == null || path == null) {
       return null;
@@ -84,10 +98,8 @@ class InputUtils {
     return null;
   }
 
-  ///
   /// Writes the given 'value' at 'path' into the given 'json' map.
   /// If 'path' does not yet exist in the map, it will be created.
-  ///
   static Map<String, dynamic> writeJson(
       Map<String, dynamic> json, String path, dynamic value) {
     if (path == null) {
@@ -115,10 +127,8 @@ class InputUtils {
     return json;
   }
 
-  ///
-  /// Creates a string from a map by putting each entry into a separate line and
+  /// Creates a string from a map by putting each entry on a separate line and
   /// prefixing it with spaces according to its depth within the map.
-  ///
   static String prettyPrintMap(Map<dynamic, dynamic> map) {
     return _prettyPrintMap(map, 0);
   }

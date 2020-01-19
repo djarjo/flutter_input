@@ -1,84 +1,46 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-//
-// The original source has been modified by Hajo.Lemcke@gmail.com
-// To avoid collisions, the following renaming took place:
-//
-// Flutter -> flutter_input
-// ========================
-// FormField -> InputField
-// FormFieldState -> InputFieldState
-// Form -> InputForm
-// FormState -> InputFormState
+// Copyright 2020 Hajo.Lemcke@mail.com
+// Please see the LICENSE file for details.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'input_form.dart';
+import 'input_utils.dart';
 
-/// An [InputField] that contains a [TextField].
+/// An [InputField] that contains a [TextField] for one of type [String], [int] or [double].
 ///
-/// This is a convenience widget that wraps a [TextField] widget in an
-/// [InputField].
+/// The value type is specified by a generic.
 ///
-/// An [InputForm] ancestor is not required. The [InputForm] simply makes it easier to
-/// enable, save, reset, or validate multiple fields at once.
-/// To use without an [InputForm], pass a [GlobalKey] to the constructor
-/// and use [GlobalKey.currentState] to save or reset the form field.
-///
-/// When a [controller] is specified, its [TextEditingController.text]
-/// defines the [initialValue]. If this [FormField] is part of a scrolling
-/// container that lazily constructs its children, like a [ListView] or a
-/// [CustomScrollView], then a [controller] should be specified.
-/// The controller's lifetime should be managed by a stateful widget ancestor
-/// of the scrolling container.
-///
-/// If a [controller] is not specified, [initialValue] can be used to give
-/// the automatically generated controller an initial value.
-///
-/// Remember to [dispose] of the [TextEditingController] when it is no longer needed.
-/// This will ensure we discard any resources used by the object.
-///
-/// For a documentation about the various parameters, see [TextField].
+/// An [InputForm] ancestor is not required.
+/// It simply makes it easier to enable, save, reset, or validate multiple fields at once.
 ///
 /// {@tool sample}
 ///
-/// Creates a [TextFormField] with an [InputDecoration] and validator function.
+/// Creates a [InputKeyboard] with an [InputDecoration] and validators.
 ///
-/// ![If the user enters valid text, the TextField appears normally without any warnings to the user](https://flutter.github.io/assets-for-api-docs/assets/material/text_form_field.png)
+/// ![If the user enters valid input, the field appears normally without any warnings to the user]
 ///
-/// ![If the user enters invalid text, the error message returned from the validator function is displayed in dark red underneath the input](https://flutter.github.io/assets-for-api-docs/assets/material/text_form_field_error.png)
+/// ![If the user enters invalid text, the error message returned from the first failed validator
+/// function will be displayed in dark red underneath the input]
 ///
 /// ```dart
-/// TextFormField(
-///   decoration: const InputDecoration(
+/// InputKeyboard<String>(
+///   decoration: InputDecoration(
+///     labelText: 'Name *',
 ///     icon: Icon(Icons.person),
 ///     hintText: 'What do people call you?',
-///     labelText: 'Name *',
 ///   ),
-///   onSaved: (String value) {
-///     // This optional block of code can be used to run
-///     // code when the user saves the form.
-///   },
-///   validator: (String value) {
-///     return value.contains('@') ? 'Do not use the @ char.' : null;
-///   },
+///   path: 'user.name',
+///   validators: [(v) => NotNull(), (v) => MinLen(v, 7), message: 'Must be at least 7 chars long'), ],
 /// )
 /// ```
 /// {@end-tool}
 ///
 /// See also:
-///
-///  * <https://material.io/design/components/text-fields.html>
-///  * [TextField], which is the underlying text field without the [Form]
-///    integration.
-///  * [InputDecorator], which shows the labels and other visual elements that
-///    surround the actual text editing widget.
-///  * Learn how to use a [TextEditingController] in one of our [cookbook recipe]s.(https://flutter.dev/docs/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller)
-@Deprecated('Please use InputKeyboard<String> instead. Deprecated since v0.2.0.')
-class InputText extends InputField<String> {
+/// [InputField] for a documentation about the common parameters.
+/// [TextField] for a documentation about the specific parameters.
+class InputKeyboard<T> extends InputField<T> {
   /// Creates an [InputField] that contains a [TextField].
   ///
   /// When a [controller] is specified, [initialValue] must be null (the
@@ -88,7 +50,7 @@ class InputText extends InputField<String> {
   ///
   /// For documentation about the various parameters, see the [TextField] class
   /// and [new TextField], the constructor.
-  InputText({
+  InputKeyboard({
     Key key,
     this.autocorrect = true,
     this.autofocus = false,
@@ -104,7 +66,7 @@ class InputText extends InputField<String> {
     this.enableSuggestions = true,
     this.expands = false,
     this.focusNode,
-    String initialValue,
+    T initialValue,
     this.inputFormatters,
     this.keyboardAppearance,
     this.keyboardType,
@@ -113,13 +75,12 @@ class InputText extends InputField<String> {
     this.maxLines = 1,
     this.minLines,
     this.obscureText = false,
-    ValueChanged<String> onChanged,
+    ValueChanged<T> onChanged,
     this.onEditingComplete,
     this.onFieldSubmitted,
-    InputFieldSetter<String> onSaved,
+    InputFieldSetter<T> onSaved,
     this.onTap,
     String path,
-    this.readOnly = false,
     this.showCursor,
     this.scrollPadding = const EdgeInsets.all(20.0),
     this.strutStyle,
@@ -131,18 +92,23 @@ class InputText extends InputField<String> {
     this.textInputAction,
     this.toolbarOptions,
     List<InputValidator> validators,
-  })  : assert(autocorrect != null),
+  })  : assert(
+          T == String || T == int || T == double,
+          'Generic must be one of String, int or double',
+        ),
+        assert(autocorrect != null),
         assert(autofocus != null),
         assert(autovalidate != null),
+        assert(enableInteractiveSelection != null),
         assert(enableSuggestions != null),
         assert(initialValue == null || controller == null),
+        assert(maxLength == null || maxLength > 0),
         assert(maxLengthEnforced != null),
-        assert(obscureText != null),
-        assert(readOnly != null),
-        assert(textAlign != null),
-        assert(scrollPadding != null),
         assert(maxLines == null || maxLines > 0),
         assert(minLines == null || minLines > 0),
+        assert(obscureText != null),
+        assert(textAlign != null),
+        assert(scrollPadding != null),
         assert(
           (maxLines == null) || (minLines == null) || (maxLines >= minLines),
           'minLines can\'t be greater than maxLines',
@@ -153,8 +119,6 @@ class InputText extends InputField<String> {
           'minLines and maxLines must be null when expands is true.',
         ),
         assert(!obscureText || maxLines == 1, 'Obscured fields cannot be multiline.'),
-        assert(maxLength == null || maxLength > 0),
-        assert(enableInteractiveSelection != null),
         super(
           key: key,
           autovalidate: autovalidate,
@@ -188,7 +152,6 @@ class InputText extends InputField<String> {
   final VoidCallback onEditingComplete;
   final ValueChanged<String> onFieldSubmitted;
   final GestureTapCallback onTap;
-  final bool readOnly;
   final bool showCursor;
   final EdgeInsets scrollPadding;
   final StrutStyle strutStyle;
@@ -201,29 +164,50 @@ class InputText extends InputField<String> {
   final ToolbarOptions toolbarOptions;
 
   @override
-  _InputTextState createState() => _InputTextState();
+  _InputKeyboardState<T> createState() => _InputKeyboardState<T>();
 }
 
-///
-///
-class _InputTextState extends InputFieldState<String> {
+/// -------------------------------------------------------
+class _InputKeyboardState<T> extends InputFieldState<T> {
   TextEditingController _controller;
+  TextInputType _keyboardType;
 
   TextEditingController get _effectiveController => widget.controller ?? _controller;
 
   @override
-  InputText get widget => super.widget;
+  InputKeyboard<T> get widget => super.widget;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller == null) {
+      _controller = TextEditingController(text: super.value?.toString());
+    } else {
+      widget.controller.addListener(_handleControllerChanged);
+    }
+    if (T == int) {
+      _keyboardType = TextInputType.numberWithOptions(decimal: false, signed: true);
+    } else if (T == double) {
+      _keyboardType = TextInputType.numberWithOptions(decimal: true, signed: true);
+    }
+    print('T=$T, _keyboardType=$_keyboardType');
+  }
 
   @override
   Widget build(BuildContext context) {
     final InputDecoration effectiveDecoration =
         (widget.decoration ?? const InputDecoration())
             .applyDefaults(Theme.of(context).inputDecorationTheme);
-    void onChangedHandler(String value) {
-      if (widget.onChanged != null) {
-        widget.onChanged(value);
+
+    void onChangedHandler(String fieldValue) {
+      if (fieldValue == null || fieldValue.isEmpty) {
+        return;
       }
-      didChange(value);
+      T newValue = InputUtils.convertToType(T, fieldValue);
+      if (widget.onChanged != null) {
+        widget.onChanged(newValue);
+      }
+      didChange(newValue);
     }
 
     return TextField(
@@ -241,7 +225,7 @@ class _InputTextState extends InputFieldState<String> {
       expands: widget.expands,
       focusNode: widget.focusNode,
       keyboardAppearance: widget.keyboardAppearance,
-      keyboardType: widget.keyboardType,
+      keyboardType: _keyboardType,
       inputFormatters: widget.inputFormatters,
       maxLength: widget.maxLength,
       maxLengthEnforced: widget.maxLengthEnforced,
@@ -252,7 +236,7 @@ class _InputTextState extends InputFieldState<String> {
       onEditingComplete: widget.onEditingComplete,
       onSubmitted: widget.onFieldSubmitted,
       onTap: widget.onTap,
-      readOnly: widget.readOnly,
+      readOnly: false,
       scrollPadding: widget.scrollPadding,
       showCursor: widget.showCursor,
       style: widget.style,
@@ -267,7 +251,7 @@ class _InputTextState extends InputFieldState<String> {
   }
 
   @override
-  void didUpdateWidget(InputText oldWidget) {
+  void didUpdateWidget(InputKeyboard<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       oldWidget.controller?.removeListener(_handleControllerChanged);
@@ -277,7 +261,8 @@ class _InputTextState extends InputFieldState<String> {
         _controller = TextEditingController.fromValue(oldWidget.controller.value);
       }
       if (widget.controller != null) {
-        setValue(widget.controller.text);
+        T newValue = InputUtils.convertToType(T, widget.controller.text);
+        setValue(newValue);
         if (oldWidget.controller == null) _controller = null;
       }
     }
@@ -289,16 +274,6 @@ class _InputTextState extends InputFieldState<String> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.controller == null) {
-      _controller = TextEditingController(text: super.value);
-    } else {
-      widget.controller.addListener(_handleControllerChanged);
-    }
-  }
-
   void _handleControllerChanged() {
     // Suppress changes that originated from within this class.
     //
@@ -307,6 +282,9 @@ class _InputTextState extends InputFieldState<String> {
     // notifications for changes originating from within this class -- for
     // example, the reset() method. In such cases, the FormField value will
     // already have been set.
-    if (_effectiveController.text != value) didChange(_effectiveController.text);
+    if (_effectiveController.text != value) {
+      T newValue = InputUtils.convertToType(T, _effectiveController.text);
+      didChange(newValue);
+    }
   }
 }

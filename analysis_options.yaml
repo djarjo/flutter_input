@@ -4,10 +4,11 @@
 include: package:pedantic/analysis_options.yaml
 
 # For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
-# Uncomment to specify additional rules.
-# linter:
-#   rules:
-#     - camel_case_types
+# Disables warnings 'to not specify local variable type'
+linter:
+  rules:
+    omit_local_variable_types: false
+#    always_specify_types: true
 
 analyzer:
 #   exclude:

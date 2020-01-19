@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_input/flutter_input.dart';
 
+import 'datetime_page.dart';
+
 void main() {
   debugPaintSizeEnabled = false; // true does not work in web
   runApp(MyApp());
@@ -16,7 +18,7 @@ void main() {
 
 /// This Widget is the main application widget.
 class MyApp extends StatelessWidget {
-  static const String _title = 'Flutter Form Input Sample';
+  static const String _title = 'flutter_input Example';
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
       'active': true,
       'amount': 123.45,
       'birthday': '1977-02-17',
-      'title': 'Example Data Object',
+      'title': 'Use InputKeyboard<String> instead',
       'rateCount': 4711,
       'rateValue': 71,
       // Nested map. Access with dotted path
@@ -58,12 +60,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<InputFormState> _formKey = GlobalKey();
   List<DropdownMenuItem<String>> countries;
-  List<DropdownMenuItem<CupertinoDatePickerMode>> dateTimeMode;
   bool inEditMode = false;
+  int coffeeTemp;
 
   @override
   Widget build(BuildContext context) {
-    print(widget.data);
+//    print(widget.data);
     return Scaffold(
       appBar: AppBar(
         title: Text('Example Form'),
@@ -71,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ? <Widget>[
                 IconButton(
                   icon: Icon(Icons.done),
+                  tooltip: 'Save changes and leave edit mode',
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       setState(() {
@@ -99,10 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           });
                     }
                   },
-                  tooltip: 'Save changes and leave edit mode',
                 ),
                 IconButton(
                   icon: Icon(Icons.cancel),
+                  tooltip: 'Exit without any changes',
                   onPressed: () {
                     setState(() {
                       inEditMode = false;
@@ -110,19 +113,28 @@ class _MyHomePageState extends State<MyHomePage> {
                       _formKey.currentState.reset();
                     });
                   },
-                  tooltip: 'Exit without any changes',
                 ),
               ]
             : <Widget>[
                 IconButton(
+                  icon: Icon(Icons.calendar_today),
+                  tooltip: 'Switch to datetime page',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DateTimePage()),
+                    );
+                  },
+                ),
+                IconButton(
                   icon: Icon(Icons.edit),
+                  tooltip: 'Edit',
                   onPressed: () {
                     setState(() {
                       inEditMode = true;
                       _formKey.currentState.enabled = true;
                     });
                   },
-                  tooltip: 'Edit',
                 )
               ],
         backgroundColor: Colors.deepOrange,
@@ -136,9 +148,16 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Text('ID = ${widget.data["id"]}'),
             InputText(
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(
+                labelText: '--- deprecated ---',
+              ),
               path: 'title',
               validators: [(v) => MinLength(v, 6, message: 'Not less than 6 chars')],
+            ),
+            InputKeyboard<int>(
+              decoration: InputDecoration(labelText: 'Editable int'),
+              path: 'editable int',
+              validators: [(v) => Min(v, 69, message: 'Not smaller than 69')],
             ),
             InputSwitch(
               decoration: InputDecoration(
@@ -196,36 +215,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 (v) => NotNull(v, message: 'You must live somewhere'),
               ],
             ),
-            InputRadio(
-              // This input field is not attached to the form
-              decoration: InputDecoration(labelText: 'Date and time format selection'),
-              direction: Axis.horizontal,
-//              direction: Axis.vertical,
-              initialValue: CupertinoDatePickerMode.date,
-              items: dateTimeMode,
-            ),
-            InputDateTime(
-              decoration: InputDecoration(labelText: 'Next Coffee Alarm'),
-              path: 'alarm',
-            ),
-            InputDate(
-              decoration: InputDecoration(labelText: 'Somebodies birthday'),
-              path: 'birthday',
-            ),
             InputSlider(
-              decoration: InputDecoration(labelText: 'Coffee Temperatur [°C]'),
-              divisions: 373,
-              min: -273,
-              max: 120,
+              decoration: InputDecoration(labelText: 'Coffee Temperatur $coffeeTemp °C'),
+              divisions: 200,
+              min: -50,
+              max: 150,
+              onChanged: (v) => setState(() {
+                coffeeTemp = v?.floor();
+              }),
               path: 'temperature',
               validators: [
                 (v) => Max(v, 101, message: 'This is only steam'),
-                (v) => Min(v, 0, message: 'This is coffee ice'),
+                (v) => Min(v, 0, message: 'This coffee is frozen'),
               ],
             ),
             InputSpinner(
-              decoration: InputDecoration(labelText: 'Coffee order [l]'),
-              path: 'content',
+              decoration: InputDecoration(labelText: 'Mug size [ml]'),
+              path: 'size',
             ),
           ],
         ),
@@ -252,20 +258,6 @@ class _MyHomePageState extends State<MyHomePage> {
       DropdownMenuItem<String>(
         value: 'JP',
         child: Text('Japan'),
-      ),
-    ];
-    dateTimeMode = [
-      DropdownMenuItem<CupertinoDatePickerMode>(
-        value: CupertinoDatePickerMode.date,
-        child: Text('Date'),
-      ),
-      DropdownMenuItem<CupertinoDatePickerMode>(
-        value: CupertinoDatePickerMode.time,
-        child: Text('Time'),
-      ),
-      DropdownMenuItem<CupertinoDatePickerMode>(
-        value: CupertinoDatePickerMode.dateAndTime,
-        child: Text('Date & Time'),
       ),
     ];
   }

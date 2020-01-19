@@ -2,12 +2,11 @@
 // Please see the LICENSE file for details.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_input/flutter_input.dart';
 
 import 'input_form.dart';
 
-/// Provides a slider to select a value of type double between a given minimum and a given maximum.
-///
-/// See
+/// Provides a slider to select a value with type double between a given minimum and a given maximum.
 class InputSlider extends InputField<double> {
   final Color activeColor, inactiveColor;
   final int divisions;

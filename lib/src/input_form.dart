@@ -388,14 +388,7 @@ class InputFieldState<T> extends State<InputField<T>> {
   bool get hasError => _errorText != null;
 
   InputFormState _formState;
-  T _value;
-
-  /// The current value of the form field.
-  T get value => _value;
-
-  set value(T newValue) {
-    _value = newValue;
-  }
+  T value;
 
   Widget buildInputField(BuildContext context, Widget builder) {
     if (widget.autovalidate && _enabled) {
@@ -413,7 +406,7 @@ class InputFieldState<T> extends State<InputField<T>> {
 
   @override
   void deactivate() {
-    _formState._unregister(this);
+    _formState?._unregister(this);
     super.deactivate();
   }
 
@@ -423,15 +416,15 @@ class InputFieldState<T> extends State<InputField<T>> {
   /// Triggers the [InputForm.onChanged] callback and, if the [InputForm.autovalidate]
   /// field is set, revalidates all fields of the form.
   void didChange(T newValue) {
-    if (_value == newValue) {
+    if (value == newValue) {
       return;
     }
     setState(() {
-      _value = newValue;
+      value = newValue;
     });
-    _formState._fieldDidChange();
+    _formState?._fieldDidChange();
     if (widget.onChanged != null) {
-      widget.onChanged(_value);
+      widget.onChanged(value);
     }
   }
 
@@ -458,9 +451,9 @@ class InputFieldState<T> extends State<InputField<T>> {
   }
 
   void _initValue() {
-    dynamic valueLoaded = widget.initialValue ??
-        InputUtils.readJson(_formState?.widget?.value, widget.path);
-    _value = InputUtils.convertToType(T, valueLoaded);
+    dynamic valueLoaded =
+        widget.initialValue ?? InputUtils.readJson(_formState?.widget?.value, widget.path);
+    value = InputUtils.convertToType(T, valueLoaded);
   }
 
   /// Resets the field to its initial value.
@@ -489,8 +482,8 @@ class InputFieldState<T> extends State<InputField<T>> {
   /// the value should be set by a call to [didChange], which ensures that
   /// `setState` is called.
   @protected
-  void setValue(T value) {
-    _value = value;
+  void setValue(T newValue) {
+    value = newValue;
   }
 
   /// Calls [InputField.validators] to set the [errorText]. Returns true if there

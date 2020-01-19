@@ -59,7 +59,7 @@ class InputRating extends InputField<double> {
 }
 
 class _InputRatingState extends InputFieldState<double> {
-  static const double _allInsets = 10.0;
+//  static const double _allInsets = 10.0;
   double _starSize;
 
   @override

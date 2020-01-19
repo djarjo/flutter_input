@@ -1,5 +1,6 @@
 # Miscellaneous
 *.class
+*.err
 *.lock
 *.log
 *.pyc

@@ -1,0 +1,15 @@
+# Activate dartdoc
+# pub global activate dartdoc
+#
+# Add path to dartdoc SDK ('to global path variable
+#
+# dartdoc --no-auto-include-dependencies > dartdoc.log 2> dartdoc.err
+#
+# !!! Exclude does not work. Maybe syntax wrong? !!!
+# !!! Any help appreciated !!!
+
+dartdoc:
+  examplePathPrefix: 'example'
+  exclude: ['dart:async', 'dart:collection', 'dart:core', 'dart:intl']
+  include: 'flutter_input'
+  

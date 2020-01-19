@@ -5,16 +5,19 @@ import 'package:flutter/material.dart';
 
 import 'input_form.dart';
 
-/// Provides a spinner to set a value of type double between a given minimum
-/// and a given maximum.
+/// Provides a spinner to set a value between [min] and [max].
+///
 /// Setting the value is performed by two buttons for decreasing and increasing the value.
 /// The value will be changed with each click by `(max - min) / divisions`.
+/// To have `value` of type int supply generic int.
 class InputSpinner extends InputField<double> {
   final int divisions;
   final Color iconColor;
   final IconData iconDecrease;
   final IconData iconIncrease;
-  final double interval, min, max, size;
+  final double interval;
+  final double min, max;
+  final double size;
 
   InputSpinner({
     Key key,
@@ -26,8 +29,8 @@ class InputSpinner extends InputField<double> {
     this.iconDecrease = Icons.remove_circle,
     this.iconIncrease = Icons.add_circle,
     double initialValue,
-    this.min = 0.0,
-    this.max = 100.0,
+    this.min = 0,
+    this.max = 100,
     ValueChanged<double> onChanged,
     ValueSetter<double> onSaved,
     String path,
@@ -94,6 +97,12 @@ class _InputSpinnerState extends InputFieldState<double> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   void onPressedDecrease() {

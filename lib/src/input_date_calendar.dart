@@ -6,19 +6,32 @@ import 'package:intl/intl.dart';
 
 import 'input_form.dart';
 
-/// Input widget for a date picker.
-///
-/// This is a thin wrapper around [showDatePicker]. See specific parameters there.
-///
-/// See [InputField] for common parameters.
+enum InputDateFormat {
+  /// Date format 24.12.2001
+  dd_dot_MM_dot_yyyy,
+
+  /// Corresponds to ISO 'yyyy-MM-dd' pattern
+  ISO,
+
+  /// US format
+  MM_slash_dd_slash_yyyy,
+}
+
+enum InputDateWidget {
+  Calendar,
+  Sliver,
+}
+
+/// Provides an input field displaying a date.
+/// If the field is enabled then tapping it will open a calendar to change the date.
 class InputDate extends InputField<DateTime> {
   final DateTime firstDate, lastDate;
-  final String datePattern;
+  final InputDateFormat dateFormat;
 
   InputDate({
     Key key,
     bool autovalidate = false,
-    this.datePattern = 'yyyy-MM-dd',
+    this.dateFormat,
     InputDecoration decoration,
     bool enabled,
     this.firstDate,
@@ -28,8 +41,7 @@ class InputDate extends InputField<DateTime> {
     ValueSetter<DateTime> onSaved,
     String path,
     List<InputValidator> validators,
-  })  : assert(datePattern != null),
-        super(
+  }) : super(
           key: key,
           autovalidate: autovalidate,
           decoration: decoration,
@@ -51,8 +63,8 @@ class _InputDateState extends InputFieldState<DateTime> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime displayDate = value ?? widget.initialValue ?? DateTime.now();
-    String formattedDate = DateFormat(widget.datePattern).format(displayDate);
+    DateTime display = value ?? widget.initialValue ?? DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(display);
     return super.buildInputField(
       context,
       GestureDetector(
@@ -61,7 +73,7 @@ class _InputDateState extends InputFieldState<DateTime> {
             ? () async {
                 DateTime dateTime = await showDatePicker(
                   context: context,
-                  initialDate: displayDate,
+                  initialDate: display,
                   firstDate: widget.firstDate ?? DateTime.parse('0001-01-01'),
                   lastDate: widget.lastDate ?? DateTime.parse('9999-12-31'),
                 );
