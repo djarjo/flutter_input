@@ -15,7 +15,7 @@
 /// Validates that [fieldValue] (DateTime) is after [checkValue].
 ///
 /// Returns `null` if [fieldValue] > [checkValue] else an error message
-String After(
+String after(
   DateTime fieldValue,
   DateTime checkValue, {
   String message,
@@ -30,7 +30,7 @@ String After(
 /// Validates that [fieldValue] (DateTime) is before [checkValue].
 ///
 /// Returns `null` if [fieldValue] < [checkValue] else an error message
-String Before(
+String before(
   DateTime fieldValue,
   DateTime checkValue, {
   String message,
@@ -44,7 +44,7 @@ String Before(
 /// Validates that [fieldValue] (DateTime) is in the future.
 ///
 /// Returns `null` if [fieldValue] > [DateTime.now()] else an error message
-String Future(
+String future(
   DateTime fieldValue, {
   String message,
 }) {
@@ -57,7 +57,7 @@ String Future(
 /// Validates that [fieldValue] (int or double) is equal to or smaller than [maxVal].
 ///
 /// Returns `null` if [fieldValue] <= [maxVal] else an error message
-String Max(
+String max(
   num fieldValue,
   int maxVal, {
   String message,
@@ -71,7 +71,7 @@ String Max(
 /// Validates that the string [fieldValue] is not longer than [maxLen].
 ///
 /// Returns `null` if [fieldValue.length()] <= [maxLen] else an error message
-String MaxLength(
+String maxLength(
   String fieldValue,
   int maxLen, {
   String message,
@@ -85,7 +85,7 @@ String MaxLength(
 /// Validates that [fieldValue] (int or double) is equal to or larger than [minVal].
 ///
 /// Returns `null` if [fieldValue] >= [minVal] else an error message
-String Min(
+String min(
   num fieldValue,
   int minVal, {
   String message,
@@ -99,7 +99,7 @@ String Min(
 /// Validates that the string [fieldValue] is not shorter than [minLen].
 ///
 /// Returns `null` if [fieldValue.length()] >= [minLen] else an error message
-String MinLength(
+String minLength(
   String fieldValue,
   int minLen, {
   String message,
@@ -111,7 +111,7 @@ String MinLength(
 }
 
 /// Checks if the given value is not null.
-String NotNull(
+String notNull(
   dynamic fieldValue, {
   String message,
 }) {
@@ -124,7 +124,7 @@ String NotNull(
 /// Validates that [fieldValue] (DateTime) is in the past.
 ///
 /// Returns `null` if [fieldValue] < [DateTime.now()] else an error message
-String Past(
+String past(
   DateTime fieldValue, {
   String message,
 }) {

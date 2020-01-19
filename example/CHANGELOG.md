@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Validators adapted to lowerCamelCase
+
 ## 1.0.0
 
 - Added input fields `InputKeyboard` and `InputCalendar`

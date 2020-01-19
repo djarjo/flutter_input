@@ -152,12 +152,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 labelText: '--- deprecated ---',
               ),
               path: 'title',
-              validators: [(v) => MinLength(v, 6, message: 'Not less than 6 chars')],
+              validators: [(v) => minLength(v, 6, message: 'Not less than 6 chars')],
             ),
             InputKeyboard<int>(
               decoration: InputDecoration(labelText: 'Editable int'),
               path: 'editable int',
-              validators: [(v) => Min(v, 69, message: 'Not smaller than 69')],
+              validators: [(v) => min(v, 69, message: 'Not smaller than 69')],
             ),
             InputSwitch(
               decoration: InputDecoration(
@@ -212,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
               items: countries,
               path: 'country',
               validators: [
-                (v) => NotNull(v, message: 'You must live somewhere'),
+                (v) => notNull(v, message: 'You must live somewhere'),
               ],
             ),
             InputSlider(
@@ -225,8 +225,8 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
               path: 'temperature',
               validators: [
-                (v) => Max(v, 101, message: 'This is only steam'),
-                (v) => Min(v, 0, message: 'This coffee is frozen'),
+                (v) => max(v, 101, message: 'This is only steam'),
+                (v) => min(v, 0, message: 'This coffee is frozen'),
               ],
             ),
             InputSpinner(

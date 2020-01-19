@@ -13,8 +13,8 @@ import 'date_helper.dart';
 /// To have a date in the past, set [lastDate] to `DateTime.now()` or just add the validator
 /// `validators: [(v) => past( v ),]`. Same with [firstDate].
 ///
-/// TODO [X] year becomes TextField
-/// TODO [ ] Internationalize this input widget: day names, month names, tooltips, display format, first day of week
+/// TODO \[X\] year becomes TextField
+/// TODO \[ \] Internationalize this input widget: day names, month names, tooltips, display format, first day of week
 ///
 /// See [InputField] for all common parameters.
 class InputCalendar extends InputField<DateTime> {
@@ -196,7 +196,8 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     super.dispose();
   }
 
-  Widget _buildCell(String text, CalendarStyle style, {GestureTapCallback onTapHandler}) {
+  Widget _buildCell(String text, CalendarStyle style,
+      {GestureTapCallback onTapHandler}) {
     Widget cell = Container(
       decoration: style?.decoration,
       height: kMinInteractiveDimension,
@@ -328,7 +329,8 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
 
     // --- Compute number of days from previous month
     DateTime displayMonth = DateTime(_year, _month, 1);
-    DateTime displayDay = displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
+    DateTime displayDay =
+        displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
     rows.add(_buildRow(displayDay, widget.baseWidget.styles.prevMonthStyle));
     displayDay = displayDay.add(Duration(days: 7));
     for (int i = 1; i < 6; i++) {
@@ -352,7 +354,8 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
       controller: _yearController,
       decoration: InputDecoration(border: InputBorder.none),
       enabled: true,
-      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType:
+          TextInputType.numberWithOptions(signed: false, decimal: false),
       maxLength: 4,
       onSubmitted: (v) => _setDisplayedMonth(
         year: int.tryParse(v),
@@ -420,14 +423,18 @@ class CalendarStyles {
       weekStyle;
 
   const CalendarStyles({
-    this.headerStyle =
-        const CalendarStyle(decoration: BoxDecoration(color: Colors.amberAccent)),
-    this.monthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black)),
-    this.nextMonthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
-    this.prevMonthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
+    this.headerStyle = const CalendarStyle(
+        decoration: BoxDecoration(color: Colors.amberAccent)),
+    this.monthStyle =
+        const CalendarStyle(textStyle: TextStyle(color: Colors.black)),
+    this.nextMonthStyle =
+        const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
+    this.prevMonthStyle =
+        const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
     this.todayStyle = const CalendarStyle(
         decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
-    this.weekStyle = const CalendarStyle(decoration: BoxDecoration(color: Colors.black12)),
+    this.weekStyle =
+        const CalendarStyle(decoration: BoxDecoration(color: Colors.black12)),
   });
 }
 

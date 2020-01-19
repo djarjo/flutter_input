@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Breaking change: all validator functions are now lowerCamelCase
+
 ## 1.0.0
 
 - Added new widget `InputKeyboard`.

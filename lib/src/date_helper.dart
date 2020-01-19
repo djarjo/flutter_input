@@ -45,7 +45,21 @@ enum DateTimeFormat {
 /// * Monday = 1, ..., Sunday = 7
 class DateHelper {
   /// Days in each month (January = 1)
-  static List<int> daysPerMonth = <int>[0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  static List<int> daysPerMonth = <int>[
+    0,
+    31,
+    28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31
+  ];
 
   static int computeDaysInMonth(int year, int month) {
     if (isLeapYear(year) && (month == 2)) {
@@ -64,7 +78,8 @@ class DateHelper {
     int jd = (day + (((153 * m) + 2) ~/ 5) + (365 * y) + (y ~/ 4));
 
     // --- Dates since 1582-10-15 <=> Gregorian Calendar
-    if (year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)))) {
+    if (year > 1582 ||
+        (year == 1582 && (month > 10 || (month == 10 && day >= 15)))) {
       jd = (jd - (y ~/ 100) + (y ~/ 400) - 32045);
     } else {
       jd = jd - 32083;
@@ -93,7 +108,8 @@ class DateHelper {
     int weekday = jdfirst % 7;
 
     // --- Compute weeks
-    int calWeek = ((days ~/ 7) + ((10 - weekday) ~/ 7) + (((days % 7) + weekday) ~/ 7));
+    int calWeek =
+        ((days ~/ 7) + ((10 - weekday) ~/ 7) + (((days % 7) + weekday) ~/ 7));
     if (calWeek == 0) {
       calWeek = computeWeekOfYear(year - 1, 12, 31);
     }

@@ -1,9 +1,8 @@
 name: flutter_input
 description: This package provides widgets for input fields.
   Each widget can be used standalone or within a form.
-  A form can provide enabling, validation, initial values and saving for all fields.
 homepage: https://github.com/djarjo/flutter_input
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: '>=2.7.0 <3.0.0'

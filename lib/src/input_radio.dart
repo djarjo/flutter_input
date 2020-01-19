@@ -69,8 +69,9 @@ class _InputRadioState<T> extends InputFieldState<T> {
           value: item.value,
         );
       } else {
-        throw UnimplementedError(
-            'Unsupported widget direction <' + widget.direction.toString() + '>');
+        throw UnimplementedError('Unsupported widget direction <' +
+            widget.direction.toString() +
+            '>');
       }
     }).toList();
 

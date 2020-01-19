@@ -43,7 +43,8 @@ class InputUtils {
         return DateTime.parse(value);
       }
     }
-    print('Missing conversion from ${value.runtimeType} $value into type $type');
+    print(
+        'Missing conversion from ${value.runtimeType} $value into type $type');
     return value;
   }
 

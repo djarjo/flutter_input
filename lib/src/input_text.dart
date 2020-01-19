@@ -206,6 +206,7 @@ class InputText extends InputField<String> {
 
 ///
 ///
+@Deprecated('Please use InputKeyboard<String> instead. Deprecated since v0.2.0.')
 class _InputTextState extends InputFieldState<String> {
   TextEditingController _controller;
 

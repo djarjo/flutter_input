@@ -67,7 +67,8 @@ class _InputRatingState extends InputFieldState<double> {
 
   @override
   Widget build(BuildContext context) {
-    _starSize ??= widget.size ?? MediaQuery.of(context).size.width / widget.iconCount;
+    _starSize ??=
+        widget.size ?? MediaQuery.of(context).size.width / widget.iconCount;
 
     return super.buildInputField(
       context,
@@ -97,7 +98,8 @@ class _InputRatingState extends InputFieldState<double> {
                       child: SliderTheme(
                         child: Slider(
                           inactiveColor: Colors.transparent,
-                          label: value?.floor().toString() ?? widget.min.toString(),
+                          label: value?.floor().toString() ??
+                              widget.min.toString(),
                           min: widget.min,
                           max: widget.max,
                           onChanged: (v) => super.didChange(v),
@@ -105,8 +107,8 @@ class _InputRatingState extends InputFieldState<double> {
                         ),
                         data: SliderThemeData(
                           activeTrackColor: Colors.transparent,
-                          overlayShape:
-                              RoundSliderOverlayShape(overlayRadius: _starSize / 2),
+                          overlayShape: RoundSliderOverlayShape(
+                              overlayRadius: _starSize / 2),
                           showValueIndicator: ShowValueIndicator.always,
                           thumbColor: Colors.transparent,
                           valueIndicatorColor: Colors.greenAccent,
@@ -131,12 +133,15 @@ class _InputRatingState extends InputFieldState<double> {
     double sliderVal = value ?? (widget.min + 0.0012345);
     if (sliderVal >= (index + 1) * interval) {
       return Icon(widget.iconFull,
-          color: widget.color ?? Theme.of(context).primaryColor, size: _starSize);
+          color: widget.color ?? Theme.of(context).primaryColor,
+          size: _starSize);
     } else if (sliderVal >= (index * interval) + (interval / 2)) {
       return Icon(widget.iconHalf,
-          color: widget.color ?? Theme.of(context).primaryColor, size: _starSize);
+          color: widget.color ?? Theme.of(context).primaryColor,
+          size: _starSize);
     }
     return Icon(widget.iconEmpty,
-        color: widget.borderColor ?? Theme.of(context).buttonColor, size: _starSize);
+        color: widget.borderColor ?? Theme.of(context).buttonColor,
+        size: _starSize);
   }
 }

@@ -252,7 +252,8 @@ class _InputFormScope extends InheritedWidget {
   InputForm get form => _formState.widget;
 
   @override
-  bool updateShouldNotify(_InputFormScope old) => _generation != old._generation;
+  bool updateShouldNotify(_InputFormScope old) =>
+      _generation != old._generation;
 }
 
 /// Signature for validating a form field.
@@ -451,8 +452,8 @@ class InputFieldState<T> extends State<InputField<T>> {
   }
 
   void _initValue() {
-    dynamic valueLoaded =
-        widget.initialValue ?? InputUtils.readJson(_formState?.widget?.value, widget.path);
+    dynamic valueLoaded = widget.initialValue ??
+        InputUtils.readJson(_formState?.widget?.value, widget.path);
     value = InputUtils.convertToType(T, valueLoaded);
   }
 

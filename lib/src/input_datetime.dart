@@ -15,10 +15,10 @@ import 'input_form.dart';
 ///
 /// See [InputField] for common parameters.
 ///
-/// TODO [ ] internationalize widget.
+/// TODO \[ \] internationalize widget.
 class InputDateTime extends InputField<DateTime> {
   final DateTime firstDate, lastDate;
-  String datePattern, timePattern;
+  final String datePattern, timePattern;
   final DateTimeUsing using;
   final CupertinoDatePickerMode mode;
 
