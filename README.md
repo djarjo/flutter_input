@@ -1,25 +1,27 @@
 # Flutter Input Widgets - Standalone or within a Form &rarr; <i>flutter_input</i>
-This package provides input widgets (fields) to manipulate basic data types and an `InputForm`.
-Each input widget can be used standalone or attached to the form.
+This package provides input widgets (fields) to manipulate basic data types.
 All input widgets share a common set of parameters.
 A list of validators (see below) can be attached to an input widget.
+Every input widget can be used standalone or attached to the `InputForm`.
+The `InputForm` provides methods to `enable()`, `reset()`, `save()` or `validate()`
+all fields at once which are attached to the form.
 
 ## Input Widgets
 The following input widgets are included.
 See section 'Development' below for building your own input widget.
-* [InputCalendar] - A highly customizable date picker with month selection and slider and a text input for the year
-* [InputCheckbox] - Checkbox for data type `bool`
-* [InputDate] - Calendar based selection for data type `DateTime` (date part only)
-* [InputDateTime] - Wheels for data type `DateTime` can be customized for date only, time only or both
-* [InputDropDown<T>] - Dropdown button for data type `T`
-* [InputFavorite] - A favorite button with selectable icon for data type `bool`
-* [InputKeyboard] - Text input for data type `String`, `int` or `double`
-* [InputRadio<T>] - Radio button to select one value of type `T`
-* [InputRating] - Rating widget with selectable icons and a range slider for data type `int`
-* [InputSlider] - Slider for data type `double` between a minimum and maximum value
-* [InputSpinner] - Spinner with buttons for data type `double` to decrease or increase a value
+* `InputCalendar` - A highly customizable date picker with month selection and slider and a text input for the year
+* `InputCheckbox` - Checkbox for data type `bool`
+* `InputDate` - Calendar based selection for data type `DateTime` (date part only)
+* `InputDateTime` - Wheels for data type `DateTime` can be customized for date only, time only or both
+* `InputDropDown<T>` - Dropdown button for data type `T`
+* `InputFavorite` - A favorite button with selectable icon for data type `bool`
+* `InputKeyboard` - Text input for data type `String`, `int` or `double`
+* `InputRadio<T>` - Radio button to select one value of type `T`
+* `InputRating` - Rating widget with selectable icons and a range slider for data type `int`
+* `InputSlider` - Slider for data type `double` between a minimum and maximum value
+* `InputSpinner` - Spinner with buttons for data type `double` to decrease or increase a value
  between a minimum and maximum
-* [InputSwitch] - Switch for data type `bool`
+* `InputSwitch` - Switch for data type `bool`
 
 
 ## Usage
@@ -43,38 +45,37 @@ the value from the forms map.
 * List<InputValidator> validators - list of validators
 
 ## Validators
-The following validators can be given to parameter [InputField.validators]
+The following validators can be given to parameter `validators`
 of an input widget. Each validator accepts the optional parameter
 `message` to set an individual error message if the validation fails.
-* `After(DateTime date)` - validates that the field value
+* `after(DateTime date)` - validates that the field value
  is after `date`
-* `Before(DateTime date)` - validates that the field value
+* `before(DateTime date)` - validates that the field value
  is before `date`
-* `Future` - validates that the DateTime field value
+* `future` - validates that the DateTime field value
  lies in the future
-* `Max(num maxVal)` - validates that the num field value
+* `max(num maxVal)` - validates that the num field value
  is not larger than `maxVal` 
-* `MaxLen(num maxLen)` - validates that the length of the String
+* `maxLen(num maxLen)` - validates that the length of the String
  field value is not longer than `maxLen` 
-* `Min(num minVal)` - validates that the num field value
+* `min(num minVal)` - validates that the num field value
  is not smaller than `minVal` 
-* `MinLen(num minLen)` - validates that the length of the String
+* `minLen(num minLen)` - validates that the length of the String
  field value is not shorter than `minLen` 
-* `NotNull` - validates the the field value is not empty
-* `Past` - validates that the DateTime field value
+* `notNull` - validates the the field value is not empty
+* `past` - validates that the DateTime field value
  lies in the past
 
 ## Development
-To create a new input field for data type `T` just copy one of the existing
-classes and modify it accordingly. Replace T with the type of the value of
-your new input field.
-1. Create a new stateful widget for type `T` with
-`class MyNewInputWidget extends InputField<T> {`
-1. `class MyNewInputState extends InputFieldState<T> {`
- where T is replaced by the type of the value of the field.
-1. Write method `build( BuildContext context)` in the state class.
+To create a new input field for data type `T` follow these steps:
+1. Copy one of the included class files.
+1. Rename the class widget and its state to your new one. 
+1. Replace `T` with the value type of your new input field.
+1. Adapt parameters and leave the call to `super()` with
+ all the common parameters.
+1. Adapt method `build( BuildContext context)` in the state class.
  It must end with `return super.buildInputField( context, ...` where
- `...` is the code to display your input field widget.
+ `...` is the code to display your new field widget.
 
 ## Utilities
 This package also contains some utilities.

@@ -10,13 +10,14 @@ import 'input_form.dart';
 /// Setting the value is performed by two buttons for decreasing and increasing the value.
 /// The value will be changed with each click by `(max - min) / divisions`.
 /// To have `value` of type int supply generic int.
-class InputSpinner extends InputField<double> {
+class InputSpinner<T extends num> extends InputField<T> {
   final int divisions;
-  final Color iconColor;
   final IconData iconDecrease;
+  final Color iconDecreaseColor;
   final IconData iconIncrease;
-  final double interval;
-  final double min, max;
+  final Color iconIncreaseColor;
+  final num interval;
+  final num min, max;
   final double size;
 
   InputSpinner({
@@ -25,18 +26,20 @@ class InputSpinner extends InputField<double> {
     this.divisions = 100,
     InputDecoration decoration,
     bool enabled,
-    this.iconColor,
     this.iconDecrease = Icons.remove_circle,
+    this.iconDecreaseColor,
     this.iconIncrease = Icons.add_circle,
-    double initialValue,
-    this.min = 0,
-    this.max = 100,
-    ValueChanged<double> onChanged,
-    ValueSetter<double> onSaved,
+    this.iconIncreaseColor,
+    T initialValue,
+    this.min = 0.0,
+    this.max = 100.0,
+    ValueChanged<T> onChanged,
+    ValueSetter<T> onSaved,
     String path,
-    this.size,
+    this.size = 25.0,
     List<InputValidator> validators,
-  })  : assert(min < max),
+  })  : assert(size != null),
+        assert(min < max),
         assert(divisions != null),
         interval = (max - min) / divisions,
         super(
@@ -52,20 +55,19 @@ class InputSpinner extends InputField<double> {
         );
 
   @override
-  _InputSpinnerState createState() => _InputSpinnerState();
+  _InputSpinnerState<T> createState() => _InputSpinnerState<T>();
 }
 
-class _InputSpinnerState extends InputFieldState<double> {
+class _InputSpinnerState<T extends num> extends InputFieldState<T> {
   @override
-  InputSpinner get widget => super.widget;
+  InputSpinner<T> get widget => super.widget;
   TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
     controller = TextEditingController(
-      text: (value ?? widget.initialValue ?? (widget.max - widget.min) / 2)
-          .toString(),
+      text: (value ?? widget.initialValue ?? (widget.max - widget.min) / 2).toString(),
     );
   }
 
@@ -77,23 +79,28 @@ class _InputSpinnerState extends InputFieldState<double> {
         children: <Widget>[
           IconButton(
             onPressed: isEnabled() ? onPressedDecrease : null,
-            icon: Icon(widget.iconDecrease),
-            iconSize: widget.size ?? 25,
+            icon: Icon(
+              widget.iconDecrease,
+              color: widget.iconDecreaseColor,
+            ),
+            iconSize: widget.size,
           ),
           Container(
             child: TextField(
               controller: controller,
               enabled: super.isEnabled(),
-              keyboardType: TextInputType.numberWithOptions(
-                  signed: false, decimal: false),
+              keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
               onChanged: super.isEnabled() ? (v) => textChanged(v) : null,
             ),
             width: 50,
           ),
           IconButton(
             onPressed: isEnabled() ? onPressedIncrease : null,
-            icon: Icon(widget.iconIncrease),
-            iconSize: widget.size ?? 25,
+            icon: Icon(
+              widget.iconIncrease,
+              color: widget.iconIncreaseColor,
+            ),
+            iconSize: widget.size,
           ),
         ],
       ),
@@ -107,8 +114,7 @@ class _InputSpinnerState extends InputFieldState<double> {
   }
 
   void onPressedDecrease() {
-    double curVal =
-        value ?? widget.initialValue ?? (widget.max - widget.min) / 2;
+    T curVal = value ?? widget.initialValue ?? (widget.max - widget.min) / 2;
     curVal = curVal - widget.interval;
     if (curVal < widget.min) {
       curVal = widget.min;
@@ -118,8 +124,7 @@ class _InputSpinnerState extends InputFieldState<double> {
   }
 
   void onPressedIncrease() {
-    double curVal =
-        value ?? widget.initialValue ?? (widget.max - widget.min) / 2;
+    T curVal = value ?? widget.initialValue ?? (widget.max - widget.min) / 2;
     curVal = curVal + widget.interval;
     if (curVal > widget.max) {
       curVal = widget.max;
@@ -129,7 +134,12 @@ class _InputSpinnerState extends InputFieldState<double> {
   }
 
   void textChanged(String text) {
-    double curVal = double.tryParse(text);
+    num curVal;
+    if (T == int) {
+      curVal = int.tryParse(text);
+    } else {
+      curVal = double.tryParse(text);
+    }
     curVal ??= widget.min;
     controller.text = curVal.toString();
     super.didChange(curVal);

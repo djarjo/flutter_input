@@ -86,7 +86,7 @@ class _InputCalendarState extends InputFieldState<DateTime> {
                         return Dialog(
                             child: _InputCalendarPicker(
                           baseWidget: widget,
-                          initialDate: date,
+                          pickerDate: date,
                         ));
                       });
                   didChange(newDate);
@@ -102,11 +102,11 @@ class _InputCalendarState extends InputFieldState<DateTime> {
 /// selecting today or any other day from the calendar grid.
 class _InputCalendarPicker extends StatefulWidget {
   final InputCalendar baseWidget;
-  final DateTime initialDate;
+  final DateTime pickerDate;
 
   _InputCalendarPicker({
     @required this.baseWidget,
-    @required this.initialDate,
+    @required this.pickerDate,
   });
 
   @override
@@ -136,13 +136,13 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
   // --- used to analyze gestures
   double _dx, _dy;
 
-  TextEditingController _yearController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _month = widget.initialDate.month;
-    _year = widget.initialDate.year;
+    _month = widget.pickerDate.month;
+    _year = widget.pickerDate.year;
     for (int i = 0; i < _monthNamesLong.length; i++) {
       _monthItems.add(DropdownMenuItem<int>(
         child: Text(_monthNamesLong[i]),
@@ -189,6 +189,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     );
   }
 
+  @override
   void dispose() {
     if (_yearController != null) {
       _yearController.dispose();
@@ -196,8 +197,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     super.dispose();
   }
 
-  Widget _buildCell(String text, CalendarStyle style,
-      {GestureTapCallback onTapHandler}) {
+  Widget _buildCell(String text, CalendarStyle style, {GestureTapCallback onTapHandler}) {
     Widget cell = Container(
       decoration: style?.decoration,
       height: kMinInteractiveDimension,
@@ -228,7 +228,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
             flex: 2,
             child: IconButton(
               icon: Icon(Icons.close),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop(widget.pickerDate),
               tooltip: 'Close without selection',
             ),
           ),
@@ -329,8 +329,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
 
     // --- Compute number of days from previous month
     DateTime displayMonth = DateTime(_year, _month, 1);
-    DateTime displayDay =
-        displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
+    DateTime displayDay = displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
     rows.add(_buildRow(displayDay, widget.baseWidget.styles.prevMonthStyle));
     displayDay = displayDay.add(Duration(days: 7));
     for (int i = 1; i < 6; i++) {
@@ -354,8 +353,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
       controller: _yearController,
       decoration: InputDecoration(border: InputBorder.none),
       enabled: true,
-      keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
       maxLength: 4,
       onSubmitted: (v) => _setDisplayedMonth(
         year: int.tryParse(v),
@@ -423,18 +421,14 @@ class CalendarStyles {
       weekStyle;
 
   const CalendarStyles({
-    this.headerStyle = const CalendarStyle(
-        decoration: BoxDecoration(color: Colors.amberAccent)),
-    this.monthStyle =
-        const CalendarStyle(textStyle: TextStyle(color: Colors.black)),
-    this.nextMonthStyle =
-        const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
-    this.prevMonthStyle =
-        const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
+    this.headerStyle =
+        const CalendarStyle(decoration: BoxDecoration(color: Colors.amberAccent)),
+    this.monthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black)),
+    this.nextMonthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
+    this.prevMonthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
     this.todayStyle = const CalendarStyle(
         decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
-    this.weekStyle =
-        const CalendarStyle(decoration: BoxDecoration(color: Colors.black12)),
+    this.weekStyle = const CalendarStyle(decoration: BoxDecoration(color: Colors.black12)),
   });
 }
 

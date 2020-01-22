@@ -1,5 +1,9 @@
-## 1.0.1
+## 1.0.2
 
+- `InputSpinner` now accepts a generic of type `int` or `double`.
+- Bugfix: closing `InputCalendar` with \[X\] did set value to null
+
+## 1.0.1
 - Breaking change: all validator functions are now lowerCamelCase
 
 ## 1.0.0

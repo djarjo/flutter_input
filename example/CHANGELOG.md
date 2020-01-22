@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Added setState to `datetime_page.dart` for field `InputCalendar`
+
 ## 1.0.1
 
 - Validators adapted to lowerCamelCase

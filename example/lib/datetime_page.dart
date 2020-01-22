@@ -78,7 +78,9 @@ class _DateTimePageState extends State<DateTimePage> {
             ),
             InputCalendar(
               initialValue: _birthday ?? DateTime.parse('1977-02-17'),
-              onChanged: (v) => _birthday = v,
+              onChanged: (v) => setState(() {
+                _birthday = v;
+              }),
               styles: _calendarStyles,
             ),
             InputRadio(
