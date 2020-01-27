@@ -161,8 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             InputSwitch(
               decoration: InputDecoration(
-                  labelText: 'Active',
-                  helperText: 'Helper text for InputSwitch "Active"'),
+                  labelText: 'Active', helperText: 'Helper text for InputSwitch "Active"'),
               path: 'active',
             ),
             InputCheckbox(

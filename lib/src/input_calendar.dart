@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_input/flutter_input.dart';
 import 'package:intl/intl.dart';
 
-import 'date_helper.dart';
-
 /// Provides an input widget for a date.
 ///
 /// The date is displayed together with an icon. Tapping it opens a dialog box with
@@ -110,7 +108,7 @@ class _InputCalendarPicker extends StatefulWidget {
   });
 
   @override
-  _InputCalendarPickerState createState() => _InputCalendarPickerState();
+  _InputCalendarPickerState createState() => _InputCalendarPickerState(pickerDate);
 }
 
 class _InputCalendarPickerState extends State<_InputCalendarPicker> {
@@ -128,24 +126,52 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     'November',
     'December'
   ];
-  final List<DropdownMenuItem<int>> _monthItems = [];
 
-  // --- Displayed month and year
-  int _month, _year;
+  static final List<String> _monthNamesShort = [
+    'Jan.',
+    'Feb.',
+    'Mar.',
+    'Apr.',
+    'Mai.',
+    'Jun.',
+    'Jul.',
+    'Aug.',
+    'Sep.',
+    'Oct.',
+    'Nov.',
+    'Dec.'
+  ];
+
+  static final List<String> _weekDays = ['W', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
+  final List<DropdownMenuItem<int>> _monthItemsLong = [];
+  final List<DropdownMenuItem<int>> _monthItemsShort = [];
 
   // --- used to analyze gestures
   double _dx, _dy;
 
   final TextEditingController _yearController = TextEditingController();
 
+  DateTime currentSelectedDate;
+
+  double monthGridCellDimensionFactor;
+
+  _InputCalendarPickerState(DateTime pickerDate) {
+    currentSelectedDate = pickerDate;
+  }
+
   @override
   void initState() {
     super.initState();
-    _month = widget.pickerDate.month;
-    _year = widget.pickerDate.year;
     for (int i = 0; i < _monthNamesLong.length; i++) {
-      _monthItems.add(DropdownMenuItem<int>(
+      _monthItemsLong.add(DropdownMenuItem<int>(
         child: Text(_monthNamesLong[i]),
+        value: i + 1,
+      ));
+    }
+    for (int i = 0; i < _monthNamesShort.length; i++) {
+      _monthItemsShort.add(DropdownMenuItem<int>(
+        child: Text(_monthNamesShort[i]),
         value: i + 1,
       ));
     }
@@ -154,39 +180,92 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
   /// Builds the calendar picker in a dialog overlay.
   @override
   Widget build(BuildContext context) {
+    MediaQuery.of(context).orientation == Orientation.portrait
+        ? monthGridCellDimensionFactor = 1.5
+        : monthGridCellDimensionFactor = 1.8;
     Widget tableHeader = _buildHeader(context);
-    Table calendarTable = _buildTable(context);
-    return Material(
-      child: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.greenAccent),
-          ),
-          height: 8 * kMinInteractiveDimension + 2,
-          width: 8 * kMinInteractiveDimension,
-          child: Column(
-            children: <Widget>[
-              tableHeader,
-              GestureDetector(
-                child: calendarTable,
-                onHorizontalDragUpdate: (DragUpdateDetails details) {
-                  _dx = details.delta.dx;
-                },
-                onHorizontalDragEnd: (DragEndDetails details) {
-                  _setDisplayedMonth(delta: (_dx > 0) ? -1 : 1);
-                },
-                onVerticalDragUpdate: (details) {
-                  _dy = details.delta.dy;
-                },
-                onVerticalDragEnd: (DragEndDetails details) {
-                  _setDisplayedMonth(delta: (_dy > 0) ? -1 : 1);
-                },
-              ),
-            ],
+    Widget monthYearSelections = _buildMonthYearSelections(context);
+    Widget calendarTable = _buildTable(context);
+    Widget tableFooter = _buildFooter(context);
+
+    Widget calendarPicker;
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      // is portrait
+      calendarPicker = Material(
+        child: SingleChildScrollView(
+          child: Container(
+            width: 8 * (kMinInteractiveDimension / monthGridCellDimensionFactor),
+            child: Column(
+              children: <Widget>[
+                tableHeader,
+                monthYearSelections,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: calendarTable,
+                  onHorizontalDragUpdate: (DragUpdateDetails details) {
+                    _dx = details.delta.dx;
+                  },
+                  onHorizontalDragEnd: (DragEndDetails details) {
+                    _setDisplayedMonth(delta: (_dx > 0) ? -1 : 1);
+                  },
+                  onVerticalDragUpdate: (details) {
+                    _dy = details.delta.dy;
+                  },
+                  onVerticalDragEnd: (DragEndDetails details) {
+                    _setDisplayedMonth(delta: (_dy > 0) ? -1 : 1);
+                  },
+                ),
+                tableFooter,
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      // is landscape
+      calendarPicker = Material(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  width: widget.baseWidget.styles?.dateStyle?.textStyle.fontSize * 6,
+                  child: tableHeader,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    monthYearSelections,
+                    Container(
+                      width: 10 * (kMinInteractiveDimension / monthGridCellDimensionFactor),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        child: calendarTable,
+                        onHorizontalDragUpdate: (DragUpdateDetails details) {
+                          _dx = details.delta.dx;
+                        },
+                        onHorizontalDragEnd: (DragEndDetails details) {
+                          _setDisplayedMonth(delta: (_dx > 0) ? -1 : 1);
+                        },
+                        onVerticalDragUpdate: (details) {
+                          _dy = details.delta.dy;
+                        },
+                        onVerticalDragEnd: (DragEndDetails details) {
+                          _setDisplayedMonth(delta: (_dy > 0) ? -1 : 1);
+                        },
+                      ),
+                    ),
+                    tableFooter,
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return calendarPicker;
   }
 
   @override
@@ -197,10 +276,251 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     super.dispose();
   }
 
+  Widget _buildHeader(BuildContext context) {
+    String monthYearText;
+    double width;
+    double height;
+    EdgeInsets paddingsWeekDay;
+    EdgeInsets paddingsDay;
+    EdgeInsets monthYear;
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      width = 8 * kMinInteractiveDimension;
+      monthYearText = _monthNamesLong[currentSelectedDate.month - 1] +
+          ' ' +
+          currentSelectedDate.year.toString();
+      paddingsWeekDay = EdgeInsets.only(top: 5.0, bottom: 5.0);
+      paddingsDay = EdgeInsets.only(bottom: 5.0);
+      monthYear = EdgeInsets.only(bottom: 5.0);
+    } else {
+      paddingsWeekDay = EdgeInsets.all(5.0);
+      paddingsDay = EdgeInsets.all(5.0);
+      monthYear = EdgeInsets.all(5.0);
+      height = (7 * (kMinInteractiveDimension / monthGridCellDimensionFactor)) +
+          (1 * kMinInteractiveDimension) +
+          10.0;
+      monthYearText = _monthNamesShort[currentSelectedDate.month - 1] +
+          ' ' +
+          currentSelectedDate.year.toString();
+    }
+    return Container(
+      decoration: widget.baseWidget.styles?.dateStyle?.decoration,
+      width: width,
+      height: height,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: paddingsWeekDay,
+            child: Text(
+              _weekDays[currentSelectedDate.weekday],
+              style: widget.baseWidget.styles?.dateStyle?.textStyle,
+            ),
+          ),
+          Padding(
+            padding: paddingsDay,
+            child: Text(
+              currentSelectedDate.day.toString(),
+              style: widget.baseWidget.styles?.dateStyle?.textStyle.copyWith(
+                  fontSize: widget.baseWidget.styles?.dateStyle?.textStyle.fontSize * 2),
+            ),
+          ),
+          Padding(
+            padding: monthYear,
+            child: Text(
+              monthYearText,
+              style: widget.baseWidget.styles?.dateStyle?.textStyle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Builds the header of the calendar picker with close, previous month,
+  // month and year, next month and today.
+  Widget _buildMonthYearSelections(BuildContext context) {
+    Widget monthWidget = _buildMonthWidget();
+    Widget yearWidget = _buildYearWidget();
+    return Container(
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 5.0),
+            child: GestureDetector(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15.0),
+                  ),
+                ),
+                child: Icon(Icons.chevron_left),
+              ),
+              onTap: () => _setDisplayedMonth(delta: -1),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 5.0),
+            child: monthWidget,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 5.0),
+            child: yearWidget,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 5.0, right: 5.0),
+            child: GestureDetector(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15.0),
+                  ),
+                ),
+                child: Icon(Icons.chevron_right),
+              ),
+              onTap: () => _setDisplayedMonth(delta: 1),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMonthWidget() {
+    List<DropdownMenuItem<int>> monthItems;
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      // is portrait
+      monthItems = _monthItemsShort;
+    } else {
+      // is landscape
+      monthItems = _monthItemsLong;
+    }
+    return Container(
+      padding: EdgeInsets.only(left: 5.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1.0,
+        ),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<int>(
+          isDense: true,
+          icon: null,
+          items: monthItems,
+          value: currentSelectedDate.month,
+          onChanged: (int v) {
+            setState(() {
+              currentSelectedDate =
+                  DateTime(currentSelectedDate.year, v, currentSelectedDate.day);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildYearWidget() {
+    int year = currentSelectedDate.year;
+    _yearController.text = '$year';
+    return Container(
+        padding: EdgeInsets.only(left: 5.0),
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1.0,
+          ),
+        ),
+        child: SizedBox(
+          width: 50,
+          child: TextField(
+            buildCounter: _noCounterHandler,
+            controller: _yearController,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.all(2.0),
+              isDense: true,
+            ),
+            enabled: true,
+            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+            maxLength: 4,
+            style: new TextStyle(color: Colors.black),
+            onSubmitted: (v) => _setDisplayedMonth(
+              year: int.tryParse(v),
+            ),
+          ),
+        ));
+  }
+
+  /// Builds the calendar. It has a header row with column names and
+  /// 6 rows with week number and the days of the selected month.
+  Widget _buildTable(BuildContext context) {
+    List<TableRow> rows = [];
+
+    //--- First row contains column headers
+    List<Widget> tableCells =
+        _weekDays.map((e) => _buildCell(e, widget.baseWidget.styles.headerStyle)).toList();
+    rows.add(TableRow(children: tableCells));
+
+    // --- Compute number of days from previous month
+    DateTime displayMonth =
+        DateTime(currentSelectedDate.year, currentSelectedDate.month, 1);
+    DateTime displayDay = displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
+    rows.add(_buildRow(displayDay, widget.baseWidget.styles.prevMonthStyle));
+    displayDay = displayDay.add(Duration(days: 7));
+    for (int i = 1; i < 6; i++) {
+      rows.add(_buildRow(displayDay, widget.baseWidget.styles.nextMonthStyle));
+      displayDay = displayDay.add(Duration(days: 7));
+    }
+    return Table(
+      children: rows,
+    );
+  }
+
+  /// Adds one row to the table with week number and 7 day numbers
+  TableRow _buildRow(DateTime date, CalendarStyle otherMonthStyle) {
+    CalendarStyle dayStyle;
+    List<Widget> cells = [];
+    cells.add(_buildCell(
+      '${date.weekOfYear()}',
+      widget.baseWidget.styles.weekStyle,
+    ));
+    for (int i = 0; i < 7; i++) {
+      DateTime selectedDate = date;
+      if (date.isBetween(widget.baseWidget.firstDate, widget.baseWidget.lastDate)) {
+        if (selectedDate.isOnSameDayAs(DateTime.now())) {
+          dayStyle = widget.baseWidget.styles.todayStyle;
+        } else if (selectedDate.isOnSameDayAs(currentSelectedDate)) {
+          dayStyle = widget.baseWidget.styles.selectedStyle;
+        } else {
+          dayStyle = (selectedDate.month == currentSelectedDate.month)
+              ? widget.baseWidget.styles.monthStyle
+              : otherMonthStyle;
+        }
+        cells.add(_buildCell('${date.day}', dayStyle, onTapHandler: () {
+          setState(() {
+            currentSelectedDate = selectedDate;
+          });
+          //Navigator.of(context).pop(another);
+        }));
+      } else {
+        cells.add(Container());
+      }
+      date = date.add(Duration(days: 1));
+    }
+    return TableRow(children: cells);
+  }
+
   Widget _buildCell(String text, CalendarStyle style, {GestureTapCallback onTapHandler}) {
     Widget cell = Container(
       decoration: style?.decoration,
-      height: kMinInteractiveDimension,
+      height: kMinInteractiveDimension / monthGridCellDimensionFactor,
+      width: kMinInteractiveDimension / monthGridCellDimensionFactor,
       child: Center(
         child: Text(
           text,
@@ -216,52 +536,32 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
           );
   }
 
-  // Builds the header of the calendar picker with close, previous month,
-  // month and year, next month and today.
-  Widget _buildHeader(BuildContext context) {
-    Widget monthWidget = _buildMonthWidget();
-    Widget yearWidget = _buildYearWidget();
+  Widget _buildFooter(BuildContext context) {
     return Container(
+      alignment: Alignment.centerRight,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () => Navigator.of(context).pop(widget.pickerDate),
-              tooltip: 'Close without selection',
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                currentSelectedDate = DateTime.now();
+              });
+            },
+            child: Icon(Icons.today),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 25.0),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(widget.pickerDate),
+              child: Icon(Icons.cancel),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: IconButton(
-              icon: Icon(Icons.chevron_left),
-              onPressed: () => _setDisplayedMonth(delta: -1),
-              tooltip: 'Previous month',
-            ),
-          ),
-          Expanded(
-            flex: 6,
-            child: monthWidget,
-          ),
-          Expanded(
-            flex: 3,
-            child: yearWidget,
-          ),
-          Expanded(
-            flex: 2,
-            child: IconButton(
-              icon: Icon(Icons.chevron_right),
-              onPressed: () => _setDisplayedMonth(delta: 1),
-              tooltip: 'Next month',
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: IconButton(
-              icon: Icon(Icons.today),
-              onPressed: () => Navigator.of(context).pop(DateTime.now()),
-              tooltip: 'Today',
+          Padding(
+            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(currentSelectedDate),
+              child: Icon(Icons.done),
             ),
           ),
         ],
@@ -269,96 +569,9 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     );
   }
 
-  Widget _buildMonthWidget() {
-    return DropdownButton<int>(
-      icon: null,
-      iconSize: 0.0,
-      items: _monthItems,
-      value: _month,
-      onChanged: (int v) {
-        setState(() {
-          _month = v;
-        });
-      },
-    );
-  }
-
-  /// Adds one row to the table with week number and 7 day numbers
-  TableRow _buildRow(DateTime date, CalendarStyle otherMonthStyle) {
-    CalendarStyle dayStyle;
-    int week = DateHelper.getWeekOfYear(date);
-    List<Widget> cells = [];
-    cells.add(_buildCell(
-      '$week',
-      widget.baseWidget.styles.weekStyle,
-    ));
-    for (int i = 0; i < 7; i++) {
-      DateTime another = date;
-      if (DateHelper.isBetween(
-          first: widget.baseWidget.firstDate,
-          last: widget.baseWidget.lastDate,
-          date: another)) {
-        if (DateHelper.isSameDay(date, DateTime.now())) {
-          dayStyle = widget.baseWidget.styles.todayStyle;
-        } else {
-          dayStyle = (date.month == _month)
-              ? widget.baseWidget.styles.monthStyle
-              : otherMonthStyle;
-        }
-        cells.add(_buildCell('${date.day}', dayStyle, onTapHandler: () {
-          Navigator.of(context).pop(another);
-        }));
-      } else {
-        cells.add(Container());
-      }
-      date = date.add(Duration(days: 1));
-    }
-    return TableRow(children: cells);
-  }
-
-  /// Builds the calendar. It has a header row with column names and
-  /// 6 rows with week number and the days of the selected month.
-  Table _buildTable(BuildContext context) {
-    List<TableRow> rows = [];
-
-    //--- First row contains column headers
-    List<Widget> tableCells = ['W', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-        .map((e) => _buildCell(e, widget.baseWidget.styles.headerStyle))
-        .toList();
-    rows.add(TableRow(children: tableCells));
-
-    // --- Compute number of days from previous month
-    DateTime displayMonth = DateTime(_year, _month, 1);
-    DateTime displayDay = displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
-    rows.add(_buildRow(displayDay, widget.baseWidget.styles.prevMonthStyle));
-    displayDay = displayDay.add(Duration(days: 7));
-    for (int i = 1; i < 6; i++) {
-      rows.add(_buildRow(displayDay, widget.baseWidget.styles.nextMonthStyle));
-      displayDay = displayDay.add(Duration(days: 7));
-    }
-    return Table(
-      children: rows,
-    );
-  }
-
   Widget _noCounterHandler(BuildContext context,
       {int currentLength, bool isFocused, int maxLength}) {
     return null;
-  }
-
-  Widget _buildYearWidget() {
-    _yearController.text = '$_year';
-    return TextField(
-      buildCounter: _noCounterHandler,
-      controller: _yearController,
-      decoration: InputDecoration(border: InputBorder.none),
-      enabled: true,
-      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
-      maxLength: 4,
-      onSubmitted: (v) => _setDisplayedMonth(
-        year: int.tryParse(v),
-      ),
-    );
   }
 
   /// Sets [year] and / or [month] or applies [delta] in months.
@@ -368,8 +581,8 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
   /// [InputCalendar.lastDate] if these are not null.
   void _setDisplayedMonth({int year, int month, int delta}) {
     setState(() {
-      year ??= _year;
-      month ??= _month;
+      year ??= currentSelectedDate.year;
+      month ??= currentSelectedDate.month;
       if (delta != null) {
         month = month + delta;
         while (month < 1) {
@@ -383,17 +596,12 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
       }
       // Only set if within borders
       if (DateHelper.isBetween(
-          first: widget.baseWidget.firstDate,
-          last: widget.baseWidget.lastDate,
+          lower: widget.baseWidget.firstDate,
+          upper: widget.baseWidget.lastDate,
           year: year,
           month: month)) {
-        _year = year;
-        _month = month;
+        currentSelectedDate = DateTime(year, month, currentSelectedDate.day);
       }
-//        WidgetsBinding.instance.addPostFrameCallback((_) async {
-//          _monthWheelController.animateToItem(
-//          _monthWheelController.jumpToItem( _month - 1 );
-//        });
     });
   }
 }
@@ -402,25 +610,37 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
 ///
 /// This class can be set once and then used for all calendars.
 class CalendarStyles {
-  /// Styles the first row of the picker which contains the column names.
-  final CalendarStyle headerStyle,
+  /// Styles the written selected date on top or left of the picker
+  final CalendarStyle dateStyle,
+
+      /// Styles the first row of the picker which contains the column names.
+      headerStyle,
 
       /// Styles the days in the currently selected month.
       monthStyle,
 
-      /// Styles the days which are displyed from the next month.
+      /// Styles the days which are displayed from the next month.
       nextMonthStyle,
 
-      /// Styles the days which are displyed from the previous month.
+      /// Styles the days which are displayed from the previous month.
       prevMonthStyle,
 
       /// Styles today
       todayStyle,
 
+      /// Styles selected
+      selectedStyle,
+
       /// Styles the column which contains the number of the week
       weekStyle;
 
   const CalendarStyles({
+    this.dateStyle = const CalendarStyle(
+        decoration: BoxDecoration(color: Colors.lightBlueAccent),
+        textStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24.0,
+        )),
     this.headerStyle =
         const CalendarStyle(decoration: BoxDecoration(color: Colors.amberAccent)),
     this.monthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black)),
@@ -428,6 +648,8 @@ class CalendarStyles {
     this.prevMonthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
     this.todayStyle = const CalendarStyle(
         decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
+    this.selectedStyle = const CalendarStyle(
+        decoration: BoxDecoration(color: Colors.cyanAccent, shape: BoxShape.circle)),
     this.weekStyle = const CalendarStyle(decoration: BoxDecoration(color: Colors.black12)),
   });
 }

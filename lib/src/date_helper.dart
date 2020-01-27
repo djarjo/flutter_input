@@ -6,6 +6,93 @@ enum DateTimeUsing {
   dateAndTime,
 }
 
+/// Extensions on DateTime.
+/// * [dayOfYear()]
+/// * [daysInMonth()]
+/// * [isBetween()]
+/// * [isInLeapYear()]
+/// * [isOnSameDayAs()]
+/// * [julianDay()]
+/// * [weekOfYear()]
+extension DateHelperExtension on DateTime {
+  /// Returns the number of days in this year e.g.: February 1st = 32.
+  int dayOfYear() {
+    List<int> _daysInYear = <int>[0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    int doy = _daysInYear[month] + day;
+    if (isInLeapYear() && (month > 2)) {
+      doy++;
+    }
+    return doy;
+  }
+
+  /// Returns the number of days in the month.
+  int daysInMonth() {
+    if (isInLeapYear() && (month == 2)) {
+      return 29;
+    }
+    List<int> _daysPerMonth = <int>[0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return _daysPerMonth[month];
+  }
+
+  /// Returns `true` if this DateTime value is not older than `lower` (or `lower=null`)
+  /// and not younger than `upper` (or `upper=null`).
+  bool isBetween(DateTime lower, DateTime upper) {
+    if ((lower != null) && (isBefore(lower))) return false;
+    if ((upper != null) && (isAfter(upper))) return false;
+    return true;
+  }
+
+  /// Returns `true` if this DateTime object is in a leap year with 366 days.
+  bool isInLeapYear() {
+    if ((year % 400) == 0) return true;
+    if (((year % 4) == 0) && ((year % 100) != 0)) return true;
+    return false;
+  }
+
+  /// Returns `true` if this DateTime object is on the same day as `another`.
+  bool isOnSameDayAs(DateTime another) {
+    if (another == null) {
+      return false;
+    }
+    if (year != another.year || month != another.month || day != another.day) {
+      return false;
+    }
+    return true;
+  }
+
+  /// Computes the Julian day which is the number of days since Monday, January 1, 4713 BC.
+  int julianDay() {
+    int a = ((14 - month) ~/ 12);
+    int y = year + 4800 - a;
+    int m = month + (12 * a) - 3;
+    int jd = (day + (((153 * m) + 2) ~/ 5) + (365 * y) + (y ~/ 4));
+
+    // --- Correction for dates since 1582-10-15 <=> Gregorian Calendar
+    if (year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)))) {
+      jd = (jd - (y ~/ 100) + (y ~/ 400) - 32045);
+    } else {
+      jd = jd - 32083;
+    }
+    return jd;
+  }
+
+  /// Week number in year. Week 1 has the first Thursday.
+  int weekOfYear() {
+    assert((1 <= month) && (month <= 12));
+    assert((1 <= day) && (day <= 31));
+    int woy = (dayOfYear() + 10 - weekday) ~/ 7;
+    if (woy < 1) {
+      return DateTime(year - 1, 12, 31).weekOfYear();
+    }
+    if (woy == 53) {
+      if (DateTime(year + 1, 1, 1).weekday <= 4) {
+        return 1;
+      }
+    }
+    return woy;
+  }
+}
+
 /// Enumeration of formats for dates and times.
 enum DateTimeFormat {
   /// Date format '24.12.2001'
@@ -44,82 +131,6 @@ enum DateTimeFormat {
 /// * January = 1, ..., December = 12,
 /// * Monday = 1, ..., Sunday = 7
 class DateHelper {
-  /// Days in each month (January = 1)
-  static List<int> daysPerMonth = <int>[
-    0,
-    31,
-    28,
-    31,
-    30,
-    31,
-    30,
-    31,
-    31,
-    30,
-    31,
-    30,
-    31
-  ];
-
-  static int computeDaysInMonth(int year, int month) {
-    if (isLeapYear(year) && (month == 2)) {
-      return 29;
-    }
-    return daysPerMonth[month];
-  }
-
-  /// Computes the Julian day which is the number of days since Monday, January 1, 4713 BC.
-  ///
-  /// The date is given by year, [month] 1..12 and [day] 1..31.
-  static int computeJulianDay(int year, int month, int day) {
-    int a = ((14 - month) ~/ 12);
-    int y = year + 4800 - a;
-    int m = month + (12 * a) - 3;
-    int jd = (day + (((153 * m) + 2) ~/ 5) + (365 * y) + (y ~/ 4));
-
-    // --- Dates since 1582-10-15 <=> Gregorian Calendar
-    if (year > 1582 ||
-        (year == 1582 && (month > 10 || (month == 10 && day >= 15)))) {
-      jd = (jd - (y ~/ 100) + (y ~/ 400) - 32045);
-    } else {
-      jd = jd - 32083;
-    }
-    return jd;
-  }
-
-  /// Computes the day of the week with 1=Monday until 7=Sunday
-  static int computeWeekday(int year, int month, int day) {
-    int jd = computeJulianDay(year, month, day);
-    return (jd % 7) + 1;
-  }
-
-  /// Computes the week of the year.
-  ///
-  /// ISO-8601 specifies the first week of the year must contain at least 4 days.
-  /// Otherwise the days still belong to the last week of the previous year.
-  static int computeWeekOfYear(int year, int month, int day) {
-    int jd = computeJulianDay(year, month, day);
-
-    // --- Get first day of that year
-    int jdfirst = computeJulianDay(year, 1, 1);
-    int days = jd - jdfirst;
-
-    // --- Which day is it (0 = Monday)
-    int weekday = jdfirst % 7;
-
-    // --- Compute weeks
-    int calWeek =
-        ((days ~/ 7) + ((10 - weekday) ~/ 7) + (((days % 7) + weekday) ~/ 7));
-    if (calWeek == 0) {
-      calWeek = computeWeekOfYear(year - 1, 12, 31);
-    }
-    return calWeek;
-  }
-
-  static int getDaysInMonth(DateTime date) {
-    return computeDaysInMonth(date.year, date.month);
-  }
-
   /// Gets the default pattern for date, time or date with time.
   static String getDefaultPattern(DateTimeUsing using) {
     if (using == null || using == DateTimeUsing.dateAndTime) {
@@ -131,74 +142,14 @@ class DateHelper {
     return DateTimeFormat.HH_colon_mm.toString();
   }
 
-  /// Gets the Julian day which is the number of days since Monday, January 1,
-  /// 4713 BC.
-  static int getJulianDay(DateTime date) {
-    return computeJulianDay(date.year, date.month, date.day);
-  }
-
-  /// See [computeWeekOfYear()]
-  static int getWeekOfYear(DateTime date) {
-    return computeWeekOfYear(date.year, date.month, date.day);
-  }
-
-  /// Checks if both dates are on the same calendar day.
-  ///
-  /// Should be a method in [DateTime] `isOnSameDayAs( DateTime another )`
-  static bool isSameDay(DateTime one, DateTime two) {
-    if (one == null || two == null) {
-      return false;
-    }
-    if (one.year != two.year || one.month != two.month || one.day != two.day) {
-      return false;
-    }
+  /// Returns `true` if `year` and `month` is not older than `lower` (or `lower=null`)
+  /// and not younger than `upper` (or `upper=null`).
+  static bool isBetween({int year, int month, DateTime lower, DateTime upper}) {
+    if ((lower != null) &&
+        ((year < lower.year) || (year == lower.year && month < lower.month))) return false;
+    if ((upper != null) &&
+        ((year > upper.year) || (year == upper.year && month > upper.month))) return false;
     return true;
-  }
-
-  /// Checks if either [date] or [year] with [month] is within [first] and [last].
-  ///
-  /// If [first] or [last] is `null` then any value in that directions returns `true`.
-  static bool isBetween({
-    DateTime first,
-    DateTime last,
-    DateTime date,
-    int year,
-    int month,
-  }) {
-    if (first != null) {
-      if (date != null) {
-        // date given
-        if (date.isBefore(first)) {
-          return false;
-        }
-      } else {
-        // year and month given
-        if ((date.year < year) || (date.year == year && date.month < month)) {
-          return false;
-        }
-      }
-    }
-    if (last != null) {
-      if (date != null) {
-        // date given
-        if (date.isAfter(last)) {
-          return false;
-        }
-      } else {
-        // year and month given
-        if ((date.year > year) || (date.year == year && date.month > month)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  /// Checks if the given year is a leap year which has 366 days instead of 365.
-  static bool isLeapYear(int year) {
-    if ((year % 400) == 0) return true;
-    if (((year % 4) == 0) && ((year % 100) != 0)) return true;
-    return false;
   }
 
   static DateTimeUsing isUsing(DateTimeFormat format) {
