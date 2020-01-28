@@ -9,9 +9,9 @@ all fields at once which are attached to the form.
 ## Input Widgets
 The following input widgets are included.
 See section 'Development' below for building your own input widget.
-* `InputCalendar` - A highly customizable date picker with month selection and slider and a text input for the year
 * `InputCheckbox` - Checkbox for data type `bool`
 * `InputDate` - Calendar based selection for data type `DateTime` (date part only)
+* `InputDatePicker` - A highly customizable date picker with week of year
 * `InputDateTime` - Wheels for data type `DateTime` can be customized for date only, time only or both
 * `InputDropDown<T>` - Dropdown button for data type `T`
 * `InputFavorite` - A favorite button with selectable icon for data type `bool`
@@ -23,6 +23,15 @@ See section 'Development' below for building your own input widget.
  between a minimum and maximum
 * `InputSwitch` - Switch for data type `bool`
 
+### Demo
+#### InputDatePicker
+The highly customizable `InputDatePicker` allows you to choose a date
+from a calendar page which also shows the week of the year.
+It provides spinners, sliders and a dropdown to select the month.
+The year can even be entered as text.
+All parts can be customized by `DatePickerStyles`.
+ 
+![Screenshot](doc/screenshots/date_picker.gif)
 
 ## Usage
 
@@ -35,7 +44,7 @@ All parameters are named and optional.
 * `bool autovalidate = false` - automatically validates  
 * InputDecoration decoration - e.g. for a label
 * bool enabled - to protect the field against changes. Overrides
-setting through the `Form`
+setting of the `Form`
 * T initialValue - to set the fields initial value. Overrides using
 the value from the forms map.
 * ValueSetter<T> onChanged - invoked on every change
@@ -79,18 +88,19 @@ To create a new input field for data type `T` follow these steps:
 
 ## Utilities
 This package also contains some utilities.
-Methods missing in `DateTime` like [DateHelper.getWeekOfYear]
-or [DateHelper.getJulianDay]. 
-See [InputUtils.convertToType()] for data type conversion, 
-[InputUtils.readFromJson()] for reading and [InputUtils.writeToJson()]
-for writing values into nested maps.
+
+* `InputUtils.convertToType()` converts a value to a given target type.
+* `InputUtils.readFromJson()` reads a value from a nested map.
+* `InputUtils.writeToJson()` writes a value into a nested map.
+* See `date_helper.dart` for extensions on `DateTime`
+ for `weekOfYear`, `julianDay` and more.
 
 ### To Do
 * \[X\] create a customizable calendar picker with week numbers
 * \[X\] create a text input field for int and double
+* \[ \] create an input widget for a calendar with events
 * \[ \] create an input widget to select multiple choices like a
  multi-select list
 * \[ \] add some images to this documentation
 * \[ \] internationalize the whole package 
 * \[ \] add dartdoc output
- (requires a dartdoc not creating the whole dart api)

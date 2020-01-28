@@ -17,7 +17,21 @@ enum DateTimeUsing {
 extension DateHelperExtension on DateTime {
   /// Returns the number of days in this year e.g.: February 1st = 32.
   int dayOfYear() {
-    List<int> _daysInYear = <int>[0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    List<int> _daysInYear = <int>[
+      0,
+      0,
+      31,
+      59,
+      90,
+      120,
+      151,
+      181,
+      212,
+      243,
+      273,
+      304,
+      334
+    ];
     int doy = _daysInYear[month] + day;
     if (isInLeapYear() && (month > 2)) {
       doy++;
@@ -30,7 +44,21 @@ extension DateHelperExtension on DateTime {
     if (isInLeapYear() && (month == 2)) {
       return 29;
     }
-    List<int> _daysPerMonth = <int>[0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    List<int> _daysPerMonth = <int>[
+      0,
+      31,
+      28,
+      31,
+      30,
+      31,
+      30,
+      31,
+      31,
+      30,
+      31,
+      30,
+      31
+    ];
     return _daysPerMonth[month];
   }
 
@@ -68,7 +96,8 @@ extension DateHelperExtension on DateTime {
     int jd = (day + (((153 * m) + 2) ~/ 5) + (365 * y) + (y ~/ 4));
 
     // --- Correction for dates since 1582-10-15 <=> Gregorian Calendar
-    if (year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)))) {
+    if (year > 1582 ||
+        (year == 1582 && (month > 10 || (month == 10 && day >= 15)))) {
       jd = (jd - (y ~/ 100) + (y ~/ 400) - 32045);
     } else {
       jd = jd - 32083;
@@ -146,9 +175,11 @@ class DateHelper {
   /// and not younger than `upper` (or `upper=null`).
   static bool isBetween({int year, int month, DateTime lower, DateTime upper}) {
     if ((lower != null) &&
-        ((year < lower.year) || (year == lower.year && month < lower.month))) return false;
+        ((year < lower.year) || (year == lower.year && month < lower.month)))
+      return false;
     if ((upper != null) &&
-        ((year > upper.year) || (year == upper.year && month > upper.month))) return false;
+        ((year > upper.year) || (year == upper.year && month > upper.month)))
+      return false;
     return true;
   }
 

@@ -1,21 +1,25 @@
-// Copyright 2020 Hajo.Lemcke@mail.com
+// Copyright 2020 Hajo.Lemcke@gmail.com
 // Please see the LICENSE file for details.
 
 /// Provides input widgets for data manipulation which can be used standalone or within a form.
 ///
 /// An input widget is used to change the value of a variable through user interaction.
-/// This library provides input widgets for all types of variables: bool, int, double, String and DateTime.
+/// This library provides input widgets for all types of variables:
+/// bool, int, double, String and DateTime.
 /// All input widgets share a common set of parameters which makes them easier to use.
 /// This common set of parameters can be found at [InputField].
 ///
 /// ## Input Utilities
 ///
-/// Input widgets and form rely on some utility methods which can be used anywhere:
-/// * [InputUtils.convertToType]
-/// * [InputUtils.readJson]
+/// Form and some input widgets rely on utility methods which can be used anywhere:
+/// * [InputUtils.convertToType] converts a value to a type
+/// * [InputUtils.readJson] reads a value from a nested map
 /// * [InputUtils.writeJson] writes a value into a nested map of String value pairs
-/// * [DateHelper.computeJulianDay]
-/// * [DateHelper.computeWeekOfYear]
+///
+/// [DateHelperExtension] provides extensions for `DateTime` objects:
+/// * [DateHelperExtension.isSameDay] compares only the date not the time
+/// * [DateHelperExtension.julianDay] computes the Julian Day
+/// * [DateHelperExtension.weekOfYear] gets the week of year \[1..53\]
 ///
 /// ## Architecture
 ///
@@ -39,9 +43,9 @@
 library flutter_input;
 
 export 'src/date_helper.dart';
-export 'src/input_calendar.dart';
 export 'src/input_checkbox.dart';
 export 'src/input_date.dart';
+export 'src/input_datepicker.dart';
 export 'src/input_datetime.dart';
 export 'src/input_dropdown.dart';
 export 'src/input_favorite.dart';

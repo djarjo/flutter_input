@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Adapted sample to `InputDatePicker` instead of `InputCalendar`
+
 ## 1.0.2
 
 - Added setState to `datetime_page.dart` for field `InputCalendar`

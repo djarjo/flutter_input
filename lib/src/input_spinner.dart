@@ -67,7 +67,8 @@ class _InputSpinnerState<T extends num> extends InputFieldState<T> {
   void initState() {
     super.initState();
     controller = TextEditingController(
-      text: (value ?? widget.initialValue ?? (widget.max - widget.min) / 2).toString(),
+      text: (value ?? widget.initialValue ?? (widget.max - widget.min) / 2)
+          .toString(),
     );
   }
 
@@ -89,7 +90,8 @@ class _InputSpinnerState<T extends num> extends InputFieldState<T> {
             child: TextField(
               controller: controller,
               enabled: super.isEnabled(),
-              keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+              keyboardType: TextInputType.numberWithOptions(
+                  signed: false, decimal: false),
               onChanged: super.isEnabled() ? (v) => textChanged(v) : null,
             ),
             width: 50,

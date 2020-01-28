@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_input/flutter_input.dart';
 import 'package:intl/intl.dart';
 
-/// Provides an input widget for a date.
+/// Provides a date picker for a `DateTime` value.
 ///
-/// The date is displayed together with an icon. Tapping it opens a dialog box with
-/// a date picker. The picker can be fully customized.
+/// The current value is displayed together with an icon.
+/// Tapping it opens a dialog box with a date picker.
+/// The picker can be fully customized.
 ///
-/// To have a date in the past, set [lastDate] to `DateTime.now()` or just add the validator
-/// `validators: [(v) => past( v ),]`. Same with [firstDate].
+/// To allow only dates in the past, set [lastDate] to `DateTime.now()`
+/// or just add `validators: [(v) => past( v ),]`.
+///
+/// To allow only dates in the future, set [firstDate] to `DateTime.now()`
+/// or just add `validators: [(v) => future( v ),]`.
 ///
 /// TODO \[X\] year becomes TextField
 /// TODO \[ \] Internationalize this input widget: day names, month names, tooltips, display format, first day of week
 ///
 /// See [InputField] for all common parameters.
-class InputCalendar extends InputField<DateTime> {
+class InputDatePicker extends InputField<DateTime> {
   /// Pattern to format the displayed date. Defaults to ISO 8601 'yyyy-MM-dd'.
   final String datePattern;
 
@@ -24,10 +28,10 @@ class InputCalendar extends InputField<DateTime> {
   final DateTime firstDate, lastDate;
   final double size;
 
-  /// Contains all the customizable styles for the date picker. See [CalendarStyles].
-  final CalendarStyles styles;
+  /// Contains all the customizable styles for the date picker. See [DatePickerStyles].
+  final DatePickerStyles styles;
 
-  InputCalendar({
+  InputDatePicker({
     Key key,
     bool autovalidate = false,
     this.datePattern = 'yyyy-MM-dd',
@@ -56,12 +60,12 @@ class InputCalendar extends InputField<DateTime> {
         );
 
   @override
-  _InputCalendarState createState() => _InputCalendarState();
+  _InputDatePickerState createState() => _InputDatePickerState();
 }
 
-class _InputCalendarState extends InputFieldState<DateTime> {
+class _InputDatePickerState extends InputFieldState<DateTime> {
   @override
-  InputCalendar get widget => super.widget;
+  InputDatePicker get widget => super.widget;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +86,7 @@ class _InputCalendarState extends InputFieldState<DateTime> {
                       context: context,
                       builder: (context) {
                         return Dialog(
-                            child: _InputCalendarPicker(
+                            child: _DatePicker(
                           baseWidget: widget,
                           pickerDate: date,
                         ));
@@ -96,22 +100,22 @@ class _InputCalendarState extends InputFieldState<DateTime> {
   }
 }
 
-/// The calendar picker is displayed in a dialog box. It can either be aborted or closed by
-/// selecting today or any other day from the calendar grid.
-class _InputCalendarPicker extends StatefulWidget {
-  final InputCalendar baseWidget;
+/// The date picker is displayed in a dialog box. It can either be aborted or closed by
+/// selecting today or any other day from the DatePicker grid.
+class _DatePicker extends StatefulWidget {
+  final InputDatePicker baseWidget;
   final DateTime pickerDate;
 
-  _InputCalendarPicker({
+  _DatePicker({
     @required this.baseWidget,
     @required this.pickerDate,
   });
 
   @override
-  _InputCalendarPickerState createState() => _InputCalendarPickerState(pickerDate);
+  _DatePickerState createState() => _DatePickerState(pickerDate);
 }
 
-class _InputCalendarPickerState extends State<_InputCalendarPicker> {
+class _DatePickerState extends State<_DatePicker> {
   static final List<String> _monthNamesLong = [
     'January',
     'February',
@@ -156,7 +160,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
 
   double monthGridCellDimensionFactor;
 
-  _InputCalendarPickerState(DateTime pickerDate) {
+  _DatePickerState(DateTime pickerDate) {
     currentSelectedDate = pickerDate;
   }
 
@@ -177,7 +181,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     }
   }
 
-  /// Builds the calendar picker in a dialog overlay.
+  /// Builds the date picker in a dialog overlay.
   @override
   Widget build(BuildContext context) {
     MediaQuery.of(context).orientation == Orientation.portrait
@@ -188,10 +192,10 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     Widget calendarTable = _buildTable(context);
     Widget tableFooter = _buildFooter(context);
 
-    Widget calendarPicker;
+    Widget datePicker;
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       // is portrait
-      calendarPicker = Material(
+      datePicker = Material(
         child: SingleChildScrollView(
           child: Container(
             width: 8 * (kMinInteractiveDimension / monthGridCellDimensionFactor),
@@ -223,14 +227,14 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
       );
     } else {
       // is landscape
-      calendarPicker = Material(
+      datePicker = Material(
         child: SingleChildScrollView(
           child: Container(
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  width: widget.baseWidget.styles?.dateStyle?.textStyle.fontSize * 6,
+                  width: widget.baseWidget.styles.dateStyle.textStyle.fontSize * 6,
                   child: tableHeader,
                 ),
                 Column(
@@ -265,7 +269,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
         ),
       );
     }
-    return calendarPicker;
+    return datePicker;
   }
 
   @override
@@ -320,15 +324,15 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
             padding: paddingsDay,
             child: Text(
               currentSelectedDate.day.toString(),
-              style: widget.baseWidget.styles?.dateStyle?.textStyle.copyWith(
-                  fontSize: widget.baseWidget.styles?.dateStyle?.textStyle.fontSize * 2),
+              style: widget.baseWidget.styles.dateStyle.textStyle.copyWith(
+                  fontSize: widget.baseWidget.styles.dateStyle.textStyle.fontSize * 2),
             ),
           ),
           Padding(
             padding: monthYear,
             child: Text(
               monthYearText,
-              style: widget.baseWidget.styles?.dateStyle?.textStyle,
+              style: widget.baseWidget.styles.dateStyle.textStyle,
             ),
           ),
         ],
@@ -336,8 +340,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     );
   }
 
-  // Builds the header of the calendar picker with close, previous month,
-  // month and year, next month and today.
+  // Builds the selector row for month and year.
   Widget _buildMonthYearSelections(BuildContext context) {
     Widget monthWidget = _buildMonthWidget();
     Widget yearWidget = _buildYearWidget();
@@ -457,7 +460,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
         ));
   }
 
-  /// Builds the calendar. It has a header row with column names and
+  /// Builds the date picker. It has a header row with column names and
   /// 6 rows with week number and the days of the selected month.
   Widget _buildTable(BuildContext context) {
     List<TableRow> rows = [];
@@ -483,8 +486,8 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
   }
 
   /// Adds one row to the table with week number and 7 day numbers
-  TableRow _buildRow(DateTime date, CalendarStyle otherMonthStyle) {
-    CalendarStyle dayStyle;
+  TableRow _buildRow(DateTime date, DatePickerStyle otherMonthStyle) {
+    DatePickerStyle dayStyle;
     List<Widget> cells = [];
     cells.add(_buildCell(
       '${date.weekOfYear()}',
@@ -516,7 +519,7 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
     return TableRow(children: cells);
   }
 
-  Widget _buildCell(String text, CalendarStyle style, {GestureTapCallback onTapHandler}) {
+  Widget _buildCell(String text, DatePickerStyle style, {GestureTapCallback onTapHandler}) {
     Widget cell = Container(
       decoration: style?.decoration,
       height: kMinInteractiveDimension / monthGridCellDimensionFactor,
@@ -577,8 +580,8 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
   /// Sets [year] and / or [month] or applies [delta] in months.
   ///
   /// Setting [delta] in number of months changes the year accordingly.
-  /// Ensures that new month and year are within [InputCalendar.firstDate] and
-  /// [InputCalendar.lastDate] if these are not null.
+  /// Ensures that new month and year are within [InputDatePicker.firstDate] and
+  /// [InputDatePicker.lastDate] if these are not null.
   void _setDisplayedMonth({int year, int month, int delta}) {
     setState(() {
       year ??= currentSelectedDate.year;
@@ -606,12 +609,12 @@ class _InputCalendarPickerState extends State<_InputCalendarPicker> {
   }
 }
 
-/// All styles for a calendar.
+/// All styles for a date picker.
 ///
-/// This class can be set once and then used for all calendars.
-class CalendarStyles {
+/// This class can be set once and then used for all date pickers.
+class DatePickerStyles {
   /// Styles the written selected date on top or left of the picker
-  final CalendarStyle dateStyle,
+  final DatePickerStyle dateStyle,
 
       /// Styles the first row of the picker which contains the column names.
       headerStyle,
@@ -634,32 +637,35 @@ class CalendarStyles {
       /// Styles the column which contains the number of the week
       weekStyle;
 
-  const CalendarStyles({
-    this.dateStyle = const CalendarStyle(
+  const DatePickerStyles({
+    this.dateStyle = const DatePickerStyle(
         decoration: BoxDecoration(color: Colors.lightBlueAccent),
         textStyle: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 24.0,
         )),
     this.headerStyle =
-        const CalendarStyle(decoration: BoxDecoration(color: Colors.amberAccent)),
-    this.monthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black)),
-    this.nextMonthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
-    this.prevMonthStyle = const CalendarStyle(textStyle: TextStyle(color: Colors.black38)),
-    this.todayStyle = const CalendarStyle(
+        const DatePickerStyle(decoration: BoxDecoration(color: Colors.amberAccent)),
+    this.monthStyle = const DatePickerStyle(textStyle: TextStyle(color: Colors.black)),
+    this.nextMonthStyle =
+        const DatePickerStyle(textStyle: TextStyle(color: Colors.black38)),
+    this.prevMonthStyle =
+        const DatePickerStyle(textStyle: TextStyle(color: Colors.black38)),
+    this.todayStyle = const DatePickerStyle(
         decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
-    this.selectedStyle = const CalendarStyle(
+    this.selectedStyle = const DatePickerStyle(
         decoration: BoxDecoration(color: Colors.cyanAccent, shape: BoxShape.circle)),
-    this.weekStyle = const CalendarStyle(decoration: BoxDecoration(color: Colors.black12)),
+    this.weekStyle =
+        const DatePickerStyle(decoration: BoxDecoration(color: Colors.black12)),
   });
 }
 
-/// Styles for an [InputCalendar].
-class CalendarStyle {
+/// Styles for an [InputDatePicker].
+class DatePickerStyle {
   final Decoration decoration;
   final TextStyle textStyle;
 
-  const CalendarStyle({
+  const DatePickerStyle({
     this.decoration,
     this.textStyle,
   });

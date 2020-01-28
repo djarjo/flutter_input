@@ -77,7 +77,8 @@ import 'input_form.dart';
 ///  * [InputDecorator], which shows the labels and other visual elements that
 ///    surround the actual text editing widget.
 ///  * Learn how to use a [TextEditingController] in one of our [cookbook recipe]s.(https://flutter.dev/docs/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller)
-@Deprecated('Please use InputKeyboard<String> instead. Deprecated since v0.2.0.')
+@Deprecated(
+    'Please use InputKeyboard<String> instead. Deprecated since v0.2.0.')
 class InputText extends InputField<String> {
   /// Creates an [InputField] that contains a [TextField].
   ///
@@ -152,7 +153,8 @@ class InputText extends InputField<String> {
           !expands || (maxLines == null && minLines == null),
           'minLines and maxLines must be null when expands is true.',
         ),
-        assert(!obscureText || maxLines == 1, 'Obscured fields cannot be multiline.'),
+        assert(!obscureText || maxLines == 1,
+            'Obscured fields cannot be multiline.'),
         assert(maxLength == null || maxLength > 0),
         assert(enableInteractiveSelection != null),
         super(
@@ -206,11 +208,13 @@ class InputText extends InputField<String> {
 
 ///
 ///
-@Deprecated('Please use InputKeyboard<String> instead. Deprecated since v0.2.0.')
+@Deprecated(
+    'Please use InputKeyboard<String> instead. Deprecated since v0.2.0.')
 class _InputTextState extends InputFieldState<String> {
   TextEditingController _controller;
 
-  TextEditingController get _effectiveController => widget.controller ?? _controller;
+  TextEditingController get _effectiveController =>
+      widget.controller ?? _controller;
 
   @override
   InputText get widget => super.widget;
@@ -275,7 +279,8 @@ class _InputTextState extends InputFieldState<String> {
       widget.controller?.addListener(_handleControllerChanged);
 
       if (oldWidget.controller != null && widget.controller == null) {
-        _controller = TextEditingController.fromValue(oldWidget.controller.value);
+        _controller =
+            TextEditingController.fromValue(oldWidget.controller.value);
       }
       if (widget.controller != null) {
         setValue(widget.controller.text);
@@ -308,6 +313,7 @@ class _InputTextState extends InputFieldState<String> {
     // notifications for changes originating from within this class -- for
     // example, the reset() method. In such cases, the FormField value will
     // already have been set.
-    if (_effectiveController.text != value) didChange(_effectiveController.text);
+    if (_effectiveController.text != value)
+      didChange(_effectiveController.text);
   }
 }

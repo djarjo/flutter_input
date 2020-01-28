@@ -19,7 +19,7 @@ class DateTimePage extends StatefulWidget {
 class _DateTimePageState extends State<DateTimePage> {
   List<DropdownMenuItem<DateTimeUsing>> _dateTimeParts;
   DateTimeUsing _using = DateTimeUsing.dateAndTime;
-  CalendarStyles _calendarStyles;
+  DatePickerStyles _pickerStyles;
   DateTime _birthday;
   int _counter = 0;
 
@@ -32,8 +32,9 @@ class _DateTimePageState extends State<DateTimePage> {
   @override
   void initState() {
     // create your global calendar styles here
-    _calendarStyles = CalendarStyles(
-      headerStyle: CalendarStyle(decoration: BoxDecoration(color: Colors.deepOrangeAccent)),
+    _pickerStyles = DatePickerStyles(
+      headerStyle:
+          DatePickerStyle(decoration: BoxDecoration(color: Colors.deepOrangeAccent)),
     );
     _dateTimeParts = [
       DropdownMenuItem<DateTimeUsing>(
@@ -76,12 +77,12 @@ class _DateTimePageState extends State<DateTimePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
-            InputCalendar(
+            InputDatePicker(
               initialValue: _birthday ?? DateTime.parse('1977-02-17'),
               onChanged: (v) => setState(() {
                 _birthday = v;
               }),
-              styles: _calendarStyles,
+              styles: _pickerStyles,
             ),
             InputRadio(
               // This input field is not attached to a form
