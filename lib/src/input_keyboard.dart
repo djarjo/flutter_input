@@ -118,7 +118,8 @@ class InputKeyboard<T> extends InputField<T> {
           !expands || (maxLines == null && minLines == null),
           'minLines and maxLines must be null when expands is true.',
         ),
-        assert(!obscureText || maxLines == 1, 'Obscured fields cannot be multiline.'),
+        assert(!obscureText || maxLines == 1,
+            'Obscured fields cannot be multiline.'),
         super(
           key: key,
           autovalidate: autovalidate,
@@ -172,7 +173,8 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
   TextEditingController _controller;
   TextInputType _keyboardType;
 
-  TextEditingController get _effectiveController => widget.controller ?? _controller;
+  TextEditingController get _effectiveController =>
+      widget.controller ?? _controller;
 
   @override
   InputKeyboard<T> get widget => super.widget;
@@ -186,9 +188,11 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
       widget.controller.addListener(_handleControllerChanged);
     }
     if (T == int) {
-      _keyboardType = TextInputType.numberWithOptions(decimal: false, signed: true);
+      _keyboardType =
+          TextInputType.numberWithOptions(decimal: false, signed: true);
     } else if (T == double) {
-      _keyboardType = TextInputType.numberWithOptions(decimal: true, signed: true);
+      _keyboardType =
+          TextInputType.numberWithOptions(decimal: true, signed: true);
     }
   }
 
@@ -257,7 +261,8 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
       widget.controller?.addListener(_handleControllerChanged);
 
       if (oldWidget.controller != null && widget.controller == null) {
-        _controller = TextEditingController.fromValue(oldWidget.controller.value);
+        _controller =
+            TextEditingController.fromValue(oldWidget.controller.value);
       }
       if (widget.controller != null) {
         T newValue = InputUtils.convertToType(T, widget.controller.text);

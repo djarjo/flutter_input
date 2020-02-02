@@ -46,7 +46,7 @@ Drawer buildDrawer(BuildContext context) {
           icon: Icon(Icons.info),
           applicationLegalese: 'Free to Use',
           applicationName: 'flutter_input',
-          applicationVersion: 'v1.1.0',
+          applicationVersion: 'v1.1.1',
           aboutBoxChildren: <Widget>[
             Text('Thanks for using flutter_input!'.i18n),
           ],

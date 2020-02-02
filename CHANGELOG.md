@@ -1,3 +1,9 @@
+## 1.1.1
+
+- Fixed flutter version problem:
+ _The getter 'floatingLabelBehavior' isn't defined for the class 'InputDecoration'_
+- Fixed pub.dev analysis problem with class local instance variable.
+
 ## 1.1.0
 
 - Localized widgets by using a combination of Flutter localization

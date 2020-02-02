@@ -6,8 +6,6 @@ import 'package:i18n_extension/i18n_widget.dart';
 
 import 'input_form.dart';
 
-typedef _ValueSetter<T> = void Function(T value);
-
 Map<String, String> _languageNames = {
   'de': 'deutsch',
   'en': 'english',
