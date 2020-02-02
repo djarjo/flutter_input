@@ -44,6 +44,7 @@ library flutter_input;
 
 export 'src/date_helper.dart';
 export 'src/input_checkbox.dart';
+export 'src/input_country.dart';
 export 'src/input_date.dart';
 export 'src/input_datepicker.dart';
 export 'src/input_datetime.dart';
@@ -51,6 +52,7 @@ export 'src/input_dropdown.dart';
 export 'src/input_favorite.dart';
 export 'src/input_form.dart';
 export 'src/input_keyboard.dart';
+export 'src/input_language.dart';
 export 'src/input_radio.dart';
 export 'src/input_rating.dart';
 export 'src/input_slider.dart';

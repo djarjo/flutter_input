@@ -6,21 +6,25 @@ import 'package:flutter/material.dart';
 import 'input_form.dart';
 
 /// Provides a drop down button for a selection list
-class InputDropDown<T> extends InputField<T> {
+class InputDropdown<T> extends InputField<T> {
   final Color activeColor;
   final Color color;
+  final int elevation;
   final IconData icon;
+  final double iconSize;
   final List<DropdownMenuItem<T>> items;
   final TextStyle style;
 
-  InputDropDown({
+  InputDropdown({
     Key key,
     bool autovalidate = false,
     this.activeColor,
     this.color,
     InputDecoration decoration,
+    this.elevation,
     enabled,
     this.icon = Icons.arrow_drop_down,
+    this.iconSize,
     initialValue,
     this.items,
     ValueChanged<T> onChanged,
@@ -41,21 +45,24 @@ class InputDropDown<T> extends InputField<T> {
         );
 
   @override
-  _InputDropDownState<T> createState() => _InputDropDownState<T>();
+  _InputDropdownState<T> createState() => _InputDropdownState<T>();
 }
 
-class _InputDropDownState<T> extends InputFieldState<T> {
+class _InputDropdownState<T> extends InputFieldState<T> {
   @override
-  InputDropDown<T> get widget => super.widget;
+  InputDropdown<T> get widget => super.widget;
 
   @override
   Widget build(BuildContext context) {
     return super.buildInputField(
       context,
       DropdownButton(
-        elevation: 16,
+        elevation: widget.elevation ?? 8,
+        disabledHint: value != null
+            ? widget.items.firstWhere((item) => value == item.value).child
+            : null,
         icon: Icon(widget.icon),
-        iconSize: 24,
+        iconSize: widget.iconSize ?? 24.0,
         items: widget.items,
         onChanged: isEnabled() ? (v) => super.didChange(v) : null,
         style: widget.style,

@@ -1,4 +1,4 @@
-// Copyright 2020 Hajo.Lemcke@mail.com
+// Copyright 2020 Hajo.Lemcke@gmail.com
 // Please see the LICENSE file for details.
 
 import 'package:flutter/material.dart';
@@ -45,14 +45,14 @@ class _InputSwitchState extends InputFieldState<bool> {
   @override
   Widget build(BuildContext context) {
     return super.buildInputField(
-        context,
-        Row(
-          children: [
-            Switch.adaptive(
-              onChanged: isEnabled() ? (v) => super.didChange(v) : null,
-              value: value ?? false,
-            ),
-          ],
-        ));
+      context,
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Switch.adaptive(
+          onChanged: isEnabled() ? (v) => super.didChange(v) : null,
+          value: value ?? false,
+        ),
+      ),
+    );
   }
 }

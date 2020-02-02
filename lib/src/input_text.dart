@@ -163,6 +163,7 @@ class InputText extends InputField<String> {
           decoration: decoration,
           enabled: enabled,
           initialValue: controller != null ? controller.text : initialValue,
+          onChanged: onChanged,
           onSaved: onSaved,
           path: path,
           validators: validators,

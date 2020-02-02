@@ -1,7 +1,12 @@
-///
+// Copyright 2020 Hajo.Lemcke@gmail.com
+// Please see the LICENSE file for details.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_input/flutter_input.dart';
 import 'package:intl/intl.dart';
+
+import 'date_helper.dart';
+import 'date_helper.i18n.dart';
+import 'input_form.dart';
 
 /// Provides a date picker for a `DateTime` value.
 ///
@@ -116,38 +121,6 @@ class _DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<_DatePicker> {
-  static final List<String> _monthNamesLong = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'Mai',
-    'June',
-    'Juli',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ];
-
-  static final List<String> _monthNamesShort = [
-    'Jan.',
-    'Feb.',
-    'Mar.',
-    'Apr.',
-    'Mai.',
-    'Jun.',
-    'Jul.',
-    'Aug.',
-    'Sep.',
-    'Oct.',
-    'Nov.',
-    'Dec.'
-  ];
-
-  static final List<String> _weekDays = ['W', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-
   final List<DropdownMenuItem<int>> _monthItemsLong = [];
   final List<DropdownMenuItem<int>> _monthItemsShort = [];
 
@@ -167,15 +140,15 @@ class _DatePickerState extends State<_DatePicker> {
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < _monthNamesLong.length; i++) {
+    for (int i = 0; i < monthNamesLong.length; i++) {
       _monthItemsLong.add(DropdownMenuItem<int>(
-        child: Text(_monthNamesLong[i]),
+        child: Text(monthNamesLong[i].i18n),
         value: i + 1,
       ));
     }
-    for (int i = 0; i < _monthNamesShort.length; i++) {
+    for (int i = 0; i < monthNamesShort.length; i++) {
       _monthItemsShort.add(DropdownMenuItem<int>(
-        child: Text(_monthNamesShort[i]),
+        child: Text(monthNamesShort[i].i18n),
         value: i + 1,
       ));
     }
@@ -198,7 +171,8 @@ class _DatePickerState extends State<_DatePicker> {
       datePicker = Material(
         child: SingleChildScrollView(
           child: Container(
-            width: 8 * (kMinInteractiveDimension / monthGridCellDimensionFactor),
+            width:
+                8 * (kMinInteractiveDimension / monthGridCellDimensionFactor),
             child: Column(
               children: <Widget>[
                 tableHeader,
@@ -234,7 +208,8 @@ class _DatePickerState extends State<_DatePicker> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  width: widget.baseWidget.styles.dateStyle.textStyle.fontSize * 6,
+                  width: widget.baseWidget.styles.dateStyle.textStyle.fontSize *
+                      6.2,
                   child: tableHeader,
                 ),
                 Column(
@@ -242,7 +217,9 @@ class _DatePickerState extends State<_DatePicker> {
                   children: <Widget>[
                     monthYearSelections,
                     Container(
-                      width: 10 * (kMinInteractiveDimension / monthGridCellDimensionFactor),
+                      width: 10 *
+                          (kMinInteractiveDimension /
+                              monthGridCellDimensionFactor),
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         child: calendarTable,
@@ -289,7 +266,7 @@ class _DatePickerState extends State<_DatePicker> {
     EdgeInsets monthYear;
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       width = 8 * kMinInteractiveDimension;
-      monthYearText = _monthNamesLong[currentSelectedDate.month - 1] +
+      monthYearText = monthNamesLong[currentSelectedDate.month - 1].i18n +
           ' ' +
           currentSelectedDate.year.toString();
       paddingsWeekDay = EdgeInsets.only(top: 5.0, bottom: 5.0);
@@ -302,7 +279,7 @@ class _DatePickerState extends State<_DatePicker> {
       height = (7 * (kMinInteractiveDimension / monthGridCellDimensionFactor)) +
           (1 * kMinInteractiveDimension) +
           10.0;
-      monthYearText = _monthNamesShort[currentSelectedDate.month - 1] +
+      monthYearText = monthNamesShort[currentSelectedDate.month - 1].i18n +
           ' ' +
           currentSelectedDate.year.toString();
     }
@@ -316,7 +293,7 @@ class _DatePickerState extends State<_DatePicker> {
           Padding(
             padding: paddingsWeekDay,
             child: Text(
-              _weekDays[currentSelectedDate.weekday],
+              weekDaysLong[currentSelectedDate.weekday].i18n,
               style: widget.baseWidget.styles?.dateStyle?.textStyle,
             ),
           ),
@@ -325,7 +302,9 @@ class _DatePickerState extends State<_DatePicker> {
             child: Text(
               currentSelectedDate.day.toString(),
               style: widget.baseWidget.styles.dateStyle.textStyle.copyWith(
-                  fontSize: widget.baseWidget.styles.dateStyle.textStyle.fontSize * 2),
+                  fontSize:
+                      widget.baseWidget.styles.dateStyle.textStyle.fontSize *
+                          2),
             ),
           ),
           Padding(
@@ -420,8 +399,8 @@ class _DatePickerState extends State<_DatePicker> {
           value: currentSelectedDate.month,
           onChanged: (int v) {
             setState(() {
-              currentSelectedDate =
-                  DateTime(currentSelectedDate.year, v, currentSelectedDate.day);
+              currentSelectedDate = DateTime(
+                  currentSelectedDate.year, v, currentSelectedDate.day);
             });
           },
         ),
@@ -450,7 +429,8 @@ class _DatePickerState extends State<_DatePicker> {
               isDense: true,
             ),
             enabled: true,
-            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+            keyboardType:
+                TextInputType.numberWithOptions(signed: false, decimal: false),
             maxLength: 4,
             style: new TextStyle(color: Colors.black),
             onSubmitted: (v) => _setDisplayedMonth(
@@ -466,14 +446,16 @@ class _DatePickerState extends State<_DatePicker> {
     List<TableRow> rows = [];
 
     //--- First row contains column headers
-    List<Widget> tableCells =
-        _weekDays.map((e) => _buildCell(e, widget.baseWidget.styles.headerStyle)).toList();
+    List<Widget> tableCells = weekDaysShort
+        .map((e) => _buildCell(e, widget.baseWidget.styles.headerStyle))
+        .toList();
     rows.add(TableRow(children: tableCells));
 
     // --- Compute number of days from previous month
     DateTime displayMonth =
         DateTime(currentSelectedDate.year, currentSelectedDate.month, 1);
-    DateTime displayDay = displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
+    DateTime displayDay =
+        displayMonth.subtract(Duration(days: displayMonth.weekday - 1));
     rows.add(_buildRow(displayDay, widget.baseWidget.styles.prevMonthStyle));
     displayDay = displayDay.add(Duration(days: 7));
     for (int i = 1; i < 6; i++) {
@@ -495,7 +477,8 @@ class _DatePickerState extends State<_DatePicker> {
     ));
     for (int i = 0; i < 7; i++) {
       DateTime selectedDate = date;
-      if (date.isBetween(widget.baseWidget.firstDate, widget.baseWidget.lastDate)) {
+      if (date.isBetween(
+          widget.baseWidget.firstDate, widget.baseWidget.lastDate)) {
         if (selectedDate.isOnSameDayAs(DateTime.now())) {
           dayStyle = widget.baseWidget.styles.todayStyle;
         } else if (selectedDate.isOnSameDayAs(currentSelectedDate)) {
@@ -519,7 +502,8 @@ class _DatePickerState extends State<_DatePicker> {
     return TableRow(children: cells);
   }
 
-  Widget _buildCell(String text, DatePickerStyle style, {GestureTapCallback onTapHandler}) {
+  Widget _buildCell(String text, DatePickerStyle style,
+      {GestureTapCallback onTapHandler}) {
     Widget cell = Container(
       decoration: style?.decoration,
       height: kMinInteractiveDimension / monthGridCellDimensionFactor,
@@ -644,9 +628,10 @@ class DatePickerStyles {
           fontWeight: FontWeight.bold,
           fontSize: 24.0,
         )),
-    this.headerStyle =
-        const DatePickerStyle(decoration: BoxDecoration(color: Colors.amberAccent)),
-    this.monthStyle = const DatePickerStyle(textStyle: TextStyle(color: Colors.black)),
+    this.headerStyle = const DatePickerStyle(
+        decoration: BoxDecoration(color: Colors.amberAccent)),
+    this.monthStyle =
+        const DatePickerStyle(textStyle: TextStyle(color: Colors.black)),
     this.nextMonthStyle =
         const DatePickerStyle(textStyle: TextStyle(color: Colors.black38)),
     this.prevMonthStyle =
@@ -654,7 +639,8 @@ class DatePickerStyles {
     this.todayStyle = const DatePickerStyle(
         decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle)),
     this.selectedStyle = const DatePickerStyle(
-        decoration: BoxDecoration(color: Colors.cyanAccent, shape: BoxShape.circle)),
+        decoration:
+            BoxDecoration(color: Colors.cyanAccent, shape: BoxShape.circle)),
     this.weekStyle =
         const DatePickerStyle(decoration: BoxDecoration(color: Colors.black12)),
   });

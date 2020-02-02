@@ -308,8 +308,8 @@ abstract class InputField<T> extends StatefulWidget {
     this.onSaved,
     this.path,
     this.validators,
-  })  : assert(initialValue != null || path != null,
-            'If path is null then initialValue is required'),
+  })  : assert(((path != null) || (onChanged != null)),
+            'If path is null then onChanged is required'),
         super(key: key);
 
   /// If true, this form field will validate and update its error text
@@ -395,10 +395,20 @@ class InputFieldState<T> extends State<InputField<T>> {
     if (widget.autovalidate && _enabled) {
       _validate();
     }
-    final InputDecoration effectiveDecoration =
-        (widget.decoration ?? const InputDecoration())
-            .applyDefaults(Theme.of(context).inputDecorationTheme)
-            .copyWith(errorText: errorText);
+    InputDecoration effectiveDecoration =
+        InputDecoration(border: InputBorder.none)
+            .applyDefaults(Theme.of(context).inputDecorationTheme);
+    if (_formState?.widget?.decoration != null) {
+      effectiveDecoration =
+          effectiveDecoration.copyDecoration(_formState.widget.decoration);
+    }
+    if (widget.decoration != null) {
+      effectiveDecoration =
+          effectiveDecoration.copyDecoration(widget.decoration);
+    }
+    effectiveDecoration = effectiveDecoration.copyWith(
+      errorText: errorText,
+    );
     return InputDecorator(
       child: builder,
       decoration: effectiveDecoration,
@@ -462,6 +472,9 @@ class InputFieldState<T> extends State<InputField<T>> {
     setState(() {
       _errorText = null;
       _initValue();
+      if (widget.onChanged != null) {
+        widget.onChanged(value);
+      }
     });
   }
 
@@ -511,5 +524,55 @@ class InputFieldState<T> extends State<InputField<T>> {
   Widget build(BuildContext context) {
     throw UnimplementedError('InputField.build() must never be called.'
         ' Check exception stack!');
+  }
+}
+
+extension _InputDecorationExtension on InputDecoration {
+  InputDecoration copyDecoration(InputDecoration deco) {
+    return InputDecoration(
+      icon: deco.icon ?? this.icon,
+      labelText: deco.labelText ?? this.labelText,
+      labelStyle: deco.labelStyle ?? this.labelStyle,
+      helperText: deco.helperText ?? this.helperText,
+      helperStyle: deco.helperStyle ?? this.helperStyle,
+      helperMaxLines: deco.helperMaxLines ?? this.helperMaxLines,
+      hintText: deco.hintText ?? this.hintText,
+      hintStyle: deco.hintStyle ?? this.hintStyle,
+      hintMaxLines: deco.hintMaxLines ?? this.hintMaxLines,
+      errorText: deco.errorText ?? this.errorText,
+      errorStyle: deco.errorStyle ?? this.errorStyle,
+      errorMaxLines: deco.errorMaxLines ?? this.errorMaxLines,
+      // ignore: deprecated_member_use_from_same_package
+      hasFloatingPlaceholder:
+          hasFloatingPlaceholder ?? this.hasFloatingPlaceholder,
+      floatingLabelBehavior:
+          deco.floatingLabelBehavior ?? this.floatingLabelBehavior,
+      isDense: deco.isDense ?? this.isDense,
+      contentPadding: deco.contentPadding ?? this.contentPadding,
+      prefixIcon: deco.prefixIcon ?? this.prefixIcon,
+      prefix: deco.prefix ?? this.prefix,
+      prefixText: deco.prefixText ?? this.prefixText,
+      prefixStyle: deco.prefixStyle ?? this.prefixStyle,
+      suffixIcon: deco.suffixIcon ?? this.suffixIcon,
+      suffix: deco.suffix ?? this.suffix,
+      suffixText: deco.suffixText ?? this.suffixText,
+      suffixStyle: deco.suffixStyle ?? this.suffixStyle,
+      counter: deco.counter ?? this.counter,
+      counterText: deco.counterText ?? this.counterText,
+      counterStyle: deco.counterStyle ?? this.counterStyle,
+      filled: deco.filled ?? this.filled,
+      fillColor: deco.fillColor ?? this.fillColor,
+      focusColor: deco.focusColor ?? this.focusColor,
+      hoverColor: deco.hoverColor ?? this.hoverColor,
+      errorBorder: deco.errorBorder ?? this.errorBorder,
+      focusedBorder: deco.focusedBorder ?? this.focusedBorder,
+      focusedErrorBorder: deco.focusedErrorBorder ?? this.focusedErrorBorder,
+      disabledBorder: deco.disabledBorder ?? this.disabledBorder,
+      enabledBorder: deco.enabledBorder ?? this.enabledBorder,
+      border: deco.border ?? this.border,
+      enabled: deco.enabled ?? this.enabled,
+      semanticCounterText: deco.semanticCounterText ?? this.semanticCounterText,
+      alignLabelWithHint: deco.alignLabelWithHint ?? this.alignLabelWithHint,
+    );
   }
 }

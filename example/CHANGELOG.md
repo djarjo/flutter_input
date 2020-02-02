@@ -1,3 +1,10 @@
+## 1.1.0
+
+- Sample localized. Immediately uses language changed by `InputLanguage`.
+- Added `InputLanguage` to select a language (`Locale`).
+- Added `InputCountry` to select the ISO-3166 country code.
+- Added form decoration for playing around.
+
 ## 1.0.3
 
 - Adapted sample to `InputDatePicker` instead of `InputCalendar`

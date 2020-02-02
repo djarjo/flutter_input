@@ -44,14 +44,14 @@ class _InputCheckboxState extends InputFieldState<bool> {
   @override
   Widget build(BuildContext context) {
     return super.buildInputField(
-        context,
-        Row(
-          children: [
-            Checkbox(
-              onChanged: isEnabled() ? (v) => super.didChange(v) : null,
-              value: value ?? false,
-            )
-          ],
-        ));
+      context,
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Checkbox(
+          onChanged: isEnabled() ? (v) => super.didChange(v) : null,
+          value: value ?? false,
+        ),
+      ),
+    );
   }
 }

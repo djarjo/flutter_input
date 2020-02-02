@@ -1,263 +1,135 @@
-/// Flutter code sample for package `flutter_input`
-///
-/// ![Flutter Input sample](https://github.com/djarjo/flutter_input/sample.gif)
-///
-/// This app shows all available input fields within a form.
+// Copyright 2020 Hajo.Lemcke@gmail.com
+// Please see the LICENSE file for details.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_input/flutter_input.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 
-import 'datetime_page.dart';
+import 'form_page.dart';
+import 'main.i18n.dart';
+
+/// Sample map with nested values
+Map<String, dynamic> sampleData = {
+  'id': 666,
+  'author': true,
+  'amount': 123.45,
+  'birthday': '1977-02-17',
+  'name': 'Isaac Asimov',
+  'rateCount': 4711,
+  'rateValue': 71,
+  // Nested map. Access with dotted path
+  'myRating': {
+    'favorite': true, // path = 'myRating.favorite'
+    'value': 87, // path = 'myRating.value'
+  },
+};
+
+/// Drawer sample usable in all pages
+Drawer buildDrawer(BuildContext context) {
+  _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+  return Drawer(
+    child: ListView(
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.language),
+          title: InputLanguage(
+            initialValue: state.thisAppsLocale,
+            onChanged: (v) => state.setState(() {
+              I18n.of(context).locale = v;
+            }),
+            supportedLocales: supportedLocales,
+          ),
+        ),
+        AboutListTile(
+          icon: Icon(Icons.info),
+          applicationLegalese: 'Free to Use',
+          applicationName: 'flutter_input',
+          applicationVersion: 'v1.1.0',
+          aboutBoxChildren: <Widget>[
+            Text('Thanks for using flutter_input!'.i18n),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+/// Supported locales. 0 is default.
+List<Locale> supportedLocales = [
+  Locale('en', 'US'),
+  Locale('de', 'DE'),
+];
 
 void main() {
   debugPaintSizeEnabled = false; // true does not work in web
   runApp(MyApp());
 }
 
-/// This Widget is the main application widget.
-class MyApp extends StatelessWidget {
-  static const String _title = 'flutter_input Example';
-
+/// Flutter code sample for package `flutter_input`
+///
+/// This app shows all input widgets provided in this package.
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
-        body: MyHomePage(_initializeData()),
-      ),
-    );
-  }
+  State<StatefulWidget> createState() => _MyAppState();
 
-  Map<String, dynamic> _initializeData() {
-    return {
-      'id': 666,
-      'active': true,
-      'amount': 123.45,
-      'birthday': '1977-02-17',
-      'title': 'Use InputKeyboard<String> instead',
-      'rateCount': 4711,
-      'rateValue': 71,
-      // Nested map. Access with dotted path
-      'myRating': {
-        'favorite': true, // path = 'myRating.favorite'
-        'value': 87, // path = 'myRating.value'
-      },
-    };
+  /// Called from anywhere in the application to change apps locale
+  static bool setThisAppsLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    if (state.thisAppsLocale == newLocale) {
+      return false;
+    }
+    state.setState(() {
+      print('${state.thisAppsLocale} -> $newLocale');
+      state.thisAppsLocale = newLocale;
+    });
+    return true;
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  final Map<String, dynamic> data;
-  MyHomePage(this.data, {Key key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final GlobalKey<InputFormState> _formKey = GlobalKey();
-  List<DropdownMenuItem<String>> countries;
-  bool inEditMode = false;
-  int coffeeTemp;
-
-  @override
-  Widget build(BuildContext context) {
-//    print(widget.data);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Example Form'),
-        actions: inEditMode
-            ? <Widget>[
-                IconButton(
-                  icon: Icon(Icons.done),
-                  tooltip: 'Save changes and leave edit mode',
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      setState(() {
-                        _formKey.currentState.save();
-                        inEditMode = false;
-                        _formKey.currentState.enabled = false;
-                      });
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false, // user must tap button
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Field values saved back to map'),
-                              content: SingleChildScrollView(
-                                child: Text(InputUtils.prettyPrintMap(widget.data)),
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('Thanks'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
-                    }
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.cancel),
-                  tooltip: 'Exit without any changes',
-                  onPressed: () {
-                    setState(() {
-                      inEditMode = false;
-                      _formKey.currentState.enabled = false;
-                      _formKey.currentState.reset();
-                    });
-                  },
-                ),
-              ]
-            : <Widget>[
-                IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  tooltip: 'Switch to datetime page',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DateTimePage()),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  tooltip: 'Edit',
-                  onPressed: () {
-                    setState(() {
-                      inEditMode = true;
-                      _formKey.currentState.enabled = true;
-                    });
-                  },
-                )
-              ],
-        backgroundColor: Colors.deepOrange,
-      ),
-      body: InputForm(
-        key: _formKey,
-        enabled: inEditMode,
-        value: widget.data,
-        child: ListView(
-          padding: EdgeInsets.all(15.0),
-          children: [
-            Text('ID = ${widget.data["id"]}'),
-            InputText(
-              decoration: InputDecoration(
-                labelText: '--- deprecated ---',
-              ),
-              path: 'title',
-              validators: [(v) => minLength(v, 6, message: 'Not less than 6 chars')],
-            ),
-            InputKeyboard<int>(
-              decoration: InputDecoration(labelText: 'Editable int'),
-              path: 'editable int',
-              validators: [(v) => min(v, 69, message: 'Not smaller than 69')],
-            ),
-            InputSwitch(
-              decoration: InputDecoration(
-                  labelText: 'Active', helperText: 'Helper text for InputSwitch "Active"'),
-              path: 'active',
-            ),
-            InputCheckbox(
-              decoration: InputDecoration(labelText: 'Local'),
-              path: 'local',
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text('All users rating'),
-                ),
-                Expanded(
-                  child: InputRating(
-                    enabled: false,
-                    path: 'rateValue',
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    '(${widget.data["rateCount"]})',
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: InputRating(
-                    borderColor: Colors.grey,
-                    color: Colors.orange,
-                    decoration: InputDecoration(labelText: 'My Rating'),
-                    path: 'myRating.value',
-                  ),
-                ),
-                Expanded(
-                  child: InputFavorite(
-                    decoration: InputDecoration(labelText: 'My Favorite'),
-                    path: 'myRating.favorite',
-                  ),
-                ),
-              ],
-            ),
-            InputDropDown<String>(
-              decoration: InputDecoration(
-                  labelText: 'Country', hintText: '<Please select a country>'),
-              items: countries,
-              path: 'country',
-              validators: [
-                (v) => notNull(v, message: 'You must live somewhere'),
-              ],
-            ),
-            InputSlider(
-              decoration: InputDecoration(labelText: 'Coffee Temperatur $coffeeTemp °C'),
-              divisions: 200,
-              min: -50,
-              max: 150,
-              onChanged: (v) => setState(() {
-                coffeeTemp = v?.floor();
-              }),
-              path: 'temperature',
-              validators: [
-                (v) => max(v, 101, message: 'This is only steam'),
-                (v) => min(v, 0, message: 'This coffee is frozen'),
-              ],
-            ),
-            InputSpinner(
-              decoration: InputDecoration(labelText: 'Mug size [ml]'),
-              path: 'size',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+class _MyAppState extends State<MyApp> {
+  /// The locale used by the whole app
+  Locale thisAppsLocale;
 
   @override
   void initState() {
+    thisAppsLocale ??= WidgetsBinding.instance.window.locale;
     super.initState();
-    countries = [
-      DropdownMenuItem<String>(
-        value: 'CA',
-        child: Text('Canada'),
+    I18n.observeLocale = ({Locale oldLocale, Locale newLocale}) {
+//      print('Changing from $oldLocale to $newLocale.');
+      if (thisAppsLocale != newLocale) {
+        setState(() {
+          thisAppsLocale = newLocale;
+        });
+      }
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return I18n(
+      initialLocale: thisAppsLocale,
+      child: MaterialApp(
+        title: 'flutter_input',
+        home: SampleFormPage(),
+        locale: thisAppsLocale,
+/*        localeResolutionCallback: (deviceLocale, supportedLocales) {
+          if (thisAppsLocale != deviceLocale) {
+            print('thisA=$thisAppsLocale, devLoc=$deviceLocale');
+            thisAppsLocale = deviceLocale;
+          }
+          return thisAppsLocale;
+        },
+  */
+        localizationsDelegates: [
+          // ... app-specific localization delegate[s] here
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: supportedLocales,
       ),
-      DropdownMenuItem<String>(
-        value: 'DE',
-        child: Text('Germany'),
-      ),
-      DropdownMenuItem<String>(
-        value: 'FR',
-        child: Text('France'),
-      ),
-      DropdownMenuItem<String>(
-        value: 'JP',
-        child: Text('Japan'),
-      ),
-    ];
+    );
   }
 }

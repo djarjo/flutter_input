@@ -52,21 +52,24 @@ class _InputFavoriteState extends InputFieldState<bool> {
   Widget build(BuildContext context) {
     return super.buildInputField(
       context,
-      Tooltip(
-        message: (value == null || value == true)
-            ? 'Remove favorite mark'
-            : 'Mark as favorite',
-        child: GestureDetector(
-          onTap: isEnabled() ? onPressedHandler : null,
-          child: (value == null || value == true)
-              ? Icon(
-                  widget.iconFavorite,
-                  color: widget.iconColor ?? Theme.of(context).primaryColor,
-                  size: widget.size,
-                )
-              : Icon(widget.iconBorder,
-                  color: widget.iconColor ?? Theme.of(context).primaryColor,
-                  size: widget.size),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Tooltip(
+          message: (value == null || value == true)
+              ? 'Remove favorite mark'
+              : 'Mark as favorite',
+          child: GestureDetector(
+            onTap: isEnabled() ? onPressedHandler : null,
+            child: (value == null || value == true)
+                ? Icon(
+                    widget.iconFavorite,
+                    color: widget.iconColor ?? Theme.of(context).primaryColor,
+                    size: widget.size,
+                  )
+                : Icon(widget.iconBorder,
+                    color: widget.iconColor ?? Theme.of(context).primaryColor,
+                    size: widget.size),
+          ),
         ),
       ),
     );

@@ -1,21 +1,23 @@
-# Flutter Input Widgets - Standalone or within a Form &rarr; <i>flutter_input</i>
-This package provides input widgets (fields) to manipulate basic data types.
+# Flutter Input Widgets - Standalone or within a Form &rarr; _flutter_input_
+This package provides input widgets (fields) to manipulate data.
 All input widgets share a common set of parameters.
-A list of validators (see below) can be attached to an input widget.
-Every input widget can be used standalone or attached to the `InputForm`.
+A list of validators (see below) can be attached to any input widget.
+Each input widget can be used standalone or attached to the `InputForm`.
 The `InputForm` provides methods to `enable()`, `reset()`, `save()` or `validate()`
 all fields at once which are attached to the form.
 
 ## Input Widgets
 The following input widgets are included.
-See section 'Development' below for building your own input widget.
+See section _Development_ below for building your own input widget.
 * `InputCheckbox` - Checkbox for data type `bool`
+* `InputCountry` - Dropdown to select a country (shows flags)
 * `InputDate` - Calendar based selection for data type `DateTime` (date part only)
-* `InputDatePicker` - A highly customizable date picker with week of year
+* `InputDatePicker` - A highly customizable date picker with week of year and multiple swipe actions 
 * `InputDateTime` - Wheels for data type `DateTime` can be customized for date only, time only or both
 * `InputDropDown<T>` - Dropdown button for data type `T`
 * `InputFavorite` - A favorite button with selectable icon for data type `bool`
 * `InputKeyboard` - Text input for data type `String`, `int` or `double`
+* `InputLanguage` - Dropdown to select a language (`Locale`)
 * `InputRadio<T>` - Radio button to select one value of type `T`
 * `InputRating` - Rating widget with selectable icons and a range slider for data type `int`
 * `InputSlider` - Slider for data type `double` between a minimum and maximum value
@@ -24,18 +26,19 @@ See section 'Development' below for building your own input widget.
 * `InputSwitch` - Switch for data type `bool`
 
 ### Demo
+
+For a complete example see `example/main.dart`.
+
 #### InputDatePicker
 The highly customizable `InputDatePicker` allows you to choose a date
 from a calendar page which also shows the week of the year.
-It provides spinners, sliders and a dropdown to select the month.
+It provides spinners, swipes and a dropdown to select the month.
 The year can even be entered as text.
 All parts can be customized by `DatePickerStyles`.
  
 ![Screenshot](doc/screenshots/date_picker.gif)
 
 ## Usage
-
-For a complete example see `example/main.dart`.
 
 All input widgets share a common set of parameters.
 All parameters are named and optional.
@@ -102,5 +105,5 @@ This package also contains some utilities.
 * \[ \] create an input widget to select multiple choices like a
  multi-select list
 * \[ \] add some images to this documentation
-* \[ \] internationalize the whole package 
-* \[ \] add dartdoc output
+* \[X\] internationalize the whole package
+* \[X\] create an input widget to change the language within the app 

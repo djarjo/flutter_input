@@ -66,9 +66,9 @@ class _InputSpinnerState<T extends num> extends InputFieldState<T> {
   @override
   void initState() {
     super.initState();
+    T curVal = _ensureMinMax(value);
     controller = TextEditingController(
-      text: (value ?? widget.initialValue ?? (widget.max - widget.min) / 2)
-          .toString(),
+      text: curVal.toString(),
     );
   }
 
@@ -116,23 +116,26 @@ class _InputSpinnerState<T extends num> extends InputFieldState<T> {
   }
 
   void onPressedDecrease() {
-    T curVal = value ?? widget.initialValue ?? (widget.max - widget.min) / 2;
+    T curVal = _ensureMinMax(value);
     curVal = curVal - widget.interval;
-    if (curVal < widget.min) {
-      curVal = widget.min;
-    }
+    curVal = _ensureMinMax(curVal);
     controller.text = curVal.toString();
     super.didChange(curVal);
   }
 
   void onPressedIncrease() {
-    T curVal = value ?? widget.initialValue ?? (widget.max - widget.min) / 2;
+    T curVal = _ensureMinMax(value);
     curVal = curVal + widget.interval;
-    if (curVal > widget.max) {
-      curVal = widget.max;
-    }
+    curVal = _ensureMinMax(curVal);
     controller.text = curVal.toString();
     super.didChange(curVal);
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    T curVal = _ensureMinMax(value);
+    controller.text = curVal.toString();
   }
 
   void textChanged(String text) {
@@ -142,8 +145,22 @@ class _InputSpinnerState<T extends num> extends InputFieldState<T> {
     } else {
       curVal = double.tryParse(text);
     }
-    curVal ??= widget.min;
+    curVal = _ensureMinMax(curVal);
     controller.text = curVal.toString();
     super.didChange(curVal);
+  }
+
+  /// Returns the most valid value
+  num _ensureMinMax(num newValue) {
+    if (newValue == null) {
+      return widget.initialValue ?? (widget.max - widget.min) / 2;
+    }
+    if (newValue < widget.min) {
+      return widget.min;
+    }
+    if (newValue > widget.max) {
+      return widget.max;
+    }
+    return newValue;
   }
 }

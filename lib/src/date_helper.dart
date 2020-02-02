@@ -1,3 +1,6 @@
+// Copyright 2020 Hajo.Lemcke@gmail.com
+// Please see the LICENSE file for details.
+
 /// Enumeration about which part of a [DateTime] object is used. A value of 'null'
 /// is treated same as [dateAndTime]. Should be part of [DateTime] class.
 enum DateTimeUsing {
@@ -5,6 +8,58 @@ enum DateTimeUsing {
   timeOnly,
   dateAndTime,
 }
+
+final List<String> monthNamesLong = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
+final List<String> monthNamesShort = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+];
+
+/// Long names for the days of the week. 1 = Monday, ..., 7 = Sunday
+final List<String> weekDaysLong = [
+  'Week',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+];
+final List<String> weekDaysShort = [
+  'W',
+  'Mo',
+  'Tu',
+  'We',
+  'Th',
+  'Fr',
+  'Sa',
+  'Su'
+];
 
 /// Extensions on DateTime.
 /// * [dayOfYear()]

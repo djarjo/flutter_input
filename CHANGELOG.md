@@ -1,3 +1,17 @@
+## 1.1.0
+
+- Localized widgets by using a combination of Flutter localization
+ and package `i18n_extension`.
+- Added `Country`. Contains list of countries based on ISO-3166 and flag images.
+- Added `InputCountry` to select a country from a (filterable) list.
+ The list is automatically sorted by localized country name.
+ Flag of country is shown.
+- Added `InputLanguage` to select a language from a list of available languages.
+- Default field decoration now is without underline for non-text fields.
+- Bugfix: properly nested decoration from Default -> Theme -> Form -> Field.
+- Bugfix: editing some fields within a form, then abort editing
+ wrongly displayed the edited value.
+
 ## 1.0.3
 
 - renamed `InputCalendar` to `InputDatePicker` because we are working
