@@ -67,7 +67,7 @@ class _InputLanguageState extends InputFieldState<Locale> {
   }
 
   List<DropdownMenuItem<Locale>> _buildLanguageList() {
-    final String _imagePath = 'assets/packages/flutter_input/';
+    final String _imagePath = 'assets/';
     return widget.supportedLocales
         .map((item) => DropdownMenuItem(
               value: item,

@@ -2,7 +2,7 @@ name: flutter_input
 description: This package provides widgets for input fields.
   Each widget can be used standalone or within a form.
 homepage: https://github.com/djarjo/flutter_input
-version: 1.1.1
+version: 1.1.2
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
@@ -11,13 +11,13 @@ dependencies:
   flutter:
     sdk: flutter
   i18n_extension: ^1.3.2
-  intl: ^0.16.0
+  intl: ^0.16.1
   pedantic: ^1.8.0
 
 dev_dependencies:
   dartdoc: '>=0.30.0'
-  test: '>=1.9.4'
+  test: '>=1.12.0'
 
 flutter:
   assets:
-    - assets/packages/flutter_input/
+    - lib/assets/

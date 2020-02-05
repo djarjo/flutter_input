@@ -73,7 +73,7 @@ class _InputCountryState extends InputFieldState<String> {
   }
 
   List<DropdownMenuItem<String>> _buildDropdownList() {
-    final String _imagePath = 'assets/packages/flutter_input/';
+    final String _imagePath = 'assets/';
     List<Country> countryList = [];
     for (Country country in Country.values()) {
       if ((widget.selectableCountries != null) &&
