@@ -308,8 +308,12 @@ abstract class InputField<T> extends StatefulWidget {
     this.onSaved,
     this.path,
     this.validators,
-  })  : assert(((path != null) || (onChanged != null)),
-            'If path is null then onChanged is required'),
+  })  : assert(
+            (path != null) ||
+                (onChanged != null) ||
+                (onSaved != null) ||
+                ((enabled != null) && (enabled == false)),
+            'If path is null then onChanged is required or the field must always be disabled'),
         super(key: key);
 
   /// If true, this form field will validate and update its error text

@@ -126,6 +126,7 @@ class InputKeyboard<T> extends InputField<T> {
           decoration: decoration,
           enabled: enabled,
           initialValue: controller != null ? controller.text : initialValue,
+          onChanged: onChanged,
           onSaved: onSaved,
           path: path,
           validators: validators,
