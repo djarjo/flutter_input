@@ -27,6 +27,7 @@ class InputSlider extends InputField<double> {
     ValueSetter<double> onSaved,
     String path,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   })  : assert(min < max),
         super(
           key: key,
@@ -38,6 +39,7 @@ class InputSlider extends InputField<double> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -50,6 +52,7 @@ class _InputSliderState extends InputFieldState<double> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return super.buildInputField(
       context,
       Slider.adaptive(

@@ -92,6 +92,7 @@ class InputKeyboard<T> extends InputField<T> {
     this.textInputAction,
     this.toolbarOptions,
     List<InputValidator> validators,
+    this.wantKeepAlive = false,
   })  : assert(
           T == String || T == int || T == double,
           'Generic must be one of String, int or double',
@@ -164,6 +165,8 @@ class InputKeyboard<T> extends InputField<T> {
   final TextDirection textDirection;
   final TextInputAction textInputAction;
   final ToolbarOptions toolbarOptions;
+  @override
+  final bool wantKeepAlive;
 
   @override
   _InputKeyboardState<T> createState() => _InputKeyboardState<T>();
@@ -176,6 +179,9 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
 
   TextEditingController get _effectiveController =>
       widget.controller ?? _controller;
+
+  @override
+  bool get wantKeepAlive => widget.wantKeepAlive;
 
   @override
   InputKeyboard<T> get widget => super.widget;
@@ -199,6 +205,7 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final InputDecoration effectiveDecoration =
         (widget.decoration ?? const InputDecoration())
             .applyDefaults(Theme.of(context).inputDecorationTheme);
@@ -208,9 +215,6 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
         return;
       }
       T newValue = InputUtils.convertToType(T, fieldValue);
-      if (widget.onChanged != null) {
-        widget.onChanged(newValue);
-      }
       didChange(newValue);
     }
 

@@ -1,6 +1,11 @@
 // Copyright 2020 Hajo.Lemcke@mail.com
 // Please see the LICENSE file for details.
 
+/// Provides utility methods used by package `flutter_input`:
+/// * [convertToType] converts a value to a target type (if possible)
+/// * [readJson] allows reading from a nested map using a dotted string
+/// * [writeJson] allows writing into a nested map using a dotted string
+/// * [prettyPrintMap] prints a map with one entry per line
 class InputUtils {
   /// Converts [value] to [type].
   ///

@@ -6,9 +6,10 @@ import 'package:i18n_extension/i18n_extension.dart';
 extension Localization on String {
   String get i18n => localize(this, _t);
 
-  static final _t = Translations('en') +
+  // ignore: unused_field
+  static final _t = Translations('en_us') +
       {
-        'en': 'Thanks for using flutter_input!',
-        'de': 'Vielen Dank für die Nutzung von flutter_input',
+        'en_us': 'Thanks for using flutter_input!',
+        'de_de': 'Vielen Dank für die Nutzung von flutter_input',
       };
 }

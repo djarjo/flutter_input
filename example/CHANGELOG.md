@@ -1,3 +1,9 @@
+## 1.2.0
+
+- All input widgets are distributed over multiple tabs.
+- At least one widget from each tab has `wantKeepAlive=true`
+ to keep the widgets state even when switching tabs.
+
 ## 1.1.0
 
 - Sample localized. Immediately uses language changed by `InputLanguage`.

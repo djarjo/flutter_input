@@ -230,11 +230,13 @@ class DateHelper {
   /// and not younger than `upper` (or `upper=null`).
   static bool isBetween({int year, int month, DateTime lower, DateTime upper}) {
     if ((lower != null) &&
-        ((year < lower.year) || (year == lower.year && month < lower.month)))
+        ((year < lower.year) || (year == lower.year && month < lower.month))) {
       return false;
+    }
     if ((upper != null) &&
-        ((year > upper.year) || (year == upper.year && month > upper.month)))
+        ((year > upper.year) || (year == upper.year && month > upper.month))) {
       return false;
+    }
     return true;
   }
 

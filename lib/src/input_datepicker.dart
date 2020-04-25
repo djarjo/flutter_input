@@ -21,7 +21,7 @@ import 'input_form.dart';
 /// or just add `validators: [(v) => future( v ),]`.
 ///
 /// TODO \[X\] year becomes TextField
-/// TODO \[ \] Internationalize this input widget: day names, month names, tooltips, display format, first day of week
+/// TODO \[X\] Internationalize this input widget: day names, month names, tooltips, display format, first day of week
 ///
 /// See [InputField] for all common parameters.
 class InputDatePicker extends InputField<DateTime> {
@@ -51,6 +51,7 @@ class InputDatePicker extends InputField<DateTime> {
     this.size = 8 * kMinInteractiveDimension,
     this.styles,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   })  : assert(size == null || size >= 8 * kMinInteractiveDimension),
         super(
           key: key,
@@ -62,6 +63,7 @@ class InputDatePicker extends InputField<DateTime> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -74,6 +76,7 @@ class _InputDatePickerState extends InputFieldState<DateTime> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     DateTime date = value ?? widget.initialValue ?? DateTime.now();
     return super.buildInputField(
       context,
@@ -432,7 +435,7 @@ class _DatePickerState extends State<_DatePicker> {
             keyboardType:
                 TextInputType.numberWithOptions(signed: false, decimal: false),
             maxLength: 4,
-            style: new TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black),
             onSubmitted: (v) => _setDisplayedMonth(
               year: int.tryParse(v),
             ),

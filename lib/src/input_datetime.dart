@@ -38,6 +38,7 @@ class InputDateTime extends InputField<DateTime> {
     this.timePattern = 'HH:mm',
     this.using = DateTimeUsing.dateAndTime,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   })  : assert(datePattern != null),
         assert(timePattern != null),
         assert(using != null),
@@ -51,6 +52,7 @@ class InputDateTime extends InputField<DateTime> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -63,6 +65,7 @@ class _InputDateTimeState extends InputFieldState<DateTime> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     CupertinoDatePickerMode cupertinoMode;
     if (widget.using == DateTimeUsing.dateOnly) {
       cupertinoMode = CupertinoDatePickerMode.date;

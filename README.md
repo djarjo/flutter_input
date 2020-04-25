@@ -7,7 +7,7 @@ The `InputForm` provides methods to `enable()`, `reset()`, `save()` or `validate
 all fields at once which are attached to the form.
 
 ## Input Widgets
-The following input widgets are included.
+The following input widgets are available.
 See section _Development_ below for building your own input widget.
 * `InputCheckbox` - Checkbox for data type `bool`
 * `InputCountry` - Dropdown to select a country (shows flags)
@@ -18,6 +18,7 @@ See section _Development_ below for building your own input widget.
 * `InputFavorite` - A favorite button with selectable icon for data type `bool`
 * `InputKeyboard` - Text input for data type `String`, `int` or `double`
 * `InputLanguage` - Dropdown to select a language (`Locale`)
+* `InputPassword` - Text field with a switch to make obscured input visible (`String`)
 * `InputRadio<T>` - Radio button to select one value of type `T`
 * `InputRating` - Rating widget with selectable icons and a range slider for data type `int`
 * `InputSlider` - Slider for data type `double` between a minimum and maximum value

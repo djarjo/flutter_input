@@ -22,16 +22,19 @@ class InputCheckbox extends InputField<bool> {
     ValueSetter<bool> onSaved,
     String path,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   }) : super(
-            key: key,
-            autovalidate: autovalidate,
-            decoration: decoration,
-            enabled: enabled,
-            initialValue: initialValue,
-            onChanged: onChanged,
-            onSaved: onSaved,
-            path: path,
-            validators: validators);
+          key: key,
+          autovalidate: autovalidate,
+          decoration: decoration,
+          enabled: enabled,
+          initialValue: initialValue,
+          onChanged: onChanged,
+          onSaved: onSaved,
+          path: path,
+          validators: validators,
+          wantKeepAlive: wantKeepAlive,
+        );
 
   @override
   _InputCheckboxState createState() => _InputCheckboxState();
@@ -43,6 +46,7 @@ class _InputCheckboxState extends InputFieldState<bool> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return super.buildInputField(
       context,
       Align(

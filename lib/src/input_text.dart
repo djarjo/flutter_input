@@ -222,6 +222,7 @@ class _InputTextState extends InputFieldState<String> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final InputDecoration effectiveDecoration =
         (widget.decoration ?? const InputDecoration())
             .applyDefaults(Theme.of(context).inputDecorationTheme);
@@ -314,7 +315,8 @@ class _InputTextState extends InputFieldState<String> {
     // notifications for changes originating from within this class -- for
     // example, the reset() method. In such cases, the FormField value will
     // already have been set.
-    if (_effectiveController.text != value)
+    if (_effectiveController.text != value) {
       didChange(_effectiveController.text);
+    }
   }
 }

@@ -12,56 +12,56 @@ extension Localization on String {
   String get i18n => localize(this, _t);
 }
 
-final _t = Translations('en') +
+final _t = Translations('en_us') +
     {
-      'en': 'Australia',
-      'de': 'Australien',
+      'en_us': 'Australia',
+      'de_de': 'Australien',
     } +
     {
-      'en': 'Brazil',
-      'de': 'Brasilien',
+      'en_us': 'Brazil',
+      'de_de': 'Brasilien',
     } +
     {
-      'en': 'China',
-      'de': 'China',
+      'en_us': 'China',
+      'de_de': 'China',
     } +
     {
-      'en': 'France',
-      'de': 'Frankreich',
+      'en_us': 'France',
+      'de_de': 'Frankreich',
     } +
     {
-      'en': 'Germany',
-      'de': 'Deutschland',
+      'en_us': 'Germany',
+      'de_de': 'Deutschland',
     } +
     {
-      'en': 'Great Britain',
-      'de': 'Großbritannien',
+      'en_us': 'Great Britain',
+      'de_de': 'Großbritannien',
     } +
     {
-      'en': 'India',
-      'de': 'Indien',
+      'en_us': 'India',
+      'de_de': 'Indien',
     } +
     {
-      'en': 'Italy',
-      'de': 'Italien',
+      'en_us': 'Italy',
+      'de_de': 'Italien',
     } +
     {
-      'en': 'Netherlands',
-      'de': 'Niederlande',
+      'en_us': 'Netherlands',
+      'de_de': 'Niederlande',
     } +
     {
-      'en': 'Japan',
-      'de': 'Japan',
+      'en_us': 'Japan',
+      'de_de': 'Japan',
     } +
     {
-      'en': 'Spain',
-      'de': 'Spanien',
+      'en_us': 'Spain',
+      'de_de': 'Spanien',
     } +
     {
-      'en': 'U.S.A.',
-      'de': 'U.S.A.',
+      'en_us': 'U.S.A.',
+      'de_de': 'U.S.A.',
     } +
     {
-      'en': 'United States of America',
-      'de': 'U.S.A.',
+      'en_us': 'United States of America',
+      'de_de': 'U.S.A.',
     };

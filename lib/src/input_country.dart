@@ -25,6 +25,7 @@ class InputCountry extends InputField<String> {
     this.selectableCountries,
     this.showFlag = true,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   }) : super(
           key: key,
           autovalidate: autovalidate,
@@ -35,6 +36,7 @@ class InputCountry extends InputField<String> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   /// Displayed as dropdown icon.
@@ -60,6 +62,7 @@ class _InputCountryState extends InputFieldState<String> {
   // List of countries will not be translated if in `initState()`.
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _dropdownList = _buildDropdownList();
     return super.buildInputField(
       context,
@@ -73,7 +76,7 @@ class _InputCountryState extends InputFieldState<String> {
   }
 
   List<DropdownMenuItem<String>> _buildDropdownList() {
-    final String _imagePath = 'assets/';
+    final String _imagePath = 'lib/assets/flags/';
     List<Country> countryList = [];
     for (Country country in Country.values()) {
       if ((widget.selectableCountries != null) &&

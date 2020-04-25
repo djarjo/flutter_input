@@ -1,3 +1,10 @@
+## 1.2.0
+
+- Fixed assertion on InputField when using InputKeyboard
+- Added `InputPassword` showing characters on demand
+- Added parameter `wantKeepAlive` on all widgets to
+  keep widget state even when scrolled out of view
+
 ## 1.1.2
 
 - Moved flag images to `lib/assets`

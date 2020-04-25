@@ -224,11 +224,12 @@ class InputFormState extends State<InputForm> {
   }
 
   bool _validate() {
-    bool hasError = false;
+    bool _fieldHasError, _formHasError = false;
     for (InputFieldState<dynamic> field in _fields) {
-      hasError = !field.validate() || hasError;
+      _fieldHasError = !field.validate();
+      _formHasError = _fieldHasError || _formHasError;
     }
-    return !hasError;
+    return !_formHasError;
   }
 }
 
@@ -308,12 +309,14 @@ abstract class InputField<T> extends StatefulWidget {
     this.onSaved,
     this.path,
     this.validators,
+    this.wantKeepAlive = false,
   })  : assert(
             (path != null) ||
                 (onChanged != null) ||
                 (onSaved != null) ||
                 ((enabled != null) && (enabled == false)),
             'If path is null then onChanged is required or the field must always be disabled'),
+        assert(wantKeepAlive != null),
         super(key: key);
 
   /// If true, this form field will validate and update its error text
@@ -361,12 +364,17 @@ abstract class InputField<T> extends StatefulWidget {
   /// parameter to a space.
   final List<InputValidator> validators;
 
+  /// `true` will keep the state of all input fields within the same [Slider]
+  /// even when the widget is scrolled out of view.
+  final bool wantKeepAlive;
+
   @override
   InputFieldState<T> createState() => InputFieldState<T>();
 }
 
 /// The current state of an [InputField].
-class InputFieldState<T> extends State<InputField<T>> {
+class InputFieldState<T> extends State<InputField<T>>
+    with AutomaticKeepAliveClientMixin<InputField<T>> {
   bool _enabled, _enabledByForm;
 
   /// If the field is enabled to accept user input or not
@@ -394,6 +402,12 @@ class InputFieldState<T> extends State<InputField<T>> {
 
   InputFormState _formState;
   T value;
+
+  /// This method must not be called. Use InputField.buildInputField instead.
+  @override
+  Widget build(BuildContext context) {
+    return super.build(context);
+  }
 
   Widget buildInputField(BuildContext context, Widget builder) {
     if (widget.autovalidate && _enabled) {
@@ -453,24 +467,6 @@ class InputFieldState<T> extends State<InputField<T>> {
     _initValue();
   }
 
-  void _initEnabled() {
-    _enabledByForm = false;
-    if (widget.enabled != null) {
-      _enabled = widget.enabled;
-    } else if (_formState == null) {
-      _enabled = true;
-    } else {
-      _enabled = _formState._enabled ?? true;
-      _enabledByForm = true;
-    }
-  }
-
-  void _initValue() {
-    dynamic valueLoaded = widget.initialValue ??
-        InputUtils.readJson(_formState?.widget?.value, widget.path);
-    value = InputUtils.convertToType(T, valueLoaded);
-  }
-
   /// Resets the field to its initial value.
   void reset() {
     setState(() {
@@ -482,12 +478,14 @@ class InputFieldState<T> extends State<InputField<T>> {
     });
   }
 
-  /// Calls the [InputField]'s onSaved method with the current value. If [onSaved] is null
-  /// then it writes the value at [path] into [InputForm.value].
+  /// Calls the [InputField]'s onSaved method with the current value.
+  /// If [path] is not null
+  /// then [value] will be written into [InputForm.value] under key [path].
   void save() {
     if (widget.onSaved != null) {
       widget.onSaved(value);
-    } else if (widget.path != null) {
+    }
+    if (widget.path != null) {
       InputUtils.writeJson(_formState?.widget?.value, widget.path, value);
     }
   }
@@ -513,6 +511,27 @@ class InputFieldState<T> extends State<InputField<T>> {
     return !hasError;
   }
 
+  @override
+  bool get wantKeepAlive => widget.wantKeepAlive;
+
+  void _initEnabled() {
+    _enabledByForm = false;
+    if (widget.enabled != null) {
+      _enabled = widget.enabled;
+    } else if (_formState == null) {
+      _enabled = true;
+    } else {
+      _enabled = _formState._enabled ?? true;
+      _enabledByForm = true;
+    }
+  }
+
+  void _initValue() {
+    dynamic valueLoaded = widget.initialValue ??
+        InputUtils.readJson(_formState?.widget?.value, widget.path);
+    value = InputUtils.convertToType(T, valueLoaded);
+  }
+
   void _validate() {
     if (widget.validators != null) {
       for (InputValidator validator in widget.validators) {
@@ -522,12 +541,6 @@ class InputFieldState<T> extends State<InputField<T>> {
         }
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    throw UnimplementedError('InputField.build() must never be called.'
-        ' Check exception stack!');
   }
 }
 

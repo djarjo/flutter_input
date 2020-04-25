@@ -38,6 +38,7 @@ class InputRating extends InputField<double> {
     String path,
     this.size = 25.0,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   })  : assert(min < max),
         iconEmpty = iconEmpty ?? Icons.star_border,
         iconHalf = iconHalf ?? Icons.star_half,
@@ -52,6 +53,7 @@ class InputRating extends InputField<double> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -67,6 +69,7 @@ class _InputRatingState extends InputFieldState<double> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _starSize ??=
         widget.size ?? MediaQuery.of(context).size.width / widget.iconCount;
 

@@ -38,6 +38,7 @@ class InputSpinner<T extends num> extends InputField<T> {
     String path,
     this.size = 25.0,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   })  : assert(size != null),
         assert(min < max),
         assert(divisions != null),
@@ -52,6 +53,7 @@ class InputSpinner<T extends num> extends InputField<T> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -74,6 +76,7 @@ class _InputSpinnerState<T extends num> extends InputFieldState<T> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return super.buildInputField(
       context,
       Row(

@@ -7,164 +7,164 @@ extension Localization on String {
   String get i18n => localize(this, _t);
 }
 
-final _t = Translations('en') +
+final _t = Translations('en_us') +
     {
-      'en': 'MM/DD/YYYY',
-      'de': 'YYYY-MM-DD',
+      'en_us': 'MM/DD/YYYY',
+      'de_de': 'YYYY-MM-DD',
     } +
     // --- Days in week - long
     {
-      'en': 'Monday',
-      'de': 'Montag',
+      'en_us': 'Monday',
+      'de_de': 'Montag',
     } +
     {
-      'en': 'Tuesday',
-      'de': 'Dienstag',
+      'en_us': 'Tuesday',
+      'de_de': 'Dienstag',
     } +
     {
-      'en': 'Wednesday',
-      'de': 'Mittwoch',
+      'en_us': 'Wednesday',
+      'de_de': 'Mittwoch',
     } +
     {
-      'en': 'Thursday',
-      'de': 'Donnerstag',
+      'en_us': 'Thursday',
+      'de_de': 'Donnerstag',
     } +
     {
-      'en': 'Friday',
-      'de': 'Freitag',
+      'en_us': 'Friday',
+      'de_de': 'Freitag',
     } +
     {
-      'en': 'Saturday',
-      'de': 'Samstag',
+      'en_us': 'Saturday',
+      'de_de': 'Samstag',
     } +
     {
-      'en': 'Sunday',
-      'de': 'Sonntag',
+      'en_us': 'Sunday',
+      'de_de': 'Sonntag',
     } +
     // --- Days in week - short
     {
-      'en': 'Mo',
-      'de': 'Mo',
+      'en_us': 'Mo',
+      'de_de': 'Mo',
     } +
     {
-      'en': 'Tu',
-      'de': 'Di',
+      'en_us': 'Tu',
+      'de_de': 'Di',
     } +
     {
-      'en': 'We',
-      'de': 'Mi',
+      'en_us': 'We',
+      'de_de': 'Mi',
     } +
     {
-      'en': 'Th',
-      'de': 'Do',
+      'en_us': 'Th',
+      'de_de': 'Do',
     } +
     {
-      'en': 'Fr',
-      'de': 'Fr',
+      'en_us': 'Fr',
+      'de_de': 'Fr',
     } +
     {
-      'en': 'Sa',
-      'de': 'Sa',
+      'en_us': 'Sa',
+      'de_de': 'Sa',
     } +
     {
-      'en': 'Su',
-      'de': 'So',
+      'en_us': 'Su',
+      'de_de': 'So',
     } +
     // --- Months in year - long
     {
-      'en': 'January',
-      'de': 'Januar',
+      'en_us': 'January',
+      'de_de': 'Januar',
     } +
     {
-      'en': 'February',
-      'de': 'Februar',
+      'en_us': 'February',
+      'de_de': 'Februar',
     } +
     {
-      'en': 'March',
-      'de': 'März',
+      'en_us': 'March',
+      'de_de': 'März',
     } +
     {
-      'en': 'April',
-      'de': 'April',
+      'en_us': 'April',
+      'de_de': 'April',
     } +
     {
-      'en': 'May',
-      'de': 'Mai',
+      'en_us': 'May',
+      'de_de': 'Mai',
     } +
     {
-      'en': 'June',
-      'de': 'Juni',
+      'en_us': 'June',
+      'de_de': 'Juni',
     } +
     {
-      'en': 'July',
-      'de': 'Juli',
+      'en_us': 'July',
+      'de_de': 'Juli',
     } +
     {
-      'en': 'August',
-      'de': 'August',
+      'en_us': 'August',
+      'de_de': 'August',
     } +
     {
-      'en': 'September',
-      'de': 'September',
+      'en_us': 'September',
+      'de_de': 'September',
     } +
     {
-      'en': 'October',
-      'de': 'Oktober',
+      'en_us': 'October',
+      'de_de': 'Oktober',
     } +
     {
-      'en': 'November',
-      'de': 'November',
+      'en_us': 'November',
+      'de_de': 'November',
     } +
     {
-      'en': 'December',
-      'de': 'Dezember',
+      'en_us': 'December',
+      'de_de': 'Dezember',
     } +
     // --- Months in year - short
     {
-      'en': 'Jan',
-      'de': 'Jan',
+      'en_us': 'Jan',
+      'de_de': 'Jan',
     } +
     {
-      'en': 'Feb',
-      'de': 'Feb',
+      'en_us': 'Feb',
+      'de_de': 'Feb',
     } +
     {
-      'en': 'Mar',
-      'de': 'Mär',
+      'en_us': 'Mar',
+      'de_de': 'Mär',
     } +
     {
-      'en': 'Apr',
-      'de': 'Apr',
+      'en_us': 'Apr',
+      'de_de': 'Apr',
     } +
     {
-      'en': 'May',
-      'de': 'Mai',
+      'en_us': 'May',
+      'de_de': 'Mai',
     } +
     {
-      'en': 'Jun',
-      'de': 'Jun',
+      'en_us': 'Jun',
+      'de_de': 'Jun',
     } +
     {
-      'en': 'Jul',
-      'de': 'Jul',
+      'en_us': 'Jul',
+      'de_de': 'Jul',
     } +
     {
-      'en': 'Aug',
-      'de': 'Aug',
+      'en_us': 'Aug',
+      'de_de': 'Aug',
     } +
     {
-      'en': 'Sep',
-      'de': 'Sep',
+      'en_us': 'Sep',
+      'de_de': 'Sep',
     } +
     {
-      'en': 'Oct',
-      'de': 'Okt',
+      'en_us': 'Oct',
+      'de_de': 'Okt',
     } +
     {
-      'en': 'Nov',
-      'de': 'Nov',
+      'en_us': 'Nov',
+      'de_de': 'Nov',
     } +
     {
-      'en': 'Dec',
-      'de': 'Dez',
+      'en_us': 'Dec',
+      'de_de': 'Dez',
     };

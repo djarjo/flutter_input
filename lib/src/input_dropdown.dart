@@ -32,6 +32,7 @@ class InputDropdown<T> extends InputField<T> {
     path,
     this.style,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   }) : super(
           key: key,
           autovalidate: autovalidate,
@@ -42,6 +43,7 @@ class InputDropdown<T> extends InputField<T> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -54,6 +56,7 @@ class _InputDropdownState<T> extends InputFieldState<T> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return super.buildInputField(
       context,
       DropdownButton(

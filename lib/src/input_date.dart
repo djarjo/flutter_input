@@ -28,6 +28,7 @@ class InputDate extends InputField<DateTime> {
     ValueSetter<DateTime> onSaved,
     String path,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   })  : assert(datePattern != null),
         super(
           key: key,
@@ -39,6 +40,7 @@ class InputDate extends InputField<DateTime> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -51,6 +53,7 @@ class _InputDateState extends InputFieldState<DateTime> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     DateTime displayDate = value ?? widget.initialValue ?? DateTime.now();
     String formattedDate = DateFormat(widget.datePattern).format(displayDate);
     return super.buildInputField(

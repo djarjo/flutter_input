@@ -27,6 +27,7 @@ class InputRadio<T> extends InputField<T> {
     ValueSetter<T> onSaved,
     String path,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   }) : super(
           key: key,
           autovalidate: autovalidate,
@@ -37,6 +38,7 @@ class InputRadio<T> extends InputField<T> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -49,6 +51,7 @@ class _InputRadioState<T> extends InputFieldState<T> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     value ??= widget.items[0].value;
     List<Widget> radioButtonList = widget.items.map((item) {
       if (widget.direction == Axis.horizontal) {

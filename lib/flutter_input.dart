@@ -53,6 +53,7 @@ export 'src/input_favorite.dart';
 export 'src/input_form.dart';
 export 'src/input_keyboard.dart';
 export 'src/input_language.dart';
+export 'src/input_password.dart';
 export 'src/input_radio.dart';
 export 'src/input_rating.dart';
 export 'src/input_slider.dart';

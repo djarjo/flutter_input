@@ -22,6 +22,7 @@ class InputSwitch extends InputField<bool> {
     ValueSetter<bool> onSaved,
     String path,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   }) : super(
           key: key,
           autovalidate: autovalidate,
@@ -32,6 +33,7 @@ class InputSwitch extends InputField<bool> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -44,6 +46,7 @@ class _InputSwitchState extends InputFieldState<bool> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return super.buildInputField(
       context,
       Align(

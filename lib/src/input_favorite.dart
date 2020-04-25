@@ -28,6 +28,7 @@ class InputFavorite extends InputField<bool> {
     String path,
     this.size = 23,
     List<InputValidator> validators,
+    bool wantKeepAlive = false,
   }) : super(
           key: key,
           autovalidate: autovalidate,
@@ -38,6 +39,7 @@ class InputFavorite extends InputField<bool> {
           onSaved: onSaved,
           path: path,
           validators: validators,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -50,6 +52,7 @@ class _InputFavoriteState extends InputFieldState<bool> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return super.buildInputField(
       context,
       Align(

@@ -16,7 +16,9 @@ Map<String, String> _languageNames = {
 
 /// Provides a text with the current language and a trailing icon.
 ///
-/// Tapping on the widget opens a list to select another language (`Locale`),
+/// Tapping on the widget opens a list to select another language (`Locale`).
+/// The required parameter [supportedLocales] specifies the languages
+/// which your app supports.
 /// To change the language of the app see file `example/lib/main.dart`.
 class InputLanguage extends InputField<Locale> {
   /// Locales available in this app
@@ -31,6 +33,7 @@ class InputLanguage extends InputField<Locale> {
     ValueSetter<Locale> onSaved,
     String path,
     @required this.supportedLocales,
+    bool wantKeepAlive = false,
   }) : super(
           key: key,
           decoration: decoration,
@@ -39,6 +42,7 @@ class InputLanguage extends InputField<Locale> {
           onChanged: onChanged ?? (Locale loc) {},
           onSaved: onSaved,
           path: path,
+          wantKeepAlive: wantKeepAlive,
         );
 
   @override
@@ -53,6 +57,7 @@ class _InputLanguageState extends InputFieldState<Locale> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _languageList ??= _buildLanguageList();
     value ??= I18n.of(context).locale;
     return super.buildInputField(
@@ -67,7 +72,7 @@ class _InputLanguageState extends InputFieldState<Locale> {
   }
 
   List<DropdownMenuItem<Locale>> _buildLanguageList() {
-    final String _imagePath = 'assets/';
+    final String _imagePath = 'lib/assets/flags/';
     return widget.supportedLocales
         .map((item) => DropdownMenuItem(
               value: item,
