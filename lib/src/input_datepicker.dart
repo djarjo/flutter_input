@@ -415,14 +415,15 @@ class _DatePickerState extends State<_DatePicker> {
     int year = currentSelectedDate.year;
     _yearController.text = '$year';
     return Container(
-        padding: EdgeInsets.only(left: 5.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.0,
-          ),
+      padding: EdgeInsets.only(left: 5.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1.0,
         ),
-        child: SizedBox(
-          width: 50,
+      ),
+      child: SizedBox(
+        width: 50,
+        child: Focus(
           child: TextField(
             buildCounter: _noCounterHandler,
             controller: _yearController,
@@ -440,7 +441,9 @@ class _DatePickerState extends State<_DatePicker> {
               year: int.tryParse(v),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   /// Builds the date picker. It has a header row with column names and

@@ -69,6 +69,10 @@ extension Localization on String {
         'de_de': 'Änderungen speichern',
       } +
       {
+        'en_us': 'Select Language',
+        'de_de': 'Sprache wählen',
+      } +
+      {
         'en_us': 'Somebodies birthday',
         'de_de': 'Geburtstag',
       } +

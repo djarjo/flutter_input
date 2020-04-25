@@ -38,6 +38,16 @@ class _SampleFormPageState extends State<SampleFormPage> {
       headerStyle: DatePickerStyle(
           decoration: BoxDecoration(color: Colors.deepOrangeAccent)),
     );
+    _setupUnits();
+    _titles = [
+      Tab(text: 'Misc'.i18n),
+      Tab(text: 'Text'),
+      Tab(text: 'Date & Time'.i18n),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     _dateTimeParts = [
       DropdownMenuItem<DateTimeUsing>(
         value: DateTimeUsing.dateOnly,
@@ -52,16 +62,6 @@ class _SampleFormPageState extends State<SampleFormPage> {
         child: Text('Date & Time'.i18n),
       ),
     ];
-    _setupUnits();
-    _titles = [
-      Tab(text: 'Misc'.i18n),
-      Tab(text: 'Text'),
-      Tab(text: 'Date & Time'.i18n),
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
     List<Widget> _tabViews = [
       _buildViewMisc(context),
       _buildViewText(context),
@@ -162,7 +162,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.language),
-            title: Text('Select Language'),
+            title: Text('Select Language'.i18n),
             subtitle: InputLanguage(
               initialValue: MyApp.getThisAppsLocale(context),
               onChanged: (locale) {

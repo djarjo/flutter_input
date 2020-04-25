@@ -80,6 +80,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print('_MyAppState.build $context || $thisAppsLocale');
     return I18n(
       initialLocale: thisAppsLocale,
       child: MaterialApp(

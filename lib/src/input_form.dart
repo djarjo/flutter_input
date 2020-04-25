@@ -380,6 +380,13 @@ class InputFieldState<T> extends State<InputField<T>>
   /// If the field is enabled to accept user input or not
   bool isEnabled() => _enabled;
 
+  /// Whenever [wantKeepAlive] should change
+  /// then [updateKeepAlive] must be called.
+  @override
+  void updateKeepAlive() {
+    super.updateKeepAlive();
+  }
+
   set enabled(bool newValue) {
     if (_enabled != newValue) {
       setState(() {
