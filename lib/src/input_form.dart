@@ -41,6 +41,10 @@ import 'package:flutter_input/src/input_utils.dart';
 /// https://github.com/flutter/flutter/issues/46073
 ///
 class InputForm extends StatefulWidget {
+  /// If `true` (default = `false`) then a form field will automatically
+  ///
+  final bool autosave;
+
   /// If true, form fields will validate and update their error text
   /// immediately after every change. Otherwise, you must call
   /// [InputFormState.validate] to validate.
@@ -99,6 +103,7 @@ class InputForm extends StatefulWidget {
     this.onSaved,
     this.onWillPop,
     this.value,
+    this.autosave,
   })  : assert(child != null),
         assert(enabled != null),
         super(key: key);
@@ -305,6 +310,7 @@ abstract class InputField<T> extends StatefulWidget {
     this.decoration,
     this.enabled,
     this.initialValue,
+    this.map,
     this.onChanged,
     this.onSaved,
     this.path,
@@ -338,6 +344,11 @@ abstract class InputField<T> extends StatefulWidget {
   /// An optional value to initialize the field to. It will be preceded by
   /// dataObject[path] if an ancestor [InputForm] exists.
   final T initialValue;
+
+  /// [map] is used together with [path] to provide the initial value from
+  /// and to save any changes to the map. If an ancestor [InputForm] was found
+  /// then the map from the form would be used.
+  final Map<String, dynamic> map;
 
   /// An optional method to call on every change of the fields value.
   final ValueSetter<T> onChanged;
@@ -462,14 +473,19 @@ class InputFieldState<T> extends State<InputField<T>>
     if (widget.onChanged != null) {
       widget.onChanged(value);
     }
+    if ((widget.map != null) && (widget.path != null)) {
+      InputUtils.writeJson(widget.map, widget.path, value);
+    }
   }
 
   @override
   @mustCallSuper
   void initState() {
     super.initState();
-    _formState = context.findAncestorStateOfType<InputFormState>();
-    _formState?._register(this);
+    if (widget.map == null) {
+      _formState = context.findAncestorStateOfType<InputFormState>();
+      _formState?._register(this);
+    }
     _initEnabled();
     _initValue();
   }
@@ -535,6 +551,7 @@ class InputFieldState<T> extends State<InputField<T>>
 
   void _initValue() {
     dynamic valueLoaded = widget.initialValue ??
+        InputUtils.readJson(widget.map, widget.path) ??
         InputUtils.readJson(_formState?.widget?.value, widget.path);
     value = InputUtils.convertToType(T, valueLoaded);
   }

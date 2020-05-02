@@ -73,6 +73,10 @@ extension Localization on String {
         'de_de': 'Sprache wählen',
       } +
       {
+        'en_us': 'Settings',
+        'de_de': 'Einstellungen',
+      } +
+      {
         'en_us': 'Somebodies birthday',
         'de_de': 'Geburtstag',
       } +

@@ -1,3 +1,8 @@
+
+- Added parameter `map` on every input widget
+- `InputDatePicker` now has default styles
+- Fixed handling of enable/disable on `InputCountry`
+
 ## 1.2.0
 
 - Fixed assertion on InputField when using InputKeyboard

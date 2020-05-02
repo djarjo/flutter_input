@@ -45,11 +45,12 @@ class InputDatePicker extends InputField<DateTime> {
     this.firstDate,
     this.lastDate,
     DateTime initialValue,
+    Map<String, dynamic> map,
     ValueChanged<DateTime> onChanged,
     ValueSetter<DateTime> onSaved,
     String path,
     this.size = 8 * kMinInteractiveDimension,
-    this.styles,
+    this.styles = const DatePickerStyles(),
     List<InputValidator> validators,
     bool wantKeepAlive = false,
   })  : assert(size == null || size >= 8 * kMinInteractiveDimension),
@@ -59,6 +60,7 @@ class InputDatePicker extends InputField<DateTime> {
           decoration: decoration,
           enabled: enabled,
           initialValue: initialValue,
+          map: map,
           onChanged: onChanged,
           onSaved: onSaved,
           path: path,
@@ -304,7 +306,7 @@ class _DatePickerState extends State<_DatePicker> {
             padding: paddingsDay,
             child: Text(
               currentSelectedDate.day.toString(),
-              style: widget.baseWidget.styles.dateStyle.textStyle.copyWith(
+              style: widget.baseWidget.styles?.dateStyle?.textStyle?.copyWith(
                   fontSize:
                       widget.baseWidget.styles.dateStyle.textStyle.fontSize *
                           2),

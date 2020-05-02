@@ -172,6 +172,19 @@ class _SampleFormPageState extends State<SampleFormPage> {
               supportedLocales: supportedLocales,
             ),
           ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'.i18n),
+            onTap: () {
+              showDialog(
+                context: context,
+                child: _buildSettingsForm(context),
+              ).then((value) {
+                print('$value, settings=$sampleSettings');
+                Navigator.of(context).pop(-77);
+              });
+            },
+          ),
           AboutListTile(
             icon: Icon(Icons.info),
             applicationLegalese: 'Free to Use',
@@ -182,6 +195,31 @@ class _SampleFormPageState extends State<SampleFormPage> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  /// All input widgets in the settings form will NOT attach to
+  /// an [InputForm] ancestor.
+  Widget _buildSettingsForm(BuildContext context) {
+    return Dialog(
+      child: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              InputDatePicker(
+                decoration: InputDecoration(labelText: 'Valid since'),
+                map: sampleSettings,
+                path: 'validSince',
+              ),
+              InputCheckbox(
+                decoration: InputDecoration(labelText: 'Allow all'),
+                map: sampleSettings,
+                path: 'allowances',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -211,9 +211,6 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
             .applyDefaults(Theme.of(context).inputDecorationTheme);
 
     void onChangedHandler(String fieldValue) {
-      if (fieldValue == null || fieldValue.isEmpty) {
-        return;
-      }
       T newValue = InputUtils.convertToType(T, fieldValue);
       didChange(newValue);
     }

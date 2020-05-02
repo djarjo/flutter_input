@@ -24,6 +24,9 @@ Map<String, dynamic> centralData = {
   },
 };
 
+/// Sample map used without [InputForm]
+Map<String, dynamic> sampleSettings = {};
+
 /// Supported locales. 0 is default.
 List<Locale> supportedLocales = [
   Locale('en', 'US'),

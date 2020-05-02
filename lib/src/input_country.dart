@@ -19,6 +19,7 @@ class InputCountry extends InputField<String> {
     bool enabled,
     this.icon,
     String initialValue,
+    Map<String, dynamic> map,
     ValueChanged<String> onChanged,
     ValueSetter<String> onSaved,
     String path,
@@ -32,6 +33,7 @@ class InputCountry extends InputField<String> {
           decoration: decoration,
           enabled: enabled,
           initialValue: initialValue,
+          map: map,
           onChanged: onChanged,
           onSaved: onSaved,
           path: path,
@@ -69,7 +71,7 @@ class _InputCountryState extends InputFieldState<String> {
       DropdownButton(
         icon: widget.icon ?? Icon(Icons.flag),
         items: _dropdownList,
-        onChanged: (v) => super.didChange(v),
+        onChanged: isEnabled() ? (v) => super.didChange(v) : null,
         value: value,
       ),
     );

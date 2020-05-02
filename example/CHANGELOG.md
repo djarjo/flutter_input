@@ -1,3 +1,6 @@
+
+- Settings in `Drawer` opens dialog box to directly manage map values
+
 ## 1.2.0
 
 - All input widgets are distributed over multiple tabs.
