@@ -8,30 +8,43 @@ import 'input_form.dart';
 
 /// Provides a slider to select a value with type double between a given minimum and a given maximum.
 class InputSlider extends InputField<double> {
+  final bool autofocus;
   final Color activeColor, inactiveColor;
   final int divisions;
+  final FocusNode focusNode;
+  final String label;
   final double min, max;
+  final Function(double) onChangeStart, onChangeEnd;
+  final String Function(double) semanticFormatterCallback;
 
   InputSlider({
     Key key,
     this.activeColor,
-    bool autovalidate = false,
+    this.autofocus = false,
+    bool autosave,
+    bool autovalidate,
     this.divisions,
     InputDecoration decoration,
     bool enabled,
+    this.focusNode,
     this.inactiveColor,
     double initialValue,
+    this.label,
     Map<String, dynamic> map,
     this.min = 0.0,
     this.max = 100.0,
     ValueChanged<double> onChanged,
+    this.onChangeStart,
+    this.onChangeEnd,
     ValueSetter<double> onSaved,
     String path,
+    this.semanticFormatterCallback,
     List<InputValidator> validators,
     bool wantKeepAlive = false,
   })  : assert(min < max),
         super(
           key: key,
+          autosave: autosave,
           autovalidate: autovalidate,
           decoration: decoration,
           enabled: enabled,
@@ -59,12 +72,18 @@ class _InputSliderState extends InputFieldState<double> {
       context,
       Slider.adaptive(
         activeColor: widget.activeColor,
+//        autofocus: widget.autofocus,
         divisions: widget.divisions,
+//        focusNode: widget.focusNode,
         inactiveColor: widget.inactiveColor,
-        label: value?.floor().toString() ?? widget.min.toString(),
+        label:
+            widget.label ?? value?.floor().toString() ?? widget.min.toString(),
         min: widget.min,
         max: widget.max,
         onChanged: super.isEnabled() ? (v) => super.didChange(v) : null,
+        onChangeEnd: widget.onChangeEnd,
+        onChangeStart: widget.onChangeStart,
+        semanticFormatterCallback: widget.semanticFormatterCallback,
         value: value ?? widget.initialValue ?? widget.min,
       ),
     );

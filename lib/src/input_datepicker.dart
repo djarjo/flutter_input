@@ -20,7 +20,7 @@ import 'input_form.dart';
 /// To allow only dates in the future, set [firstDate] to `DateTime.now()`
 /// or just add `validators: [(v) => future( v ),]`.
 ///
-/// TODO \[X\] year becomes TextField
+/// TODO \[X\] year as an integer TextField
 /// TODO \[X\] Internationalize this input widget: day names, month names, tooltips, display format, first day of week
 ///
 /// See [InputField] for all common parameters.
@@ -38,7 +38,8 @@ class InputDatePicker extends InputField<DateTime> {
 
   InputDatePicker({
     Key key,
-    bool autovalidate = false,
+    bool autosave,
+    bool autovalidate,
     this.datePattern = 'yyyy-MM-dd',
     InputDecoration decoration,
     bool enabled,
@@ -56,6 +57,7 @@ class InputDatePicker extends InputField<DateTime> {
   })  : assert(size == null || size >= 8 * kMinInteractiveDimension),
         super(
           key: key,
+          autosave: autosave,
           autovalidate: autovalidate,
           decoration: decoration,
           enabled: enabled,

@@ -7,25 +7,36 @@ import 'input_form.dart';
 
 /// Provides a checkbox to manipulate a bool value.
 class InputCheckbox extends InputField<bool> {
-  final Color activeColor;
-  final Color color;
+  final bool autofocus;
+  final Color activeColor, checkColor, focusColor, hoverColor;
+  final FocusNode focusNode;
+  final MaterialTapTargetSize materialTapTargetSize;
+  final bool tristate;
 
   InputCheckbox({
     Key key,
-    bool autovalidate = false,
+    this.autofocus = false,
+    bool autosave,
+    bool autovalidate,
     this.activeColor,
-    this.color,
+    this.checkColor,
     InputDecoration decoration,
     bool enabled,
+    this.focusColor,
+    this.focusNode,
+    this.hoverColor,
     bool initialValue,
     Map<String, dynamic> map,
+    this.materialTapTargetSize,
     ValueChanged<bool> onChanged,
     ValueSetter<bool> onSaved,
     String path,
+    this.tristate,
     List<InputValidator> validators,
     bool wantKeepAlive = false,
   }) : super(
           key: key,
+          autosave: autosave,
           autovalidate: autovalidate,
           decoration: decoration,
           enabled: enabled,
@@ -54,7 +65,15 @@ class _InputCheckboxState extends InputFieldState<bool> {
       Align(
         alignment: Alignment.centerLeft,
         child: Checkbox(
+          autofocus: widget.autofocus,
+          activeColor: widget.activeColor,
+          checkColor: widget.checkColor,
+          focusColor: widget.focusColor,
+          focusNode: widget.focusNode,
+          hoverColor: widget.hoverColor,
+          materialTapTargetSize: widget.materialTapTargetSize,
           onChanged: isEnabled() ? (v) => super.didChange(v) : null,
+          tristate: widget.tristate ?? true,
           value: value ?? false,
         ),
       ),

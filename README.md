@@ -1,10 +1,17 @@
 # Flutter Input Widgets - Standalone or within a Form &rarr; _flutter_input_
 This package provides input widgets (fields) to manipulate data.
-All input widgets share a common set of parameters.
-A list of validators (see below) can be attached to any input widget.
-Each input widget can be used standalone or attached to the `InputForm`.
-The `InputForm` provides methods to `enable()`, `reset()`, `save()` or `validate()`
-all fields at once which are attached to the form.
+The data to manipulate is either a single variable or an entry in a `map`.
+The map can even be nested.
+Parameter `path` defines the key to access the entry in the map.
+
+All input widgets share a common set of parameters and methods.
+A list of validators can be attached to each input widget.
+
+Each input widget can be used standalone.
+If it finds a `InputForm` ancestor then it will automatically
+register itself to the form.
+The form provides methods to `enable()`, `reset()`, `save()`
+or `validate()` all fields at once.
 
 ## Input Widgets
 The following input widgets are available.
@@ -26,38 +33,30 @@ See section _Development_ below for building your own input widget.
  between a minimum and maximum
 * `InputSwitch` - Switch for data type `bool`
 
-### Demo
-
-For a complete example see `example/main.dart`.
-
-#### InputDatePicker
-The highly customizable `InputDatePicker` allows you to choose a date
-from a calendar page which also shows the week of the year.
-It provides spinners, swipes and a dropdown to select the month.
-The year can even be entered as text.
-All parts can be customized by `DatePickerStyles`.
- 
-![Screenshot](doc/screenshots/date_picker.gif)
-
-## Usage
+### Common Parameters
 
 All input widgets share a common set of parameters.
 All parameters are named and optional.
 
-* Key key
-* `bool autovalidate = false` - automatically validates  
-* InputDecoration decoration - e.g. for a label
-* bool enabled - to protect the field against changes. Overrides
-setting of the `Form`
-* T initialValue - to set the fields initial value. Overrides using
-the value from the forms map.
-* ValueSetter<T> onChanged - invoked on every change
+* `Key key` - Identifier for the field
+* `bool autosave = true` - automatically saves any changed value.
+If `autovalidate is true` then the value will only be changed
+when there are no validation failures.
+* `bool autovalidate = false` - automatically validates changed values
+* `InputDecoration decoration` - e.g. for a label (see example)
+* `bool enabled` - to enable or disable user input.
+If not set then uses setting from `InputForm`
+or defaults to `true` (if there is no form).
+* `T initialValue` - sets the fields initial value.
+Overrides using the value from `map`.
+* `ValueSetter<T> onChanged` - invoked on every change
  of the input field value
-* ValueSetter<T> onSaved - additionally invoked by `Form.save()`
-* String path - to access the form map
-* List<InputValidator> validators - list of validators
+* `ValueSetter<T> onSaved` - invoked by `save()` which
+will be automatically called by `InputForm.save()`.
+* `String path` - to access the value in `map`
+* `List<InputValidator> validators` - list of validators
 
-## Validators
+### Validators
 The following validators can be given to parameter `validators`
 of an input widget. Each validator accepts the optional parameter
 `message` to set an individual error message if the validation fails.
@@ -78,6 +77,39 @@ of an input widget. Each validator accepts the optional parameter
 * `notNull` - validates the the field value is not empty
 * `past` - validates that the DateTime field value
  lies in the past
+
+### Usage
+
+Each input widget will automatically register itself if it
+finds an `InputForm` ancestor.
+Otherwise it will just run standalone.
+It will use `initialValue` for its value to display.
+If `initialValue is null` then it will use the value from
+`map[path]` if both are set.
+If `map` is not set, then the field will use `map` from
+an `InputForm` ancestor (if there is any).
+
+Saving a modified value will happen
+* on any change if `autosave = true` (which is the default)
+* when `save()` is called
+* when `save()` is called on the `InputFormState`
+
+The changed value will be written to the `map` at `path`
+if both were supplied. Also method `onSave()` will be invoked
+with the changed value.
+
+### Demo
+
+For a complete example see `example/main.dart`.
+
+#### InputDatePicker
+The highly customizable `InputDatePicker` allows you to choose a date
+from a calendar page which also shows the week of the year.
+It provides spinners, swipes and a dropdown to select the month.
+The year can even be entered as text.
+All parts can be customized by `DatePickerStyles`.
+ 
+![Screenshot](doc/screenshots/date_picker.gif)
 
 ## Development
 To create a new input field for data type `T` follow these steps:

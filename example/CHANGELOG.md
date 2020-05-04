@@ -1,11 +1,14 @@
+## 1.3.0
 
-- Settings in `Drawer` opens dialog box to directly manage map values
+- Settings in `Drawer` opens dialog box to directly edit values in a map
+- Added tile in `Drawer` to display contents of maps
+- Any validation error now opens a snackbar with a message
 
 ## 1.2.0
 
 - All input widgets are distributed over multiple tabs.
 - At least one widget from each tab has `wantKeepAlive=true`
- to keep the widgets state even when switching tabs.
+to keep the widgets state even when switching tabs.
 
 ## 1.1.0
 

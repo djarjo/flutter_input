@@ -12,23 +12,73 @@ import 'input_form.dart';
 /// Selected value is two letter ISO-3166 code.
 /// Showing the flag can be suppressed with `showFlag = false`.
 class InputCountry extends InputField<String> {
+  final Color activeColor;
+  final bool autofocus;
+  final Color color;
+  final Widget disabledHint;
+  final Color dropdownColor;
+  final int elevation;
+  final Color focusColor;
+  final FocusNode focusNode;
+  final Widget hint;
+  final Widget icon;
+  final Color iconDisabledColor;
+  final Color iconEnabledColor;
+  final double iconSize;
+  final bool isDense, isExpanded;
+  final double itemHeight;
+  final Function() onTap;
+
+  /// List of ISO-3166 code-2 uppercase country codes which can be selected.
+  /// Default `null` shows full list.
+  final List<String> selectableCountries;
+
+  final List<Widget> Function(BuildContext) selectedItemBuilder;
+
+  /// `false` will not show the flag icon. Default is `true`.
+  final bool showFlag;
+
+  final TextStyle style;
+  final Widget underline;
+
   InputCountry({
     Key key,
-    bool autovalidate = false,
+    this.activeColor,
+    this.autofocus = false,
+    bool autosave,
+    bool autovalidate,
+    this.color,
     InputDecoration decoration,
+    this.disabledHint,
+    this.dropdownColor,
+    this.elevation,
     bool enabled,
+    this.focusColor,
+    this.focusNode,
+    this.hint,
     this.icon,
+    this.iconDisabledColor,
+    this.iconEnabledColor,
+    this.iconSize = 24.0,
     String initialValue,
+    this.isDense = false,
+    this.isExpanded = false,
+    this.itemHeight = kMinInteractiveDimension,
     Map<String, dynamic> map,
     ValueChanged<String> onChanged,
     ValueSetter<String> onSaved,
+    this.onTap,
     String path,
     this.selectableCountries,
+    this.selectedItemBuilder,
     this.showFlag = true,
+    this.style,
+    this.underline,
     List<InputValidator> validators,
     bool wantKeepAlive = false,
   }) : super(
           key: key,
+          autosave: autosave,
           autovalidate: autovalidate,
           decoration: decoration,
           enabled: enabled,
@@ -41,22 +91,12 @@ class InputCountry extends InputField<String> {
           wantKeepAlive: wantKeepAlive,
         );
 
-  /// Displayed as dropdown icon.
-  final Widget icon;
-
-  /// List of ISO-3166 code-2 uppercase country codes which can be selected.
-  /// Default `null` shows full list.
-  final List<String> selectableCountries;
-
-  /// `false` will not show the flag. Defaults to `true`.
-  final bool showFlag;
-
   @override
   _InputCountryState createState() => _InputCountryState();
 }
 
 class _InputCountryState extends InputFieldState<String> {
-  List<DropdownMenuItem<String>> _dropdownList;
+  List<DropdownMenuItem<String>> _countryList;
 
   @override
   InputCountry get widget => super.widget;
@@ -65,19 +105,40 @@ class _InputCountryState extends InputFieldState<String> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _dropdownList = _buildDropdownList();
+    _countryList = _buildCountryList();
     return super.buildInputField(
       context,
       DropdownButton(
+//        activeColor: widget.activeColor,
+        autofocus: widget.autofocus,
+//        color: widget.color,
+        disabledHint: (value != null)
+            ? _countryList.firstWhere((item) => value == item.value).child
+            : null,
+//        dropdownColor: widget.dropdownColor,
+        elevation: widget.elevation ?? 8,
+        focusColor: widget.focusColor,
+        focusNode: widget.focusNode,
+        hint: widget.hint,
         icon: widget.icon ?? Icon(Icons.flag),
-        items: _dropdownList,
+        iconDisabledColor: widget.iconDisabledColor,
+        iconEnabledColor: widget.iconEnabledColor,
+        iconSize: widget.iconSize,
+        isDense: widget.isDense,
+        isExpanded: widget.isExpanded,
+        items: _countryList,
+        itemHeight: widget.itemHeight,
         onChanged: isEnabled() ? (v) => super.didChange(v) : null,
+//        onTap: widget.onTap,
+        selectedItemBuilder: widget.selectedItemBuilder,
+        style: widget.style,
+        underline: widget.underline,
         value: value,
       ),
     );
   }
 
-  List<DropdownMenuItem<String>> _buildDropdownList() {
+  List<DropdownMenuItem<String>> _buildCountryList() {
     final String _imagePath = 'lib/assets/flags/';
     List<Country> countryList = [];
     for (Country country in Country.values()) {

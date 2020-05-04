@@ -67,7 +67,7 @@ class _InputLanguageState extends InputFieldState<Locale> {
       DropdownButton(
         icon: Icon(Icons.language),
         items: _languageList,
-        onChanged: (v) => super.didChange(v),
+        onChanged: isEnabled() ? (v) => super.didChange(v) : null,
         value: value,
       ),
     );

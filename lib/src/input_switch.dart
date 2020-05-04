@@ -12,7 +12,8 @@ class InputSwitch extends InputField<bool> {
 
   InputSwitch({
     Key key,
-    bool autovalidate = false,
+    bool autosave,
+    bool autovalidate,
     this.activeColor,
     this.color,
     InputDecoration decoration,
@@ -26,6 +27,7 @@ class InputSwitch extends InputField<bool> {
     bool wantKeepAlive = false,
   }) : super(
           key: key,
+          autosave: autosave,
           autovalidate: autovalidate,
           decoration: decoration,
           enabled: enabled,

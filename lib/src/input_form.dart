@@ -19,14 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_input/src/input_utils.dart';
 
-/// A container to group input fields for data manipulation.
-/// It allows enabling / disabling, validation and saving of all input fields.
-/// It can provide an [InputDecoration] which is used by the input fields.
-///
-/// It optionally accepts a map. This map can provide initial values for input fields and
-/// input fields will save their final value into this map on save.
-///
-/// - - - - - - - - - - - Regularly check this issues in GitHub - - - - - - - - - -
+/// - - - - - - - - Regularly check this issues in GitHub - - - - - - -
 ///
 /// Remove attribute readOnly in TextField and TextFormField
 /// https://github.com/flutter/flutter/issues/45604
@@ -37,43 +30,53 @@ import 'package:flutter_input/src/input_utils.dart';
 /// Add handling of maps in `Form` and `FormField` => CLOSED (see #46073)
 /// https://github.com/flutter/flutter/issues/45609
 ///
-/// Provide input widgets to easily build data maniplulation forms
+/// Provide input widgets to easily build data manipulation forms
 /// https://github.com/flutter/flutter/issues/46073
 ///
 class InputForm extends StatefulWidget {
-  /// If `true` (default = `false`) then a form field will automatically
-  ///
+  /// Automatically saves changed values in fields.
+  /// Also invokes forms method [onSaved].
+  /// Default is `true`.
+  /// This value can be overwritten by each field.
+  /// If `autovalidate` is true then a changed value
+  /// will only be saved if validation succeeds.
   final bool autosave;
 
-  /// If true, form fields will validate and update their error text
-  /// immediately after every change. Otherwise, you must call
-  /// [InputFormState.validate] to validate.
+  /// Automatically validates changed values in input fields.
+  /// Default is `false`.
+  /// This value can be overwritten by each field.
   final bool autovalidate;
 
-  /// Required widget. Normally a layout widget which contains the input fields.
+  /// The child is normally a layout widget which contains the input fields.
   final Widget child;
 
-  /// Decoration used by children like input fields.
+  /// Decoration used by the input fields.
   final InputDecoration decoration;
 
-  /// Changing 'enabled' in [InputFormState] will change 'enabled' in all descendant
-  /// input fields which did not manage their enabled state by themself.
+  /// Enables or disables user input on all fields.
+  /// Default is `true`.
+  /// This value can be overwritten by each field.
   final bool enabled;
+
+  /// All descendant input fields will retain their initial value
+  /// from this map and will update changes into it
+  /// if they have parameter [path] set.
+  final Map<String, dynamic> map;
 
   /// Called when one of the form fields changes.
   ///
-  /// In addition to this callback being invoked, all the form fields themselves
-  /// will rebuild.
+  /// In addition to this callback being invoked,
+  /// all the form fields will rebuild.
   final ValueChanged onChanged;
 
-  /// Called by InputForm.save()
+  /// Called by [InputForm.save()]
   final ValueSetter onSaved;
 
-  /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
-  /// that contains the form.
+  /// Enables the form to veto attempts by the user
+  /// to dismiss the [ModalRoute] that contains the form.
   ///
-  /// If the callback returns a Future that resolves to false, the form's route
-  /// will not be popped.
+  /// If the callback returns a Future that resolves to false,
+  /// the form's route will not be popped.
   ///
   /// See also:
   ///
@@ -81,30 +84,27 @@ class InputForm extends StatefulWidget {
   ///    back button.
   final WillPopCallback onWillPop;
 
-  /// The 'value' is a nested map used by input fields.
-  /// All descendant input fields will retain their initial value from it
-  /// and will update changes into it.
-  final Map<String, dynamic> value;
-
+  /// A container to group input widgets (fields) for data manipulation.
+  /// It provides parameters which are used by all fields
+  /// and methods which invoke the corresponding method in all fields.
+  /// It can provide an [InputDecoration] which is used by all fields.
   ///
-  /// Constructor
-  ///
-  /// @param dataObject json map containing data to prefill input widgets
-  /// @param enabled defaults to 'true'. Can be modified in state. Updates all input widgets
-  /// @param child container for input widgets
-  ///
+  /// The optional [map] provides initial values to fields
+  /// and stores changed values.
   InputForm({
     Key key,
+    this.autosave = true,
     this.autovalidate = false,
     @required this.child,
     this.decoration,
     this.enabled = true,
+    this.map,
     this.onChanged,
     this.onSaved,
     this.onWillPop,
-    this.value,
-    this.autosave,
-  })  : assert(child != null),
+  })  : assert(autosave != null),
+        assert(autovalidate != null),
+        assert(child != null),
         assert(enabled != null),
         super(key: key);
 
@@ -113,8 +113,10 @@ class InputForm extends StatefulWidget {
   /// Typical usage is as follows:
   ///
   /// ```dart
-  /// InputFormState form = InputForm.of(context);
-  /// form.save();
+  /// InputFormState _form = InputForm.of(context);
+  /// if ( _form.validate()) {
+  ///   _form.save();
+  /// }
   /// ```
   static InputFormState of(BuildContext context) {
     final _InputFormScope scope =
@@ -128,39 +130,13 @@ class InputForm extends StatefulWidget {
 
 /// State associated with an [InputForm] widget.
 ///
-/// An [InputFormState] object can be used to [enable], [save], [reset], and [validate]
-/// every [InputFormField] that is a descendant of the associated [InputForm].
+/// An [InputFormState] can be used to [enable()], [reset()], [save()]
+/// or [validate()] all fields.
 ///
 /// Typically obtained via [InputForm.of].
 class InputFormState extends State<InputForm> {
-  bool _enabled;
-
-  /// If the form fields are enabled to accept user input or not
-  bool isEnabled() => _enabled;
-
-  set enabled(bool newValue) {
-    if (_enabled != newValue) {
-      setState(() {
-        _enabled = newValue;
-        for (InputFieldState<dynamic> field in _fields) {
-          if (field._enabledByForm) {
-            field._enabled = newValue;
-          }
-        }
-      });
-    }
-  }
-
   int _generation = 0;
   final Set<InputFieldState<dynamic>> _fields = {};
-
-  Map<String, dynamic> get value => widget.value;
-
-  @override
-  void initState() {
-    super.initState();
-    _enabled = widget.enabled ?? true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,13 +151,7 @@ class InputFormState extends State<InputForm> {
     );
   }
 
-  /// Resets every [InputField] that is a descendant of this [InputForm] back to its
-  /// [InputField.initialState].
-  ///
-  /// The [InputForm.onChanged] callback will be called.
-  ///
-  /// If the form's [InputForm.autovalidate] property is true, the fields will all be
-  /// revalidated after being reset.
+  /// Resets every [InputField] attached to this form.
   void reset() {
     for (InputFieldState<dynamic> field in _fields) {
       field.reset();
@@ -209,7 +179,7 @@ class InputFormState extends State<InputForm> {
   // to rebuild, useful if form fields have interdependencies.
   void _fieldDidChange() {
     if (widget.onChanged != null) {
-      widget.onChanged(widget.value);
+      widget.onChanged(widget.map);
     }
     _forceRebuild();
   }
@@ -279,34 +249,29 @@ typedef InputFieldSetter<T> = void Function(T newValue);
 /// Used by [InputField.transformOnLoad] and by [InputField.transformOnSave].
 typedef ValueTransformer<S, T> = S Function(T value);
 
-/// A single form field.
+/// This base class must be extended by all input widgets.
 ///
-/// This widget maintains the current state of the form field, so that updates
-/// and validation errors are visually reflected in the UI.
-///
-/// When used inside an [InputForm], you can use methods on [InputFormState] to query or
-/// manipulate the form data as a whole. For example, calling [InputFormState.save]
-/// will invoke each [InputField]'s [onSaved] callback in turn.
+/// This widget maintains the current state of the field, so that user input
+/// and validation failures are visually reflected in the UI.
 ///
 /// Use a [GlobalKey] with [InputField] if you want to retrieve its current
 /// state, for example if you want one field to depend on another.
-///
-/// An [InputForm] ancestor is not required. The [InputForm] simply makes it easier to
-/// enable, save, reset, or validate multiple fields at once. To use without an [InputForm],
-/// pass a [GlobalKey] to the constructor and use [GlobalKey.currentState] to
-/// save or reset the field.
+///ö
+/// An [InputForm] ancestor is not required. It simply makes it easier to
+/// enable, save, reset, or validate all input widgets at once.
 ///
 /// See also:
 ///
-///  * [InputForm], which is the widget that aggregates the fields.
-///  * [InputText], which is a commonly used field for entering text.
+///  * [InputForm] - the widget that aggregates the fields.
+///  * [InputText] - a commonly used field for entering text.
 abstract class InputField<T> extends StatefulWidget {
   /// Creates a single form field.
   ///
   /// The [builder] argument must not be null.
   const InputField({
     Key key,
-    this.autovalidate = false,
+    this.autosave,
+    this.autovalidate,
     this.decoration,
     this.enabled,
     this.initialValue,
@@ -321,57 +286,59 @@ abstract class InputField<T> extends StatefulWidget {
                 (onChanged != null) ||
                 (onSaved != null) ||
                 ((enabled != null) && (enabled == false)),
-            'If path is null then onChanged is required or the field must always be disabled'),
+            'If path is null then onChanged is required'
+            ' or the field must always be disabled'),
         assert(wantKeepAlive != null),
         super(key: key);
 
-  /// If true, this form field will validate and update its error text
-  /// immediately after every change. Otherwise, you must call
-  /// [InputFieldState.validate] to validate. If part of an [InputForm] that
-  /// auto-validates, this value will be ignored.
+  /// Automatically saves a changed value.
+  /// If [autovalidate] is `true` then a changed value will only
+  /// be saved if there is no validation failure.
+  /// Also invokes method [onSaved]. Default is `true`.
+  final bool autosave;
+
+  /// Automatically validates any change and updates error text accordingly.
+  /// Default is `false`.
   final bool autovalidate;
 
   /// Decoration for the input field supplying frame, label, error text, ...
   final InputDecoration decoration;
 
-  /// Whether the form is able to receive user input.
-  ///
-  /// Defaults to true. If [autovalidate] is true, the field will be validated.
-  /// Likewise, if this field is false, the widget will not be validated
-  /// regardless of [autovalidate].
+  /// Whether the field accepts user input.
+  /// Default is `true`.
   final bool enabled;
 
-  /// An optional value to initialize the field to. It will be preceded by
-  /// dataObject[path] if an ancestor [InputForm] exists.
+  /// The fields value will initially be set to this `initialValue`.
   final T initialValue;
 
   /// [map] is used together with [path] to provide the initial value from
-  /// and to save any changes to the map. If an ancestor [InputForm] was found
-  /// then the map from the form would be used.
+  /// and to save changes to the map. This parameter supersedes parameter
+  /// [map] given to an [InputForm] ancestor.
   final Map<String, dynamic> map;
 
   /// An optional method to call on every change of the fields value.
   final ValueSetter<T> onChanged;
 
-  /// An optional method to call with the final value when the form is saved via
-  /// [InputFormState.save].
+  /// An optional method to call with the final value when the form is saved
+  /// through [InputFormState.save()].
   final ValueSetter<T> onSaved;
 
-  /// The path into the [InputForm]s dataObject. Path elements must be dot separated.
+  /// The path to the fields value in [map].
+  /// If the form is nested then [path] elements must be dot separated.
   final String path;
 
-  /// An optional method that validates an input. Returns an error string to
-  /// display if the input is invalid, or null otherwise.
+  /// Methods that validate an input.
+  /// The first failed validation will return an error string and no more
+  /// validations will happen.
   ///
-  /// The returned value is exposed by the [InputFieldState.errorText] property.
-  /// The [InputText] uses this to override the [InputDecoration.errorText]
-  /// value.
+  /// The returned value is exposed by the [InputFieldState.errorText] property
+  /// which will be used by the default [decoration].
   ///
   /// Alternating between error and normal state can cause the height of the
-  /// [InputText] to change if no other subtext decoration is set on the
-  /// field. To create a field whose height is fixed regardless of whether or
-  /// not an error is displayed, either wrap the  [InputText] in a fixed
-  /// height parent like [SizedBox], or set the [InputText.helperText]
+  /// field to change if no other subtext decoration is set on the field.
+  /// To create a field whose height is fixed regardless of whether or
+  /// not an error is displayed, either wrap the field in a fixed
+  /// height parent like [SizedBox], or set the [helperText]
   /// parameter to a space.
   final List<InputValidator> validators;
 
@@ -386,49 +353,54 @@ abstract class InputField<T> extends StatefulWidget {
 /// The current state of an [InputField].
 class InputFieldState<T> extends State<InputField<T>>
     with AutomaticKeepAliveClientMixin<InputField<T>> {
-  bool _enabled, _enabledByForm;
-
-  /// If the field is enabled to accept user input or not
-  bool isEnabled() => _enabled;
-
-  /// Whenever [wantKeepAlive] should change
-  /// then [updateKeepAlive] must be called.
-  @override
-  void updateKeepAlive() {
-    super.updateKeepAlive();
-  }
-
-  set enabled(bool newValue) {
-    if (_enabled != newValue) {
-      setState(() {
-        _enabled = newValue;
-        _enabledByForm = false;
-      });
-      _formState?._fieldDidChange();
-    }
-  }
-
   String _errorText;
+  // --- Set once in `initState()`
+  T _initialValue;
 
   /// The current validation error returned by the [InputField.validator]
-  /// callback, or null if no errors have been triggered. This only updates when
-  /// [validate] is called.
+  /// callback, or `null` if no errors have been triggered.
+  /// This updates on [reset] or [validate].
   String get errorText => _errorText;
 
-  /// True if this field has any validation errors.
+  /// Returns `true` if this field has any validation errors.
   bool get hasError => _errorText != null;
 
+  /// The [InputForm] to which this field has registered itself.
   InputFormState _formState;
   T value;
 
-  /// This method must not be called. Use InputField.buildInputField instead.
+  /// Initializes the input field by automatically registering itself to
+  /// an [InputForm] ancestor (if there is one).
+  ///
+  /// Enables the field by first checking parameter [enable]. If not set then
+  /// checks parameter [enable] at the [InputForm] ancestor. If no ancestor or
+  /// not set then defaults to `true`.
+  ///
+  /// Sets initially displayed value by using parameter [initialValue].
+  /// If not set then uses value from [InputForm] ancestor at parameter [path].
+  /// If no ancestor or not set then defaults to a widget specific value.
+  @override
+  @mustCallSuper
+  void initState() {
+    super.initState();
+    _formState = context.findAncestorStateOfType<InputFormState>();
+    _formState?._register(this);
+    dynamic valueLoaded = widget.initialValue ??
+        InputUtils.readJson(widget.map, widget.path) ??
+        InputUtils.readJson(_formState?.widget?.map, widget.path);
+    _initialValue = InputUtils.convertToType(T, valueLoaded);
+    value = _initialValue;
+  }
+
+  /// This method must not be called directly.
+  /// Use [InputField.buildInputField()] instead.
   @override
   Widget build(BuildContext context) {
     return super.build(context);
   }
 
   Widget buildInputField(BuildContext context, Widget builder) {
-    if (widget.autovalidate && _enabled) {
+    if (isEnabled() && (widget.autovalidate ?? false)) {
       _validate();
     }
     InputDecoration effectiveDecoration =
@@ -460,8 +432,9 @@ class InputFieldState<T> extends State<InputField<T>>
   /// Updates this field's state to the new value. Useful for responding to
   /// child widget changes, e.g. [Slider]'s [Slider.onChanged] argument.
   ///
-  /// Triggers the [InputForm.onChanged] callback and, if the [InputForm.autovalidate]
-  /// field is set, revalidates all fields of the form.
+  /// Triggers the [InputForm.onChanged] callback.
+  /// Also revalidates all fields of the form if [InputForm.autovalidate]
+  /// is `true`.
   void didChange(T newValue) {
     if (value == newValue) {
       return;
@@ -469,48 +442,48 @@ class InputFieldState<T> extends State<InputField<T>>
     setState(() {
       value = newValue;
     });
+    if (_hasAutosave()) {
+      save();
+    } else if (_hasAutovalidate()) {
+      _validate();
+    }
     _formState?._fieldDidChange();
     if (widget.onChanged != null) {
       widget.onChanged(value);
     }
-    if ((widget.map != null) && (widget.path != null)) {
-      InputUtils.writeJson(widget.map, widget.path, value);
-    }
   }
 
-  @override
-  @mustCallSuper
-  void initState() {
-    super.initState();
-    if (widget.map == null) {
-      _formState = context.findAncestorStateOfType<InputFormState>();
-      _formState?._register(this);
-    }
-    _initEnabled();
-    _initValue();
+  bool isEnabled() {
+    return widget.enabled ?? _formState?.widget?.enabled ?? true;
   }
 
-  /// Resets the field to its initial value.
+  /// Resets the field to its initial value and clears error indication.
+  /// Also invokes [onChanged()].
   void reset() {
     setState(() {
       _errorText = null;
-      _initValue();
+      value = _initialValue;
       if (widget.onChanged != null) {
         widget.onChanged(value);
       }
     });
   }
 
-  /// Calls the [InputField]'s onSaved method with the current value.
-  /// If [path] is not null
-  /// then [value] will be written into [InputForm.value] under key [path].
+  /// Saves a changed field value by invoking [onSave()]
+  /// and writing value at [path] into [map].
+  ///
+  /// If [autovalidate] is `true` then validation will be performed first.
+  /// If it fails, then the value will not be saved.
   void save() {
+    if (_hasAutovalidate() && (_validate() == false)) {
+      return;
+    }
     if (widget.onSaved != null) {
       widget.onSaved(value);
     }
-    if (widget.path != null) {
-      InputUtils.writeJson(_formState?.widget?.value, widget.path, value);
-    }
+    InputUtils.writeJson(
+        widget.map ?? _formState?.widget?.map, widget.path, value);
+    _initialValue = value;
   }
 
   /// Sets the value associated with this form field.
@@ -525,8 +498,8 @@ class InputFieldState<T> extends State<InputField<T>>
     value = newValue;
   }
 
-  /// Calls [InputField.validators] to set the [errorText]. Returns true if there
-  /// were no errors.
+  /// Calls [InputField.validators] to set the [errorText].
+  /// Returns `true` if all validations succeed.
   bool validate() {
     setState(() {
       _validate();
@@ -534,37 +507,34 @@ class InputFieldState<T> extends State<InputField<T>>
     return !hasError;
   }
 
+  /// Whenever [wantKeepAlive] should change
+  /// then [updateKeepAlive] must be called.
+  @override
+  void updateKeepAlive() {
+    super.updateKeepAlive();
+  }
+
   @override
   bool get wantKeepAlive => widget.wantKeepAlive;
 
-  void _initEnabled() {
-    _enabledByForm = false;
-    if (widget.enabled != null) {
-      _enabled = widget.enabled;
-    } else if (_formState == null) {
-      _enabled = true;
-    } else {
-      _enabled = _formState._enabled ?? true;
-      _enabledByForm = true;
-    }
+  bool _hasAutosave() {
+    return widget.autosave ?? _formState?.widget?.autosave ?? true;
   }
 
-  void _initValue() {
-    dynamic valueLoaded = widget.initialValue ??
-        InputUtils.readJson(widget.map, widget.path) ??
-        InputUtils.readJson(_formState?.widget?.value, widget.path);
-    value = InputUtils.convertToType(T, valueLoaded);
+  bool _hasAutovalidate() {
+    return widget.autovalidate ?? _formState?.widget?.autovalidate ?? false;
   }
 
-  void _validate() {
+  bool _validate() {
     if (widget.validators != null) {
       for (InputValidator validator in widget.validators) {
         _errorText = validator(value);
         if (_errorText != null) {
-          break;
+          return false;
         }
       }
     }
+    return true;
   }
 }
 

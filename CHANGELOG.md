@@ -1,4 +1,11 @@
+## 1.3.0
 
+- Added new parameters on all input fields:
+`bool autosave (true)`, `bool autofocus (false)`, `FocusNode focusNode`
+- Code cleanup in `input_form.dart` results in more proper handling
+of parameter values. Order is always `InputWidget` then `InputForm`
+then a widget specific default value.
+- Renamed parameter `InputForm.value` to `InputForm.map`
 - Added parameter `map` on every input widget
 - `InputDatePicker` now has default styles
 - Fixed handling of enable/disable on `InputCountry`

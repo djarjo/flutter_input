@@ -20,6 +20,7 @@ class SampleFormPage extends StatefulWidget {
 
 class _SampleFormPageState extends State<SampleFormPage> {
   final GlobalKey<InputFormState> _formKey = GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   bool _inEditMode = false;
 
   List<String> selectableCountries = ['AU', 'DE', 'FR', 'JP', 'NL', 'US'];
@@ -69,18 +70,18 @@ class _SampleFormPageState extends State<SampleFormPage> {
     ];
     return DefaultTabController(
       length: _titles.length,
-      child: Scaffold(
-        appBar: _buildAppBar(context),
-        body: InputForm(
-          key: _formKey,
-          enabled: _inEditMode,
-          value: centralData,
-          child: SafeArea(
+      child: SafeArea(
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: _buildAppBar(context),
+          body: InputForm(
+            key: _formKey,
+            enabled: _inEditMode,
+            map: centralData,
             child: TabBarView(children: _tabViews),
-            minimum: EdgeInsets.all(5.0),
           ),
+          drawer: _buildDrawer(context),
         ),
-        drawer: _buildDrawer(context),
       ),
     );
   }
@@ -95,31 +96,12 @@ class _SampleFormPageState extends State<SampleFormPage> {
                 tooltip: 'Save changes and leave edit mode'.i18n,
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    setState(() {
-                      _formKey.currentState.save();
-                      _inEditMode = false;
-                      _formKey.currentState.enabled = false;
-                    });
-                    showDialog(
-                        context: context,
-                        barrierDismissible: false, // user must tap button
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Field values saved back to map'.i18n),
-                            content: SingleChildScrollView(
-                              child:
-                                  Text(InputUtils.prettyPrintMap(centralData)),
-                            ),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text('Thanks'.i18n),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          );
-                        });
+                    _save(context);
+                  } else {
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text('Please correct validation errors'),
+                    ));
                   }
                 },
               ),
@@ -129,7 +111,6 @@ class _SampleFormPageState extends State<SampleFormPage> {
                 onPressed: () {
                   setState(() {
                     _inEditMode = false;
-                    _formKey.currentState.enabled = false;
                     _formKey.currentState.reset();
                   });
                 },
@@ -142,7 +123,6 @@ class _SampleFormPageState extends State<SampleFormPage> {
                 onPressed: () {
                   setState(() {
                     _inEditMode = true;
-                    _formKey.currentState.enabled = true;
                   });
                 },
               )
@@ -151,6 +131,23 @@ class _SampleFormPageState extends State<SampleFormPage> {
       bottom: TabBar(
         tabs: _titles,
         onTap: (index) => FocusScope.of(context).unfocus(),
+      ),
+    );
+  }
+
+  Widget _buildDataDisplay(BuildContext context) {
+    return Dialog(
+      child: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Text('-- Central Data --'),
+              Text(InputUtils.prettyPrintMap(centralData)),
+              Text('-- Settings --'),
+              Text(InputUtils.prettyPrintMap(sampleSettings)),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -181,7 +178,19 @@ class _SampleFormPageState extends State<SampleFormPage> {
                 child: _buildSettingsForm(context),
               ).then((value) {
                 print('$value, settings=$sampleSettings');
-                Navigator.of(context).pop(-77);
+                Navigator.of(context).pop(77);
+              });
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.info_outline),
+            title: Text('Show data'),
+            onTap: () {
+              showDialog(
+                context: context,
+                child: _buildDataDisplay(context),
+              ).then((value) {
+                Navigator.of(context).pop(88);
               });
             },
           ),
@@ -189,7 +198,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
             icon: Icon(Icons.info),
             applicationLegalese: 'Free to Use',
             applicationName: 'flutter_input',
-            applicationVersion: 'v1.2.0',
+            applicationVersion: 'v1.3.0',
             aboutBoxChildren: <Widget>[
               Text('Thanks for using flutter_input!'.i18n),
             ],
@@ -401,6 +410,32 @@ class _SampleFormPageState extends State<SampleFormPage> {
         ]),
       ),
     );
+  }
+
+  void _save(BuildContext context) {
+    _formKey.currentState.save();
+    setState(() {
+      _inEditMode = false;
+    });
+    showDialog(
+        context: context,
+        barrierDismissible: false, // user must tap button
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Field values saved back to map'.i18n),
+            content: SingleChildScrollView(
+              child: Text(InputUtils.prettyPrintMap(centralData)),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Thanks'.i18n),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 
   void _setupUnits() {

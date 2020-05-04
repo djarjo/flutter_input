@@ -15,7 +15,8 @@ class InputFavorite extends InputField<bool> {
 
   InputFavorite({
     Key key,
-    bool autovalidate = false,
+    bool autosave,
+    bool autovalidate,
     this.iconBackgroundColor,
     this.iconColor,
     this.iconBorder = Icons.favorite_border,
@@ -32,6 +33,7 @@ class InputFavorite extends InputField<bool> {
     bool wantKeepAlive = false,
   }) : super(
           key: key,
+          autosave: autosave,
           autovalidate: autovalidate,
           decoration: decoration,
           enabled: enabled,
@@ -60,20 +62,20 @@ class _InputFavoriteState extends InputFieldState<bool> {
       Align(
         alignment: Alignment.centerLeft,
         child: Tooltip(
-          message: (value == null || value == true)
-              ? 'Remove favorite mark'
-              : 'Mark as favorite',
+          message: (value == null || value == false)
+              ? 'Mark as favorite'
+              : 'Remove favorite mark',
           child: GestureDetector(
             onTap: isEnabled() ? onPressedHandler : null,
-            child: (value == null || value == true)
-                ? Icon(
+            child: (value == null || value == false)
+                ? Icon(widget.iconBorder,
+                    color: widget.iconColor ?? Theme.of(context).primaryColor,
+                    size: widget.size)
+                : Icon(
                     widget.iconFavorite,
                     color: widget.iconColor ?? Theme.of(context).primaryColor,
                     size: widget.size,
-                  )
-                : Icon(widget.iconBorder,
-                    color: widget.iconColor ?? Theme.of(context).primaryColor,
-                    size: widget.size),
+                  ),
           ),
         ),
       ),
@@ -81,10 +83,10 @@ class _InputFavoriteState extends InputFieldState<bool> {
   }
 
   void onPressedHandler() {
-    if (value == null || value == true) {
-      super.didChange(false);
-    } else {
+    if (value == null || value == false) {
       super.didChange(true);
+    } else {
+      super.didChange(false);
     }
   }
 }
