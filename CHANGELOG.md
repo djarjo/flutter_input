@@ -1,3 +1,11 @@
+- each input field automatically creates a `FocusNode` if none
+is given (!!! Must be disposed !!!)
+- new class `InputViolation` provides `InputField.key`,
+`InputField.focusNode`, `InputField.value`
+and the failed validation
+- added `InputViolation getFirstViolation()` on each input field
+to get the first failed validation.
+
 ## 1.3.0
 
 - Added new parameters on all input fields:

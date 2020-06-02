@@ -162,9 +162,7 @@ class _InputCountryState extends InputFieldState<String> {
                           _imagePath + country.code2 + '.png',
                           package: 'flutter_input',
                         )
-                      : SizedBox(
-                          width: 0,
-                        ),
+                      : SizedBox.shrink(),
                   SizedBox(
                     width: 8,
                   ),

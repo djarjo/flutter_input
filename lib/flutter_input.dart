@@ -1,11 +1,18 @@
 // Copyright 2020 Hajo.Lemcke@gmail.com
 // Please see the LICENSE file for details.
 
-/// Provides input widgets for data manipulation which can be used standalone or within a form.
+/// Provides input widgets (fields) for data manipulation
+/// and a form which collects this fields.
+/// The form provides common attributes to all fields
+/// and allows enable(), reset(), save() and validate() all fields at once.
 ///
-/// An input widget is used to change the value of a variable through user interaction.
+/// An input widget is used to change the value of a variable by some user interaction.
 /// This library provides input widgets for all types of variables:
 /// bool, int, double, String and DateTime.
+/// The variable can be a single value or a value in a map.
+/// The map can even be nested.
+/// Its value is accessed by a 'path' string.
+///
 /// All input widgets share a common set of parameters which makes them easier to use.
 /// This common set of parameters can be found at [InputField].
 ///
@@ -24,22 +31,30 @@
 /// ## Architecture
 ///
 /// This library is based on the following design criteria:
-/// 1. Provide an easy to understand library for data input which is easy to use, to maintain and to extend.
+/// 1. Provide an easy to understand library for data manipulation
+/// which is easy to use, to maintain and to extend.
 /// 1. All input widgets share a common set of parameters (see [InputField]).
-/// 1. The [InputForm] provides a central data object.
-///  [InputForm.value] is a `Map` which can be nested.
-///  The form provides methods to [enable()] , [validate()] or [save()] the values from all input widgets.
-/// 1. An input widget automatically attaches itself to the [InputForm] by its parameter [InputField.path].
-///  This parameter is also used to obtain an initial value and to save back the widget value after editing.
-/// 1. Any input widget can be used stand alone, even when it is a descendant of a form.
-///  For this, [path] must be `null` and [onChanged] must not be `null`.
+/// 1. Input widgets can be used standalone but will automatically attach
+/// to any [InputForm] ancestor.
+/// 1. The [InputForm] provides central handling of the common parameter which
+/// will be used by all child fields but can be overwritten there.
+/// 1. The [InputForm] provides methods to [enable()] , [reset()],
+/// [save()] or [validate()] all input widgets from one central place.
+/// 1. The value of an input widget is either given by `initialValue` and
+/// written through `save()` or it is taken from and written to a `map`.
+/// 1. The map can be centrally supplied to the form or individually at
+/// each input widget
+/// 1. Using the map or the initial value can be shared. Even both can be used
+/// together.
 /// 1. Input widgets inherit as much decoration from the form as possible
-///  while this can still be overwritten by the input widget.
-/// 1. Each input widget accepts a list of reusable validators by parameter [InputField.validators]
-///  like 'NotNull', 'Min', 'Max', 'Future', 'Past', ...
+///  while this can still be overwritten at the input widget.
+/// 1. Each input widget accepts a list of reusable validators by parameter
+/// [InputField.validators] like 'NotNull', 'Min', 'Max', 'Future', 'Past', ...
 /// 1. Input widgets do not have parameters for type conversion.
-///  If this is required in some case, just use your converter on parameters `initialValue` and `onSave`.
-/// 1. All input widgets should have an ".adaptive" constructor allowing them to be used by Android and iOS. (Not implemented yet)
+/// If this is required in some case, just use your converter on parameters
+/// `initialValue` and `onSave`. Maybe this still requires further analysis.
+/// 1. All input widgets should have an ".adaptive" constructor
+/// allowing them to be used by Android and iOS. (Not implemented yet)
 library flutter_input;
 
 export 'src/date_helper.dart';
