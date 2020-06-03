@@ -139,22 +139,42 @@ class InputUtils {
     return _prettyPrintMap(map, 0);
   }
 
+  static final String _spaces = '                                   ';
+
+  static String _prettyPrintList(List<dynamic> list, int depth) {
+    String _indent = _spaces.substring(0, 2 * depth);
+    depth++;
+    String out = '[\n';
+    list.forEach((element) {
+      out = out + _indent;
+      print('_printList( element=$element is ${element.runtimeType}');
+      if (element is Map) {
+        out = out + _prettyPrintMap(element, depth) + ',\n';
+      } else if (element is List) {
+        out = out + _prettyPrintList(element, depth) + ',\n';
+      } else {
+        out = out + element.toString() + ',\n';
+      }
+    });
+    depth--;
+    return out + _indent + ']';
+  }
+
   static String _prettyPrintMap(Map<dynamic, dynamic> map, int depth) {
-    String spaces = '                                   ';
-    String prefix = spaces.substring(0, 2 * depth);
+    String _indent = _spaces.substring(0, 2 * depth);
+    depth++;
     String out = '{\n';
     map.forEach((k, v) {
-      out = out + prefix + k + ': ';
+      out = out + _indent + k + ': ';
       if (v is Map) {
-        depth++;
         out = out + _prettyPrintMap(v, depth) + ',\n';
-        depth--;
       } else if (v is List) {
-        out = out + v.toString() + ',\n';
+        out = out + _prettyPrintList(v, depth);
       } else {
         out = out + v.toString() + ',\n';
       }
     });
-    return out + prefix + '}';
+    depth--;
+    return out + _indent + '}';
   }
 }
