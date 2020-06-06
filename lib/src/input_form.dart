@@ -53,9 +53,10 @@ class InputForm extends StatefulWidget {
   /// Decoration used by the input fields.
   final InputDecoration decoration;
 
-  /// Enables or disables user input on all fields.
-  /// Default is `true`.
-  /// This value can be overwritten by each field.
+  /// Enables or disables user input for all fields.
+  /// Default is `true` = enabled.
+  /// To change this value call [enable()] on the [InputFormState].
+  /// `enabled` can be set individually by each field.
   final bool enabled;
 
   /// All descendant input fields will retain their initial value
@@ -135,11 +136,13 @@ class InputForm extends StatefulWidget {
 ///
 /// Typically obtained via [InputForm.of].
 class InputFormState extends State<InputForm> {
+  bool _enable;
   int _generation = 0;
   final Set<InputFieldState<dynamic>> _fields = {};
 
   @override
   Widget build(BuildContext context) {
+    _enable ??= widget.enabled;
     if (widget.autovalidate) _validate();
     return WillPopScope(
       onWillPop: widget.onWillPop,
@@ -149,6 +152,17 @@ class InputFormState extends State<InputForm> {
         child: widget.child,
       ),
     );
+  }
+
+  bool isEnabled() => _enable;
+
+  /// Enables (`true`) or disables (`false`) all fields in this form
+  /// which are not directly enabled or disabled.
+  void set enabled(bool enable) {
+    if (_enable != enable) {
+      _enable = enable;
+      _fieldDidChange();
+    }
   }
 
   /// Resets every [InputField] attached to this form.
@@ -454,7 +468,7 @@ class InputFieldState<T> extends State<InputField<T>>
   }
 
   bool isEnabled() {
-    return widget.enabled ?? _formState?.widget?.enabled ?? true;
+    return widget.enabled ?? _formState?.isEnabled() ?? true;
   }
 
   /// Resets the field to its initial value and clears error indication.
