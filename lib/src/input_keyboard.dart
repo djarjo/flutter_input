@@ -1,7 +1,10 @@
 // Copyright 2020 Hajo.Lemcke@mail.com
 // Please see the LICENSE file for details.
 
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -53,6 +56,7 @@ class InputKeyboard<T> extends InputField<T> {
   InputKeyboard({
     Key key,
     this.autocorrect = true,
+    this.autofillHints,
     this.autofocus = false,
     bool autosave,
     bool autovalidate,
@@ -71,19 +75,28 @@ class InputKeyboard<T> extends InputField<T> {
     this.inputFormatters,
     this.keyboardAppearance,
     this.keyboardType,
+    Map<String, dynamic> map,
     this.maxLength,
     this.maxLengthEnforced = true,
     this.maxLines = 1,
     this.minLines,
+    this.mouseCursor,
     this.obscureText = false,
+    this.obscuringCharacter = '•',
     ValueChanged<T> onChanged,
     this.onEditingComplete,
     this.onFieldSubmitted,
     InputFieldSetter<T> onSaved,
     this.onTap,
     String path,
-    this.showCursor,
+    this.scrollController,
     this.scrollPadding = const EdgeInsets.all(20.0),
+    this.scrollPhysics,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+    this.showCursor,
+    this.smartDashesType,
+    this.smartQuotesType,
     this.strutStyle,
     this.style,
     this.textAlign = TextAlign.start,
@@ -128,6 +141,7 @@ class InputKeyboard<T> extends InputField<T> {
           decoration: decoration,
           enabled: enabled,
           initialValue: controller != null ? controller.text : initialValue,
+          map: map,
           onChanged: onChanged,
           onSaved: onSaved,
           path: path,
@@ -140,6 +154,7 @@ class InputKeyboard<T> extends InputField<T> {
   /// initialize its [TextEditingController.text] with [initialValue].
   final TextEditingController controller;
   final bool autocorrect, autofocus;
+  final Iterable<String> autofillHints;
   final InputCounterWidgetBuilder buildCounter;
   final Color cursorColor;
   final Radius cursorRadius;
@@ -152,12 +167,20 @@ class InputKeyboard<T> extends InputField<T> {
   final int maxLength;
   final bool maxLengthEnforced;
   final int maxLines, minLines;
+  final MouseCursor mouseCursor;
   final bool obscureText;
+  final String obscuringCharacter;
   final VoidCallback onEditingComplete;
   final ValueChanged<String> onFieldSubmitted;
   final GestureTapCallback onTap;
-  final bool showCursor;
+  final ScrollController scrollController;
   final EdgeInsets scrollPadding;
+  final ScrollPhysics scrollPhysics;
+  final ui.BoxHeightStyle selectionHeightStyle;
+  final ui.BoxWidthStyle selectionWidthStyle;
+  final bool showCursor;
+  final SmartDashesType smartDashesType;
+  final SmartQuotesType smartQuotesType;
   final StrutStyle strutStyle;
   final TextStyle style;
   final TextAlign textAlign;
@@ -218,6 +241,7 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
 
     return TextField(
       autocorrect: widget.autocorrect,
+      autofillHints: widget.autofillHints,
       autofocus: widget.autofocus,
       buildCounter: widget.buildCounter,
       controller: _effectiveController,
@@ -230,21 +254,29 @@ class _InputKeyboardState<T> extends InputFieldState<T> {
       enableSuggestions: widget.enableSuggestions,
       expands: widget.expands,
       focusNode: widget.focusNode,
+      inputFormatters: widget.inputFormatters,
       keyboardAppearance: widget.keyboardAppearance,
       keyboardType: _keyboardType,
-      inputFormatters: widget.inputFormatters,
       maxLength: widget.maxLength,
       maxLengthEnforced: widget.maxLengthEnforced,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
+      mouseCursor: widget.mouseCursor,
       obscureText: widget.obscureText,
+      obscuringCharacter: widget.obscuringCharacter,
       onChanged: onChangedHandler,
       onEditingComplete: widget.onEditingComplete,
       onSubmitted: widget.onFieldSubmitted,
       onTap: widget.onTap,
       readOnly: false,
+      scrollController: widget.scrollController,
       scrollPadding: widget.scrollPadding,
+      scrollPhysics: widget.scrollPhysics,
+      selectionHeightStyle: widget.selectionHeightStyle,
+      selectionWidthStyle: widget.selectionWidthStyle,
       showCursor: widget.showCursor,
+      smartDashesType: widget.smartDashesType,
+      smartQuotesType: widget.smartQuotesType,
       style: widget.style,
       strutStyle: widget.strutStyle,
       textAlign: widget.textAlign,

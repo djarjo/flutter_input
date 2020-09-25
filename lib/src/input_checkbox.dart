@@ -2,6 +2,7 @@
 // Please see the LICENSE file for details.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'input_form.dart';
 
@@ -11,14 +12,16 @@ class InputCheckbox extends InputField<bool> {
   final Color activeColor, checkColor, focusColor, hoverColor;
   final FocusNode focusNode;
   final MaterialTapTargetSize materialTapTargetSize;
+  final MouseCursor mouseCursor;
   final bool tristate;
+  final VisualDensity visualDensity;
 
   InputCheckbox({
     Key key,
+    this.activeColor,
     this.autofocus = false,
     bool autosave,
     bool autovalidate,
-    this.activeColor,
     this.checkColor,
     InputDecoration decoration,
     bool enabled,
@@ -28,11 +31,13 @@ class InputCheckbox extends InputField<bool> {
     bool initialValue,
     Map<String, dynamic> map,
     this.materialTapTargetSize,
+    this.mouseCursor,
     ValueChanged<bool> onChanged,
     ValueSetter<bool> onSaved,
     String path,
     this.tristate,
     List<InputValidator> validators,
+    this.visualDensity,
     bool wantKeepAlive = false,
   }) : super(
           key: key,
@@ -65,16 +70,18 @@ class _InputCheckboxState extends InputFieldState<bool> {
       Align(
         alignment: Alignment.centerLeft,
         child: Checkbox(
-          autofocus: widget.autofocus,
           activeColor: widget.activeColor,
+          autofocus: widget.autofocus,
           checkColor: widget.checkColor,
           focusColor: widget.focusColor,
           focusNode: widget.focusNode,
           hoverColor: widget.hoverColor,
           materialTapTargetSize: widget.materialTapTargetSize,
+          mouseCursor: widget.mouseCursor,
           onChanged: isEnabled() ? (v) => super.didChange(v) : null,
           tristate: widget.tristate ?? true,
           value: value ?? false,
+          visualDensity: widget.visualDensity,
         ),
       ),
     );

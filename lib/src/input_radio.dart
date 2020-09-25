@@ -2,31 +2,44 @@
 // Please see the LICENSE file for details.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'input_form.dart';
 
 /// Provides a group of radio buttons which can be aligned vertically (default)
-/// or horizontally.
+/// or horizontally by setting parameter `direction`.
 class InputRadio<T> extends InputField<T> {
   final Color activeColor;
+//  final bool autofocus;
   final Color color;
   final Axis direction;
+//  final Color focusColor;
+//  final FocusNode focusNode;
+  final Color hoverColor;
   final List<DropdownMenuItem<T>> items;
+  final MaterialTapTargetSize materialTapTargetSize;
+  final MouseCursor mouseCursor;
+//  final bool toggleable;
 
   InputRadio({
     Key key,
     bool autovalidate = false,
     this.activeColor,
+//    this.autofocus,
     this.color,
     InputDecoration decoration,
     this.direction = Axis.vertical,
     bool enabled,
+    this.hoverColor,
     T initialValue,
     this.items,
     Map<String, dynamic> map,
+    this.materialTapTargetSize,
+    this.mouseCursor,
     ValueChanged<T> onChanged,
     ValueSetter<T> onSaved,
     String path,
+//    this.toggleable,
     List<InputValidator> validators,
     bool wantKeepAlive = false,
   }) : super(
@@ -58,19 +71,22 @@ class _InputRadioState<T> extends InputFieldState<T> {
     List<Widget> radioButtonList = widget.items.map((item) {
       if (widget.direction == Axis.horizontal) {
         return FlatButton.icon(
+          hoverColor: widget.hoverColor,
           label: item.child,
+          materialTapTargetSize: widget.materialTapTargetSize,
+          mouseCursor: widget.mouseCursor,
           icon: Radio(
-            value: item.value,
             groupValue: value,
             onChanged: isEnabled() ? (v) => didChange(v) : null,
+            value: item.value,
           ),
           onPressed: isEnabled() ? () => didChange(item.value) : null,
         );
       } else if (widget.direction == Axis.vertical) {
         return RadioListTile(
-          title: item.child,
           groupValue: value,
           onChanged: isEnabled() ? (v) => didChange(v) : null,
+          title: item.child,
           value: item.value,
         );
       } else {

@@ -3,6 +3,8 @@ This package provides input widgets (fields) to manipulate data.
 The data to manipulate is either a single variable or an entry in a `map`.
 The map can even be nested.
 Parameter `path` defines the key to access the entry in the map.
+To access an entry in a nested map, the keys must be separated by a single
+slash (`/`) character.
 
 All input widgets share a common set of parameters and methods.
 A list of validators can be attached to each input widget.

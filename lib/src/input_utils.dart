@@ -53,17 +53,18 @@ class InputUtils {
     return value;
   }
 
-  /// Reads a value from a nested map ([json]) with a dot separated string ([path]).
+  /// Reads a value from a nested map (`json`). The map is identified by a
+  /// slash (`/`) separated `path`.
   ///
   /// ```dart
   /// Map<String, dynamic> json = { 'user' : { 'name' : 'Hajo', 'bday' : '1964-09-21' },};
-  /// DateTime birthday = Datetime.parse( readJson( json, 'user.bday' ));
+  /// DateTime birthday = Datetime.parse( readJson( json, 'user/bday' ));
   /// ```
   static dynamic readJson(Map<String, dynamic> json, String path) {
     if (json == null || path == null) {
       return null;
     }
-    List<String> keys = path.split('\.');
+    List<String> keys = path.split('/');
     dynamic value = json;
     for (int i = 0; i < keys.length; i++) {
       if (value == null) return null;
@@ -104,14 +105,14 @@ class InputUtils {
     return null;
   }
 
-  /// Writes the given 'value' at 'path' into the given 'json' map.
-  /// If 'path' does not yet exist in the map, it will be created.
+  /// Writes the given `value` at `path` into the given `json` map.
+  /// If `path` does not yet exist in the map, it will be created.
   static Map<String, dynamic> writeJson(
       Map<String, dynamic> json, String path, dynamic value) {
     if (path == null) {
       return json;
     }
-    List<String> keys = path.split('\.');
+    List<String> keys = path.split('/');
     // --- new map with last key : value
     Map<String, dynamic> map = {keys[keys.length - 1]: value};
     for (int i = keys.length - 2; i >= 0; i--) {

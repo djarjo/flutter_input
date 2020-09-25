@@ -12,9 +12,7 @@ import 'input_form.dart';
 /// Selected value is two letter ISO-3166 code.
 /// Showing the flag can be suppressed with `showFlag = false`.
 class InputCountry extends InputField<String> {
-  final Color activeColor;
   final bool autofocus;
-  final Color color;
   final Widget disabledHint;
   final Color dropdownColor;
   final int elevation;
@@ -43,11 +41,9 @@ class InputCountry extends InputField<String> {
 
   InputCountry({
     Key key,
-    this.activeColor,
     this.autofocus = false,
     bool autosave,
     bool autovalidate,
-    this.color,
     InputDecoration decoration,
     this.disabledHint,
     this.dropdownColor,
@@ -109,13 +105,11 @@ class _InputCountryState extends InputFieldState<String> {
     return super.buildInputField(
       context,
       DropdownButton(
-//        activeColor: widget.activeColor,
         autofocus: widget.autofocus,
-//        color: widget.color,
         disabledHint: (value != null)
             ? _countryList.firstWhere((item) => value == item.value).child
             : null,
-//        dropdownColor: widget.dropdownColor,
+        dropdownColor: widget.dropdownColor,
         elevation: widget.elevation ?? 8,
         focusColor: widget.focusColor,
         focusNode: widget.focusNode,

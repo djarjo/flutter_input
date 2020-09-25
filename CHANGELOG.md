@@ -1,3 +1,10 @@
+## 1.4.0
+
+ATTENTION: There is a breaking change when accessing nested maps.
+From this version on the separation character is a single slash `/`.
+It was a single dot `.` before.
+The forward slash better resembles a path and also allows dots in keys.
+
 - each input field automatically creates a `FocusNode` if none
 is given (!!! Must be disposed !!!)
 - new class `InputViolation` provides `InputField.key`,
@@ -5,6 +12,17 @@ is given (!!! Must be disposed !!!)
 and the failed validation
 - added `InputViolation getFirstViolation()` on each input field
 to get the first failed validation.
+- `InputCheckbox`: added properties `mouseCursor` and `visualDensity`
+- `InputKeyboard`: added properties `autofillHints, map, 
+ mouseCursor, obscuringCharacter, scrollController, scrollPhysics,
+ selectionHeightStyle, selectionWidthStyle, smartDashesType, smartQuoteTyp`
+- `InputRadio`: added properties `hoverColor, mouseCursor`
+- `InputSwitch`: added properties `activeThumbImage,
+ activeTrackColor, autofocus, dragStartBehavior, focusColor,
+ focusNode, hoverColor, inactiveThumbColor, inactiveThumbImage,
+ inactiveTrackColor, materialTapTargetSize, mouseCursor,
+ onActiveThumbImageError, onInactiveThumbImageError`
+
 
 ## 1.3.0
 

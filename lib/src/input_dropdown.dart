@@ -7,9 +7,7 @@ import 'input_form.dart';
 
 /// Provides a drop down button for a selection list
 class InputDropdown<T> extends InputField<T> {
-  final Color activeColor;
   final bool autofocus;
-  final Color color;
   final Widget disabledHint;
   final Color dropdownColor;
   final int elevation;
@@ -34,8 +32,6 @@ class InputDropdown<T> extends InputField<T> {
     this.autofocus = false,
     bool autosave,
     bool autovalidate,
-    this.activeColor,
-    this.color,
     InputDecoration decoration,
     this.disabledHint,
     this.dropdownColor,
@@ -93,13 +89,10 @@ class _InputDropdownState<T> extends InputFieldState<T> {
     return super.buildInputField(
       context,
       DropdownButton(
-//        activeColor: widget.activeColor,
         autofocus: widget.autofocus,
-//        color: widget.color,
         disabledHint: widget.disabledHint ?? (value != null)
             ? widget.items.firstWhere((item) => value == item.value).child
             : null,
-//        dropdownColor: widget.dropdownColor,
         elevation: widget.elevation ?? 8,
         focusColor: widget.focusColor,
         focusNode: widget.focusNode,
@@ -113,7 +106,7 @@ class _InputDropdownState<T> extends InputFieldState<T> {
         items: widget.items,
         itemHeight: widget.itemHeight,
         onChanged: isEnabled() ? (v) => super.didChange(v) : null,
-//        onTap: widget.onTap,
+        onTap: widget.onTap,
         selectedItemBuilder: widget.selectedItemBuilder,
         style: widget.style,
         underline: widget.underline,

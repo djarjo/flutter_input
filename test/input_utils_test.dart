@@ -24,19 +24,20 @@ void testReadFromMap(Map<String, dynamic> json) {
     test(path, () {
       expect(InputUtils.readJson(json, path), equals('root-string'));
     });
-    path = 'key1.sub1';
+    path = 'key1/sub1';
     test(path, () {
       expect(InputUtils.readJson(json, path), equals('node-string'));
     });
-    path = 'key1.1';
+    path = 'key2/1';
     test(path, () {
       expect(InputUtils.readJson(json, path), equals('listVal1'));
     });
-    path = 'key3.id:7';
+    path = 'key3/id:7';
     test(path, () {
-      expect(InputUtils.readJson(json, path), equals({'id': 7, 'sub1': 'value7-1'}));
+      expect(InputUtils.readJson(json, path),
+          equals({'id': 7, 'sub1': 'value7-1'}));
     });
-    path = 'key3.id:8.sub1';
+    path = 'key3/id:8/sub1';
     test(path, () {
       expect(InputUtils.readJson(json, path), equals('value8-1'));
     });
@@ -45,7 +46,7 @@ void testReadFromMap(Map<String, dynamic> json) {
 
 void testWriteToMap(Map<String, dynamic> json) {
   group('Writing into existing JSON map', () {
-    String path = 'key1.sub1', value = 'new value';
+    String path = 'key1/sub1', value = 'new value';
     test(path, () {
       expect(InputUtils.writeJson(json, path, value), equals(json));
     });
