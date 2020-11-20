@@ -7,9 +7,9 @@ extension Localization on String {
   String get i18n => localize(this, _t);
 
   // ignore: unused_field
-  static final _t = Translations('en_us') +
+  static final _t = Translations('en') +
       {
-        'en_us': 'Thanks for using flutter_input!',
-        'de_de': 'Vielen Dank für die Nutzung von flutter_input',
+        'en': 'Thanks for using flutter_input!',
+        'de': 'Vielen Dank für die Nutzung von flutter_input',
       };
 }

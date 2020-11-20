@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:i18n_extension/i18n_widget.dart';
+import 'package:intl/intl.dart';
 
 import 'sample_form_page.dart';
 
@@ -27,85 +28,72 @@ Map<String, dynamic> centralData = {
 /// Sample map used without [InputForm]
 Map<String, dynamic> sampleSettings = {};
 
-/// Supported locales. 0 is default.
-List<Locale> supportedLocales = [
-  Locale('en', 'US'),
-  Locale('de', 'DE'),
-];
-
 void main() {
   debugPaintSizeEnabled = false; // true does not work in web
-  runApp(MyApp());
+  //--- Only prints info to console
+  I18n.observeLocale = ({Locale oldLocale, Locale newLocale}) {
+    print('I18n -> Locale changed from $oldLocale to $newLocale');
+  };
+  runApp(I18n(child: MyApp()));
 }
 
 /// Flutter code sample for package `flutter_input`
 ///
 /// This app shows all input widgets provided in this package.
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => _MyAppState();
-
-  static Locale getThisAppsLocale(BuildContext context) {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    return state.thisAppsLocale;
-  }
-
-  /// Called from anywhere in the application to change apps locale
-  static void setThisAppsLocale(BuildContext context, Locale newLocale) {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    if (state.thisAppsLocale != newLocale) {
-      print('${state.thisAppsLocale} -> $newLocale');
-      // ignore: invalid_use_of_protected_member
-      state.setState(() {
-        state.thisAppsLocale = newLocale;
-      });
-    }
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'flutter_input',
+      home: SampleFormPage(),
+      localeResolutionCallback: (deviceLocale, supportedLocs) {
+        print('localeResolutionCallback( $deviceLocale, $supportedLocs)');
+        return MyAppLocale.setThisAppsLocale(context, deviceLocale);
+      },
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: MyAppLocale.supportedLocales,
+    );
   }
 }
 
-class _MyAppState extends State<MyApp> {
-  /// The locale used by the whole app
-  Locale thisAppsLocale;
+class MyAppLocale {
+  /// Supported locales. 0 is default.
+  static List<Locale> supportedLocales = [
+    Locale('en', 'US'),
+    Locale('de', 'DE'),
+  ];
+  static Locale _thisAppsLocale;
 
-  @override
-  void initState() {
-    thisAppsLocale ??= WidgetsBinding.instance.window.locale;
-    super.initState();
-    I18n.observeLocale = ({Locale oldLocale, Locale newLocale}) {
-      print('Changing from $oldLocale to $newLocale.');
-      if (thisAppsLocale != newLocale) {
-        setState(() {
-          thisAppsLocale = newLocale;
-        });
+  /// Gets current locale. `null` means using device locale
+  static Locale getThisAppsLocale() => _thisAppsLocale;
+
+  /// Sets locale used by this app. If [newLocale] is not in list
+  /// of [supportedLocales] then first entry from [supportedLocales] will be used.
+  ///
+  /// @return locale set for this app
+  static Locale setThisAppsLocale(BuildContext context, Locale newLocale) {
+    if ((newLocale != null) &&
+        (supportedLocales.contains(newLocale) == false)) {
+      newLocale = supportedLocales[0];
+    }
+    print('setThisAppsLocale I18n locale=${I18n.locale}');
+    if (newLocale != _thisAppsLocale) {
+      Locale oldLocale = _thisAppsLocale;
+      _thisAppsLocale = newLocale;
+      if (_thisAppsLocale == null) {
+        Intl.defaultLocale = null;
+        I18n.of(context).locale = null;
+      } else {
+        Intl.defaultLocale = _thisAppsLocale.toString();
+        I18n.of(context).locale = Locale(_thisAppsLocale.languageCode);
       }
-    };
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print('_MyAppState.build $context || $thisAppsLocale');
-    return I18n(
-      initialLocale: thisAppsLocale,
-      child: MaterialApp(
-        title: 'flutter_input',
-        home: SampleFormPage(),
-        locale: thisAppsLocale,
-/*        localeResolutionCallback: (deviceLocale, supportedLocales) {
-          if (thisAppsLocale != deviceLocale) {
-            print('thisA=$thisAppsLocale, devLoc=$deviceLocale');
-            thisAppsLocale = deviceLocale;
-          }
-          return thisAppsLocale;
-        },
-  */
-        localizationsDelegates: [
-          // ... app-specific localization delegate[s] here
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: supportedLocales,
-      ),
-    );
+      print('Locale changed from $oldLocale to $_thisAppsLocale');
+      return _thisAppsLocale;
+    }
   }
 }

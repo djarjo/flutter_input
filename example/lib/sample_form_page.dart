@@ -161,12 +161,12 @@ class _SampleFormPageState extends State<SampleFormPage> {
             leading: Icon(Icons.language),
             title: Text('Select Language'.i18n),
             subtitle: InputLanguage(
-              initialValue: MyApp.getThisAppsLocale(context),
+              initialValue: MyAppLocale.getThisAppsLocale(),
               onChanged: (locale) {
-                MyApp.setThisAppsLocale(context, locale);
+                MyAppLocale.setThisAppsLocale(context, locale);
                 Navigator.pop(context);
               },
-              supportedLocales: supportedLocales,
+              supportedLocales: MyAppLocale.supportedLocales,
             ),
           ),
           ListTile(

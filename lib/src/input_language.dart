@@ -5,14 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 
 import 'input_form.dart';
-
-Map<String, String> _languageNames = {
-  'de': 'deutsch',
-  'en': 'english',
-  'es': 'espanol',
-  'fr': 'francais',
-  'jp': 'japanese',
-};
+import 'input_language.i18n.dart';
 
 /// Provides a text with the current language and a trailing icon.
 ///
@@ -20,9 +13,12 @@ Map<String, String> _languageNames = {
 /// The required parameter [supportedLocales] specifies the languages
 /// which your app supports.
 /// To change the language of the app see file `example/lib/main.dart`.
+///
+/// To select a country see [InputCountry].
 class InputLanguage extends InputField<Locale> {
   /// Locales available in this app
   final List<Locale> supportedLocales;
+  final bool withDeviceLocale;
 
   InputLanguage({
     Key key,
@@ -35,6 +31,7 @@ class InputLanguage extends InputField<Locale> {
     String path,
     @required this.supportedLocales,
     bool wantKeepAlive = false,
+    this.withDeviceLocale = false,
   }) : super(
           key: key,
           decoration: decoration,
@@ -60,7 +57,7 @@ class _InputLanguageState extends InputFieldState<Locale> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _languageList ??= _buildLanguageList();
+    _languageList ??= _buildLanguageList(widget.withDeviceLocale);
     value ??= I18n.of(context).locale;
     return super.buildInputField(
       context,
@@ -73,9 +70,9 @@ class _InputLanguageState extends InputFieldState<Locale> {
     );
   }
 
-  List<DropdownMenuItem<Locale>> _buildLanguageList() {
+  List<DropdownMenuItem<Locale>> _buildLanguageList(bool withDeviceLocale) {
     final String _imagePath = 'lib/assets/flags/';
-    return widget.supportedLocales
+    List<DropdownMenuItem<Locale>> _languages = widget.supportedLocales
         .map((item) => DropdownMenuItem(
               value: item,
               child: Row(
@@ -88,10 +85,27 @@ class _InputLanguageState extends InputFieldState<Locale> {
                   SizedBox(
                     width: 8,
                   ),
-                  Text(_languageNames[item.languageCode]),
+                  Text(_languageNames[item.languageCode].i18n),
                 ],
               ),
             ))
         .toList();
+    if (withDeviceLocale) {
+      _languages.insert(
+          0,
+          DropdownMenuItem(
+            child: Text('From device'.i18n),
+            value: null,
+          ));
+    }
+    return _languages;
   }
+
+  final Map<String, String> _languageNames = {
+    'de': 'german',
+    'en': 'english',
+    'es': 'spain',
+    'fr': 'french',
+    'jp': 'japanese',
+  };
 }
