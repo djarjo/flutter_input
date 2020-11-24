@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  i18n_extension: ^1.4.2
+  i18n_extension: ^1.4.5
   intl: ^0.16.1
   pedantic: ^1.9.2
 

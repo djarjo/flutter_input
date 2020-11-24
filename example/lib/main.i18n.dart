@@ -9,6 +9,14 @@ extension Localization on String {
   // ignore: unused_field
   static final _t = Translations('en') +
       {
+        'en_us': 'Date',
+        'de_de': 'Datum',
+      } +
+      {
+        'en': 'Settings',
+        'de': 'Einstellungen',
+      } +
+      {
         'en': 'Thanks for using flutter_input!',
         'de': 'Vielen Dank für die Nutzung von flutter_input',
       };

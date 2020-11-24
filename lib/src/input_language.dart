@@ -79,7 +79,9 @@ class _InputLanguageState extends InputFieldState<Locale> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Image.asset(
-                    _imagePath + item.countryCode + '.png',
+                    _imagePath +
+                        (item.countryCode ?? item.languageCode.toUpperCase()) +
+                        '.png',
                     package: 'flutter_input',
                   ),
                   SizedBox(

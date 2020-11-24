@@ -7,113 +7,113 @@ extension Localization on String {
   String get i18n => localize(this, _t);
 
   // ignore: unused_field
-  static final _t = Translations('en_us') +
+  static final _t = Translations('en') +
       {
-        'en_us': 'All users rating',
-        'de_de': 'Bewertung aller Benutzer',
+        'en': 'All users rating',
+        'de': 'Bewertung aller Benutzer',
       } +
       {
-        'en_us': 'Country',
-        'de_de': 'Land',
+        'en': 'Country',
+        'de': 'Land',
       } +
       {
-        'en_us': 'Date',
-        'de_de': 'Datum',
+        'en': 'Date',
+        'de': 'Datum',
       } +
       {
-        'en_us': 'Date & Time',
-        'de_de': 'Datum & Zeit',
+        'en': 'Date & Time',
+        'de': 'Datum & Zeit',
       } +
       {
-        'en_us': 'Date and time format selection',
-        'de_de': 'Auswahl von Datum und / oder Zeit',
+        'en': 'Date and time format selection',
+        'de': 'Auswahl von Datum und / oder Zeit',
       } +
       {
-        'en_us': 'DateTime Page',
-        'de_de': 'Die zeitliche Seite',
+        'en': 'DateTime Page',
+        'de': 'Die zeitliche Seite',
       } +
       {
-        'en_us': 'Editable int',
-        'de_de': 'Zahleneingabe',
+        'en': 'Editable int',
+        'de': 'Zahleneingabe',
       } +
       {
-        'en_us': 'Exit without any changes',
-        'de_de': 'Abbruch ohne Änderungen',
+        'en': 'Exit without any changes',
+        'de': 'Abbruch ohne Änderungen',
       } +
       {
-        'en_us': 'Field values saved back to map',
-        'de_de': 'Änderungen wurden gespeichert',
+        'en': 'Field values saved back to map',
+        'de': 'Änderungen wurden gespeichert',
       } +
       {
-        'en_us': 'Misc',
-        'de_de': 'Diverse',
+        'en': 'Misc',
+        'de': 'Diverse',
       } +
       {
-        'en_us': 'Mug size [ml]',
-        'de_de': 'Bechergröße [ml]',
+        'en': 'Mug size [ml]',
+        'de': 'Bechergröße [ml]',
       } +
       {
-        'en_us': 'Next Coffee Alarm',
-        'de_de': 'Nächster Kaffee Wecker',
+        'en': 'Next Coffee Alarm',
+        'de': 'Nächster Kaffee Wecker',
       } +
       {
-        'en_us': '<Please select a country>',
-        'de_de': '<Bitte ein Land auswählen>',
+        'en': '<Please select a country>',
+        'de': '<Bitte ein Land auswählen>',
       } +
       {
-        'en_us': '<Please select the SI unit>',
-        'de_de': '<Bitte die SI Einheit wählen>',
+        'en': '<Please select the SI unit>',
+        'de': '<Bitte die SI Einheit wählen>',
       } +
       {
-        'en_us': 'Save changes and leave edit mode',
-        'de_de': 'Änderungen speichern',
+        'en': 'Save changes and leave edit mode',
+        'de': 'Änderungen speichern',
       } +
       {
-        'en_us': 'Select Language',
-        'de_de': 'Sprache wählen',
+        'en': 'Select Language',
+        'de': 'Sprache wählen',
       } +
       {
-        'en_us': 'Settings',
-        'de_de': 'Einstellungen',
+        'en': 'Settings',
+        'de': 'Einstellungen',
       } +
       {
-        'en_us': 'Somebodies birthday',
-        'de_de': 'Geburtstag',
+        'en': 'Somebodies birthday',
+        'de': 'Geburtstag',
       } +
       {
-        'en_us': 'Switch to datetime page',
-        'de_de': 'Wechsel zur Seite mit Datum und Zeit',
+        'en': 'Switch to datetime page',
+        'de': 'Wechsel zur Seite mit Datum und Zeit',
       } +
       {
-        'en_us': 'Thanks',
-        'de_de': 'Besten Dank',
+        'en': 'Thanks',
+        'de': 'Besten Dank',
       } +
       {
-        'en_us': 'Thanks for using flutter_input!',
-        'de_de': 'Danke für die Nutzung von flutter_input',
+        'en': 'Thanks for using flutter_input!',
+        'de': 'Danke für die Nutzung von flutter_input',
       } +
       {
-        'en_us': 'This coffee is frozen',
-        'de_de': 'Dieser Kaffe ist gefroren',
+        'en': 'This coffee is frozen',
+        'de': 'Dieser Kaffe ist gefroren',
       } +
       {
-        'en_us': 'This is only steam',
-        'de_de': 'Das ist nur noch Dampf',
+        'en': 'This is only steam',
+        'de': 'Das ist nur noch Dampf',
       } +
       {
-        'en_us': 'Time',
-        'de_de': 'Zeit',
+        'en': 'Time',
+        'de': 'Zeit',
       } +
       {
-        'en_us': 'Unit',
-        'de_de': 'Einheit',
+        'en': 'Unit',
+        'de': 'Einheit',
       } +
       {
-        'en_us': 'You have pushed the button this many times:',
-        'de_de': 'Du hast den Knopf so oft gedrückt',
+        'en': 'You have pushed the button this many times:',
+        'de': 'Du hast den Knopf so oft gedrückt',
       } +
       {
-        'en_us': 'You must live somewhere',
-        'de_de': 'Du musst irgendwo leben',
+        'en': 'You must live somewhere',
+        'de': 'Du musst irgendwo leben',
       };
 }

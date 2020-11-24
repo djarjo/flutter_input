@@ -1,3 +1,8 @@
+## 1.4.0
+
+- Added SampleLocale to change locale within app in drawer and also detect
+ changes in device locales 
+
 ## 1.3.0
 
 - Settings in `Drawer` opens dialog box to directly edit values in a map

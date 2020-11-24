@@ -100,6 +100,7 @@ class InputPassword extends InputField<String> {
   final TextDirection textDirection;
   final TextInputAction textInputAction;
   final ToolbarOptions toolbarOptions;
+
   /// Icon on button to make password visible. `null` disables the button.
   final IconData visibilityIcon;
   @override
@@ -139,67 +140,68 @@ class _InputPasswordState<T> extends InputFieldState<String> {
     final InputDecoration effectiveDecoration =
         (widget.decoration ?? const InputDecoration())
             .applyDefaults(Theme.of(context).inputDecorationTheme);
-TextField textField =    TextField(
-    autocorrect: false,
-    autofocus: widget.autofocus,
-    buildCounter: widget.buildCounter,
-    controller: _effectiveController,
-    cursorColor: widget.cursorColor,
-    cursorRadius: widget.cursorRadius,
-    cursorWidth: widget.cursorWidth,
-    decoration: effectiveDecoration.copyWith(errorText: errorText),
-    enabled: super.isEnabled(),
-    enableInteractiveSelection: widget.enableInteractiveSelection,
-    enableSuggestions: false,
-    expands: widget.expands,
-    focusNode: widget.focusNode,
-    keyboardAppearance: widget.keyboardAppearance,
-    keyboardType:
-    _visible ? TextInputType.visiblePassword : TextInputType.text,
-    inputFormatters: widget.inputFormatters,
-    maxLength: widget.maxLength,
-    maxLengthEnforced: widget.maxLengthEnforced,
-    maxLines: 1,
-    minLines: 1,
-    obscureText: (!super.isEnabled()) || (!_visible),
-    onChanged: (v) => didChange(v),
-    onEditingComplete: widget.onEditingComplete,
-    onSubmitted: widget.onFieldSubmitted,
-    onTap: widget.onTap,
-    readOnly: false,
-    scrollPadding: widget.scrollPadding,
-    showCursor: widget.showCursor,
-    style: widget.style,
-    strutStyle: widget.strutStyle,
-    textAlign: widget.textAlign,
-    textAlignVertical: widget.textAlignVertical,
-    textCapitalization: widget.textCapitalization,
-    textDirection: widget.textDirection,
-    textInputAction: widget.textInputAction,
-    toolbarOptions: widget.toolbarOptions,
+    TextField textField = TextField(
+      autocorrect: false,
+      autofocus: widget.autofocus,
+      buildCounter: widget.buildCounter,
+      controller: _effectiveController,
+      cursorColor: widget.cursorColor,
+      cursorRadius: widget.cursorRadius,
+      cursorWidth: widget.cursorWidth,
+      decoration: effectiveDecoration.copyWith(errorText: errorText),
+      enabled: super.isEnabled(),
+      enableInteractiveSelection: widget.enableInteractiveSelection,
+      enableSuggestions: false,
+      expands: widget.expands,
+      focusNode: widget.focusNode,
+      keyboardAppearance: widget.keyboardAppearance,
+      keyboardType:
+          _visible ? TextInputType.visiblePassword : TextInputType.text,
+      inputFormatters: widget.inputFormatters,
+      maxLength: widget.maxLength,
+      maxLengthEnforced: widget.maxLengthEnforced,
+      maxLines: 1,
+      minLines: 1,
+      obscureText: (!super.isEnabled()) || (!_visible),
+      onChanged: (v) => didChange(v),
+      onEditingComplete: widget.onEditingComplete,
+      onSubmitted: widget.onFieldSubmitted,
+      onTap: widget.onTap,
+      readOnly: false,
+      scrollPadding: widget.scrollPadding,
+      showCursor: widget.showCursor,
+      style: widget.style,
+      strutStyle: widget.strutStyle,
+      textAlign: widget.textAlign,
+      textAlignVertical: widget.textAlignVertical,
+      textCapitalization: widget.textCapitalization,
+      textDirection: widget.textDirection,
+      textInputAction: widget.textInputAction,
+      toolbarOptions: widget.toolbarOptions,
     );
 
-    return (widget.visibilityIcon == null ) ?
-    textField :
-      Row(
-      children: [
-        Flexible(
-          child: textField,
-        ),
-        IconButton(
-          icon: Icon(
-            widget.visibilityIcon,
-            color:
-                (super.isEnabled() && _visible) ? Colors.green : Colors.black,
-          ),
-          onPressed: super.isEnabled()
-              ? () => setState(() {
-                    _visible = !_visible;
-                  })
-              : null,
-        ),
-      ],
-    );
+    return (widget.visibilityIcon == null)
+        ? textField
+        : Row(
+            children: [
+              Flexible(
+                child: textField,
+              ),
+              IconButton(
+                icon: Icon(
+                  widget.visibilityIcon,
+                  color: (super.isEnabled() && _visible)
+                      ? Colors.green
+                      : Colors.black,
+                ),
+                onPressed: super.isEnabled()
+                    ? () => setState(() {
+                          _visible = !_visible;
+                        })
+                    : null,
+              ),
+            ],
+          );
   }
 
   @override

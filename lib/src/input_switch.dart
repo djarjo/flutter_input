@@ -27,7 +27,7 @@ class InputSwitch extends InputField<bool> {
 
   InputSwitch({
     Key key,
-    this.autofocus,
+    this.autofocus = false,
     bool autosave,
     bool autovalidate,
     this.activeColor,
@@ -89,7 +89,8 @@ class _InputSwitchState extends InputFieldState<bool> {
           activeThumbImage: widget.activeThumbImage,
           activeTrackColor: widget.activeTrackColor,
           autofocus: widget.autofocus,
-          dragStartBehavior: widget.dragStartBehavior,
+          dragStartBehavior:
+              widget.dragStartBehavior ?? DragStartBehavior.start,
           focusColor: widget.focusColor,
           focusNode: widget.focusNode,
           hoverColor: widget.hoverColor,

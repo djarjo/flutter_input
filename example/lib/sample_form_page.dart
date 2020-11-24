@@ -7,6 +7,7 @@ import 'package:flutter_input/flutter_input.dart';
 import 'package:flutter_input_example/main.dart';
 
 import 'sample_form_page.i18n.dart';
+import 'sample_locale.dart';
 
 /// Sample page with a form and input widgets from this package.
 ///
@@ -20,16 +21,21 @@ class SampleFormPage extends StatefulWidget {
 
 class _SampleFormPageState extends State<SampleFormPage> {
   final GlobalKey<InputFormState> _formKey = GlobalKey();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   bool _inEditMode = false;
+  void setInEditMode(bool editable) {
+    setState(() {
+      _inEditMode = editable;
+      _formKey.currentState.enabled = editable;
+    });
+  }
 
+  int coffeeTemp;
   List<String> selectableCountries = ['AU', 'DE', 'FR', 'JP', 'NL', 'US'];
   List<DropdownMenuItem<String>> units;
   List<Tab> _titles = [];
   List<DropdownMenuItem<DateTimeUsing>> _dateTimeParts;
   DateTimeUsing _using = DateTimeUsing.dateAndTime;
   DatePickerStyles _datePickerStyles;
-  int coffeeTemp;
 
   @override
   void initState() {
@@ -70,18 +76,18 @@ class _SampleFormPageState extends State<SampleFormPage> {
     ];
     return DefaultTabController(
       length: _titles.length,
-      child: SafeArea(
-        child: Scaffold(
-          key: _scaffoldKey,
-          appBar: _buildAppBar(context),
-          body: InputForm(
+      child: Scaffold(
+        appBar: _buildAppBar(context),
+        body: SafeArea(
+          minimum: EdgeInsets.all(5.0),
+          child: InputForm(
             key: _formKey,
-            enabled: _inEditMode,
+            enabled: _inEditMode, // to change see setInEditMode(true)
             map: centralData,
             child: TabBarView(children: _tabViews),
           ),
-          drawer: _buildDrawer(context),
         ),
+        drawer: _buildDrawer(context),
       ),
     );
   }
@@ -98,10 +104,23 @@ class _SampleFormPageState extends State<SampleFormPage> {
                   if (_formKey.currentState.validate()) {
                     _save(context);
                   } else {
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                      backgroundColor: Colors.red,
+                    Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text('Please correct validation errors'),
+                      duration: Duration(seconds: 3),
                     ));
+
+                    /// TODO use in next version Flutter > 1.22.4
+/*                    ScaffoldMessengerState state =
+                        ScaffoldMessenger.of(context);
+                    state.showSnackBar(SnackBar(
+                      content: Text('Please correct validation errors'),
+                      duration: Duration(seconds: 3),
+                      action: SnackBarAction(
+                        label: 'dismiss',
+                        onPressed: () => state.hideCurrentSnackBar(),
+                      ),
+                    ));
+  */
                   }
                 },
               ),
@@ -109,10 +128,8 @@ class _SampleFormPageState extends State<SampleFormPage> {
                 icon: Icon(Icons.cancel),
                 tooltip: 'Exit without any changes'.i18n,
                 onPressed: () {
-                  setState(() {
-                    _inEditMode = false;
-                    _formKey.currentState.reset();
-                  });
+                  setInEditMode(false);
+                  _formKey.currentState.reset();
                 },
               ),
             ]
@@ -120,11 +137,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
               IconButton(
                 icon: Icon(Icons.edit),
                 tooltip: 'Edit',
-                onPressed: () {
-                  setState(() {
-                    _inEditMode = true;
-                  });
-                },
+                onPressed: () => setInEditMode(true),
               )
             ],
       backgroundColor: Colors.deepOrange,
@@ -161,12 +174,13 @@ class _SampleFormPageState extends State<SampleFormPage> {
             leading: Icon(Icons.language),
             title: Text('Select Language'.i18n),
             subtitle: InputLanguage(
-              initialValue: MyAppLocale.getThisAppsLocale(),
+              initialValue: SampleLocale().getThisAppsLocale(),
               onChanged: (locale) {
-                MyAppLocale.setThisAppsLocale(context, locale);
+                SampleLocale().setThisAppsLocale(context, locale);
                 Navigator.pop(context);
               },
-              supportedLocales: MyAppLocale.supportedLocales,
+              supportedLocales: SampleLocale.supportedLocales,
+              withDeviceLocale: true,
             ),
           ),
           ListTile(
@@ -198,7 +212,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
             icon: Icon(Icons.info),
             applicationLegalese: 'Free to Use',
             applicationName: 'flutter_input',
-            applicationVersion: 'v1.3.0',
+            applicationVersion: 'v1.4.0',
             aboutBoxChildren: <Widget>[
               Text('Thanks for using flutter_input!'.i18n),
             ],
@@ -273,7 +287,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
       child: Center(
         child: Column(
           children: <Widget>[
-            Text('ID = ${centralData["id"]} | Flutter locale '
+            Text('ID = ${centralData["id"]} | Localizations.locale '
                 '= ${Localizations.localeOf(context)}'),
             Row(
               children: <Widget>[
@@ -414,9 +428,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
 
   void _save(BuildContext context) {
     _formKey.currentState.save();
-    setState(() {
-      _inEditMode = false;
-    });
+    setInEditMode(false);
     showDialog(
         context: context,
         barrierDismissible: false, // user must tap button
