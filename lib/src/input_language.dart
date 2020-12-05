@@ -7,15 +7,21 @@ import 'package:i18n_extension/i18n_widget.dart';
 import 'input_form.dart';
 import 'input_language.i18n.dart';
 
-/// Provides a text with the current language and a trailing icon.
+/// Provides a text with the current language and a leading icon flag.
 ///
 /// Tapping on the widget opens a list to select another language (`Locale`).
 /// The required parameter [supportedLocales] specifies the languages
 /// which your app supports.
 /// To change the language of the app see file `example/lib/main.dart`.
 ///
+/// To include selection from platform, set [withUsePlatform] = `true`.
+/// To display this choice, use [InputLanguage.useLocaleFromPlatform] for
+/// [initialValue]. This value will also be returned if platform is selected.
+///
 /// To select a country see [InputCountry].
 class InputLanguage extends InputField<Locale> {
+  static final Locale useLocaleFromPlatform = Locale('xx');
+
   /// Locales available in this app
   final List<Locale> supportedLocales;
   final bool withDeviceLocale;
@@ -97,7 +103,7 @@ class _InputLanguageState extends InputFieldState<Locale> {
           0,
           DropdownMenuItem(
             child: Text('From device'.i18n),
-            value: null,
+            value: InputLanguage.useLocaleFromPlatform,
           ));
     }
     return _languages;
@@ -109,5 +115,7 @@ class _InputLanguageState extends InputFieldState<Locale> {
     'es': 'spain',
     'fr': 'french',
     'jp': 'japanese',
+    'pt': 'portuguese',
+    'tr': 'turkish',
   };
 }

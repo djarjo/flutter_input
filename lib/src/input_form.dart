@@ -158,7 +158,7 @@ class InputFormState extends State<InputForm> {
 
   /// Enables (`true`) or disables (`false`) all fields in this form
   /// which are not directly enabled or disabled.
-  void set enabled(bool enable) {
+  set enabled(bool enable) {
     if (_enable != enable) {
       _enable = enable;
       _fieldDidChange();

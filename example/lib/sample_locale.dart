@@ -117,6 +117,7 @@ class SampleLocale {
   Locale setThisAppsLocale(BuildContext context, Locale newLocale) {
     _setThisAppsLocale(context, newLocale);
     _preventSetI18n = true;
+    return _thisAppsLocale;
   }
 
   Locale _setThisAppsLocale(BuildContext context, Locale newLocale) {
