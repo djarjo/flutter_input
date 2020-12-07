@@ -17,8 +17,20 @@ extension Localization on String {
         'de': 'Australien',
       } +
       {
+        'en': 'Austria',
+        'de': 'Österreich',
+      } +
+      {
+        'en': 'Belgium',
+        'de': 'Belgien',
+      } +
+      {
         'en': 'Brazil',
         'de': 'Brasilien',
+      } +
+      {
+        'en': 'Canada',
+        'de': 'Kanada',
       } +
       {
         'en': 'China',
@@ -58,10 +70,6 @@ extension Localization on String {
       } +
       {
         'en': 'U.S.A.',
-        'de': 'U.S.A.',
-      } +
-      {
-        'en': 'United States of America',
         'de': 'U.S.A.',
       };
 }

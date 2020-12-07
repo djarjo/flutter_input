@@ -13,6 +13,10 @@ extension Localization on String {
         'de': 'Bewertung aller Benutzer',
       } +
       {
+        'en': 'Coffee Temperature',
+        'de': 'Kaffee Temperatur',
+      } +
+      {
         'en': 'Country',
         'de': 'Land',
       } +

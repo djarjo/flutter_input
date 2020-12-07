@@ -30,7 +30,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
   }
 
   int coffeeTemp;
-  List<String> selectableCountries = ['AU', 'DE', 'FR', 'JP', 'NL', 'US'];
+  List<String> selectableCountries = ['AU', 'DE', 'FR', 'JP', 'NL', 'SY', 'US'];
   List<DropdownMenuItem<String>> units;
   List<Tab> _titles = [];
   List<DropdownMenuItem<DateTimeUsing>> _dateTimeParts;
@@ -347,8 +347,10 @@ class _SampleFormPageState extends State<SampleFormPage> {
             ),
             InputSlider(
               decoration: InputDecoration(
-                  labelText:
-                      'Coffee Temperatur ${(coffeeTemp == null) ? "-" : coffeeTemp} °C'),
+                  labelText: 'Coffee Temperature'.i18n +
+                      ' ${(coffeeTemp == null) ? "-"
+                          "" : coffeeTemp}' +
+                      ' °C'),
               divisions: 200,
               min: -50,
               max: 150,

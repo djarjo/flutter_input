@@ -92,16 +92,16 @@ class InputCountry extends InputField<String> {
 }
 
 class _InputCountryState extends InputFieldState<String> {
-  List<DropdownMenuItem<String>> _countryList;
-
   @override
   InputCountry get widget => super.widget;
 
   // List of countries will not be translated if in `initState()`.
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    _countryList = _buildCountryList();
+    // super.build(context);
+    List<DropdownMenuItem<String>> _countryList = _buildCountryList();
+    print(
+        'InputCountry.build() isEnabeld=${isEnabled()}, ${_countryList.length} countries');
     return super.buildInputField(
       context,
       DropdownButton(
@@ -114,7 +114,8 @@ class _InputCountryState extends InputFieldState<String> {
         focusColor: widget.focusColor,
         focusNode: widget.focusNode,
         hint: widget.hint,
-        icon: widget.icon ?? Icon(Icons.flag),
+        icon: widget.icon ??
+            Icon((value == null) ? Icons.flag_outlined : Icons.arrow_drop_down),
         iconDisabledColor: widget.iconDisabledColor,
         iconEnabledColor: widget.iconEnabledColor,
         iconSize: widget.iconSize,
@@ -160,7 +161,10 @@ class _InputCountryState extends InputFieldState<String> {
                   SizedBox(
                     width: 8,
                   ),
-                  Text(country.getLocalizedName()),
+                  Text(
+                    country.getLocalizedName(),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ))
