@@ -1,6 +1,8 @@
 // Copyright 2020 Hajo.Lemcke@gmail.com
 // Please see the LICENSE file for details.
 
+import 'package:i18n_extension/i18n_widget.dart';
+
 import 'country.csv.dart';
 import 'country.i18n.dart';
 
@@ -75,7 +77,18 @@ class Country {
   }
 
   String getLocalizedName() {
-    return name.i18n;
+    String langCode = I18n.language;
+    String translation;
+    if (langCode != 'en') {
+      Map<String, String> countryTranslation = countryTranslations[code2];
+      if (countryTranslation != null) {
+        translation = countryTranslation[langCode];
+        if (translation != null) {
+          return translation;
+        }
+      }
+    }
+    return name;
   }
 
   @override

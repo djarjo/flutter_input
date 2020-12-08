@@ -29,7 +29,7 @@ BJ,BEN,fr,Benin,229,204,1
 BM,BMU,en,Bermuda,1441,60,-4
 BT,BTN,dz,Bhutan,975,64,6
 BO,BOL,es,Bolivia,591,68,-4
-BQ,BES,,"Bonaire, Sint Eustatius and Saba",5997,535,-4
+BQ,BES,,Bonaire,5997,535,-4
 BA,BIH,hr,Bosnia and Herzegovina,387,70,1
 BW,BWA,en,Botswana,267,72,2
 BV,BVT,,Bouvet Island,,74,
@@ -49,11 +49,11 @@ TD,TCD,fr,Chad,235,148,1
 CL,CHL,es,Chile,56,152,-5
 CN,CHN,zh,China,86,156,8
 CX,CXR,en,Christmas Island,6189164,162,7
-CC,CCK,en,Cocos (Keeling) Islands,6189162,166,6.5
+CC,CCK,en,Cocos Keeling Islands,6189162,166,6.5
 CO,COL,es,Colombia,57,170,-5
 KM,COM,fr,Comoros,269,174,3
 CG,COG,fr,Congo,242,178,1
-CD,COD,fr,"Congo, Democratic Republic of the",243,180,1
+CD,COD,fr,Congo Democratic Republic,243,180,1
 CK,COK,en,Cook Islands,682,184,-10
 CR,CRI,es,Costa Rica,506,188,-6
 CI,CIV,fr,Côte d'Ivoire,225,384,0
@@ -74,7 +74,7 @@ ER,ERI,en,Eritrea,291,232,3
 EE,EST,en,Estonia,372,233,2
 SZ,SWZ,en,Eswatini,,748,
 ET,ETH,so,Ethiopia,251,231,3
-FK,FLK,en,Falkland Islands (Malvinas),500,238,-3
+FK,FLK,en,Falkland Islands,500,238,-3
 FO,FRO,fo,Faroe Islands,298,234,1
 FJ,FJI,en,Fiji,679,242,12
 FI,FIN,en,Finland,358,246,2
@@ -107,7 +107,7 @@ HU,HUN,en,Hungary,36,348,1
 IS,ISL,en,Iceland,354,352,0
 IN,IND,en,India,91,356,5.5
 ID,IDN,en,Indonesia,62,360,8
-IR,IRN,ar,Iran (Islamic Republic of),98,364,3.5
+IR,IRN,ar,Iran,98,364,3.5
 IQ,IRQ,ar,Iraq,964,368,3
 IE,IRL,en,Ireland,353,372,0
 IM,IMN,en,Isle of Man,44,833,0
@@ -120,8 +120,8 @@ JO,JOR,ar,Jordan,962,400,2
 KZ,KAZ,ru,Kazakhstan,76,398,5
 KE,KEN,en,Kenya,254,404,3
 KI,KIR,en,Kiribati,686,296,13
-KP,PRK,,"Korea, North",850,408,8.5
-KR,KOR,,"Korea, Republic of",82,410,9
+KP,PRK,,Korea - North,850,408,8.5
+KR,KOR,,Korea - South,82,410,9
 KW,KWT,ar,Kuwait,965,414,3
 KG,KGZ,ru,Kyrgyzstan,996,417,5
 LA,LAO,lo,Laos,856,418,7
@@ -146,8 +146,8 @@ MR,MRT,fr,Mauritania,222,478,0
 MU,MUS,en,Mauritius,230,480,4
 YT,MYT,fr,Mayotte,262269,175,3
 MX,MEX,es,Mexico,52,484,-7
-FM,FSM,en,Micronesia (Federated States of),691,583,10
-MD,MDA,ru,"Moldova, Republic of",373,498,2
+FM,FSM,en,Micronesia,691,583,10
+MD,MDA,ru,Moldova,373,498,2
 MC,MCO,fr,Monaco,377,492,1
 MN,MNG,mn,Mongolia,976,496,7
 ME,MNE,en,Montenegro,382,499,1
@@ -166,13 +166,13 @@ NE,NER,fr,Niger,227,562,1
 NG,NGA,en,Nigeria,234,566,1
 NU,NIU,en,Niue,683,570,-11
 NF,NFK,en,Norfolk Island,6723,574,11
-MK,MKD,sq,North Macedonia,,807,
-MP,MNP,en,Northern Mariana Islands,1670,580,10
+MK,MKD,sq,Macedonia,,807,
+MP,MNP,en,Mariana Islands,1670,580,10
 NO,NOR,se,Norway,47,578,2
 OM,OMN,ar,Oman,968,512,4
 PK,PAK,en,Pakistan,92,586,5
 PW,PLW,en,Palau,680,585,9
-PS,PSE,ar,"Palestine, State of",970,275,2
+PS,PSE,ar,Palestine,970,275,2
 PA,PAN,es,Panama,507,591,-5
 PG,PNG,en,Papua New Guinea,675,598,10
 PY,PRY,es,Paraguay,595,600,-4
@@ -188,64 +188,63 @@ RO,ROU,en,Romania,40,642,2
 RU,RUS,ru,Russian Federation,7,643,7
 RW,RWA,en,Rwanda,250,646,2
 BL,BLM,fr,Saint Barthélemy,590,652,-4
-SH,SHN,en,"Saint Helena, Ascension and Tristan da Cunha",290,654,0
-KN,KNA,ees,Saint Kitts and Nevis,1869,659,-4
+SH,SHN,en,Saint Helena,290,654,0
+KN,KNA,ees,Saint Kitts,1869,659,-4
 LC,LCA,es,Saint Lucia,1758,662,-4
-MF,MAF,fr,Saint Martin (French part),590,663,-4
-PM,SPM,fr,Saint Pierre and Miquelon,508,666,-3
-VC,VCT,es,Saint Vincent and the Grenadines,1784,670,-4
+MF,MAF,fr,Saint Martin,590,663,-4
+PM,SPM,fr,Saint Pierre,508,666,-3
+VC,VCT,es,Saint Vincent,1784,670,-4
 WS,WSM,en,Samoa,685,882,13
 SM,SMR,it,San Marino,378,674,1
-ST,STP,pt,Sao Tome and Principe,239,678,0
+ST,STP,pt,Sao Tome,239,678,0
 SA,SAU,ar,Saudi Arabia,966,682,3
 SN,SEN,fr,Senegal,221,686,0
 RS,SRB,sr,Serbia,381,688,1
 SC,SYC,fr,Seychelles,248,690,4
 SL,SLE,en,Sierra Leone,232,694,0
 SG,SGP,zh,Singapore,65,702,8
-SX,SXM,nl,Sint Maarten (Netherlands),1721,534,-4
+SX,SXM,nl,Sint Maarten,1721,534,-4
 SK,SVK,sk,Slovakia,421,703,1
 SI,SVN,sl,Slovenia,386,705,1
 SB,SLB,en,Solomon Islands,677,90,11
 SO,SOM,ar,Somalia,252,706,3
 ZA,ZAF,af,South Africa,27,710,2
-GS,SGS,,South Georgia and the South Sandwich Islands,500,239,-2
+GS,SGS,,South Georgia,500,239,-2
 SS,SSD,ar,South Sudan,211,728,3
 ES,ESP,es,Spain,34,724,1
 LK,LKA,ta,Sri Lanka,94,144,5.5
 SD,SDN,ar,Sudan,249,729,3
 SR,SUR,nl,Suriname,597,740,-3
-SJ,SJM,nb,Svalbard and Jan Mayen,4779,744,1
+SJ,SJM,nb,Svalbard,4779,744,1
 SE,SWE,sv,Sweden,46,752,1
 CH,CHE,de,Switzerland,41,756,1
-SY,SYR,ar,Syrian Arab Republic,963,760,2
-TW,TWN,zh,"Taiwan, Province of China",886,158,8
+SY,SYR,ar,Syrian,963,760,2
+TW,TWN,zh,Taiwan,886,158,8
 TJ,TJK,tg,Tajikistan,992,762,5
-TZ,TZA,sw,"Tanzania, United Republic of",255,834,3
+TZ,TZA,sw,Tanzania,255,834,3
 TH,THA,th,Thailand,66,764,7
 TL,TLS,pt,Timor-Leste,,626,
 TG,TGO,fr,Togo,228,768,0
 TK,TKL,en,Tokelau,690,772,13
 TO,TON,en,Tonga,676,776,13
-TT,TTO,es,Trinidad and Tobago,1868,780,-4
+TT,TTO,es,Trinidad,1868,780,-4
 TN,TUN,fr,Tunisia,216,788,1
 TR,TUR,tr,Turkey,90,792,3
 TM,TKM,tk,Turkmenistan,993,795,5
-TC,TCA,es,Turks and Caicos Islands,1649,796,-5
+TC,TCA,es,Turks Islands,1649,796,-5
 TV,TUV,en,Tuvalu,688,798,12
 UG,UGA,sw,Uganda,256,800,3
 UA,UKR,ru,Ukraine,380,804,2
 AE,ARE,ar,United Arab Emirates,971,784,4
 GB,GBR,en,United Kingdom,44,826,0
 US,USA,en,United States of America,1,840,-7
-UM,UMI,,United States Minor Outlying Islands,,581,
 UY,URY,es,Uruguay,598,858,-3
 UZ,UZB,uz,Uzbekistan,998,860,5
 VU,VUT,fr,Vanuatu,678,548,11
-VE,VEN,es,Venezuela (Bolivarian Republic of),58,862,-4
+VE,VEN,es,Venezuela,58,862,-4
 VN,VNM,vi,Vietnam,84,704,7
-VG,VGB,en,Virgin Islands (British),,92,
-VI,VIR,en,Virgin Islands (U.S.),1340,850,-4
+VG,VGB,en,Virgin Islands - British,,92,
+VI,VIR,en,Virgin Islands - U.S.,1340,850,-4
 WF,WLF,fr,Wallis and Futuna,681,876,12
 EH,ESH,ar,Western Sahara,,732,
 YE,YEM,ar,Yemen,967,887,3
