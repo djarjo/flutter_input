@@ -378,7 +378,8 @@ class _SampleFormPageState extends State<SampleFormPage> {
               decoration: InputDecoration(
                   labelText: 'Country'.i18n,
                   hintText: '<Please select a country>'.i18n),
-              selectableCountries: selectableCountries,
+//              selectableCountries: selectableCountries,
+              isExpanded: true,
               path: 'country',
               validators: [
                 (v) => notNull(v, message: 'You must live somewhere'.i18n),

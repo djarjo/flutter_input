@@ -26,7 +26,7 @@ extension Localization on String {
       } +
       {
         'en': 'Date & Time',
-        'de': 'Datum & Zeit',
+        'de': 'Zeit & Time',
       } +
       {
         'en': 'Date and time format selection',

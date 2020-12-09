@@ -94,19 +94,28 @@ class InputCountry extends InputField<String> {
 class _InputCountryState extends InputFieldState<String> {
   @override
   InputCountry get widget => super.widget;
+  List<DropdownMenuItem<String>> _countryList;
 
   // List of countries will not be translated if in `initState()`.
   @override
   Widget build(BuildContext context) {
+    if (_countryList == null || widget.selectableCountries != null) {
+      _countryList = _buildCountryList();
+    }
     // super.build(context);
-    List<DropdownMenuItem<String>> _countryList = _buildCountryList();
     return super.buildInputField(
       context,
       DropdownButton(
         autofocus: widget.autofocus,
-        disabledHint: (value != null)
-            ? _countryList.firstWhere((item) => value == item.value).child
-            : null,
+        disabledHint: (value == null)
+            ? null
+            : ClipRect(
+                child: Text(
+                  Country.findByCode2(value)?.getLocalizedName() ?? '$value',
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                ),
+              ),
         dropdownColor: widget.dropdownColor,
         elevation: widget.elevation ?? 8,
         focusColor: widget.focusColor,
@@ -145,27 +154,29 @@ class _InputCountryState extends InputFieldState<String> {
         country1.getLocalizedName().compareTo(country2.getLocalizedName()));
 
     return countryList
-        .map((country) => DropdownMenuItem(
-              value: country.code2,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  (widget.showFlag)
-                      ? Image.asset(
-                          _imagePath + country.code2 + '.png',
-                          package: 'flutter_input',
-                        )
-                      : SizedBox.shrink(),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    country.getLocalizedName(),
+        .map(
+          (country) => DropdownMenuItem(
+            value: country.code2,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                (widget.showFlag)
+                    ? Image.asset(
+                        _imagePath + country.code2 + '.png',
+                        package: 'flutter_input',
+                      )
+                    : SizedBox.shrink(),
+                Flexible(
+                  child: Text(
+                    '  ' + country.getLocalizedName(),
                     overflow: TextOverflow.ellipsis,
+                    softWrap: true,
                   ),
-                ],
-              ),
-            ))
+                ),
+              ],
+            ),
+          ),
+        )
         .toList();
   }
 }
