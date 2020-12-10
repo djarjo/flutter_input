@@ -20,8 +20,6 @@ import 'country.i18n.dart';
 /// ```
 /// Locale locale = Locale( country.language, country.code2 );
 /// ```
-///
-/// TODO Complete this list. Any help is highly appreciated :-)
 class Country {
   static final List<Country> countries = [];
 
@@ -40,6 +38,9 @@ class Country {
   ///
   /// ISO-639-1 two letter lowercase code as used for `Locale`.
   String language;
+
+  /// Country name by language
+  Map<String, String> _localizations;
 
   /// ISO-3166 Name in standard locale en_US
   String name;
@@ -76,17 +77,12 @@ class Country {
         orElse: () => null);
   }
 
+  /// Gets localized country name. Current locale is taken from I18n.
+  /// If no localized name found then the english name will be returned.
   String getLocalizedName() {
     String langCode = I18n.language;
-    String translation;
-    if (langCode != 'en') {
-      Map<String, String> countryTranslation = countryTranslations[code2];
-      if (countryTranslation != null) {
-        translation = countryTranslation[langCode];
-        if (translation != null) {
-          return translation;
-        }
-      }
+    if (langCode != 'en' && _localizations != null) {
+      return _localizations[langCode] ?? name;
     }
     return name;
   }
@@ -103,6 +99,7 @@ class Country {
       return;
     }
     _initializing = true;
+    //--- Load country data
     List<String> lines = csv_list_of_countries.split('\n');
     for (String line in lines) {
       Country country = Country();
@@ -115,6 +112,26 @@ class Country {
       country.timezone = (parts[5] == null) ? null : double.tryParse(parts[5]);
       countries.add(country);
     }
+    //--- Load translations of country names
+    List<String> languageCode;
+    List<String> translationLines = countryTranslations.split('\n');
+    for (String line in translationLines) {
+      if (line.isNotEmpty) {
+        List<String> cols = line.split(',');
+        //--- Extract language codes
+        if (cols[0] == 'code2') {
+          languageCode = cols;
+        } else {
+          Country country = findByCode2(cols[0]);
+          country._localizations ??= {};
+          for (int i = 1; i < languageCode.length; i++) {
+            country._localizations[languageCode[i]] = cols[i];
+          }
+        }
+      }
+    }
+
+    //--- Ready
     _initialized = true;
   }
 

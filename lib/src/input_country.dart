@@ -2,6 +2,7 @@
 // Please see the LICENSE file for details.
 
 import 'package:flutter/material.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 
 import 'country.dart';
 import 'input_form.dart';
@@ -92,15 +93,28 @@ class InputCountry extends InputField<String> {
 }
 
 class _InputCountryState extends InputFieldState<String> {
+  //--- Checks changes to rebuild country list
+  String _languageCode;
+
+  List<DropdownMenuItem<String>> _countryList;
+
   @override
   InputCountry get widget => super.widget;
-  List<DropdownMenuItem<String>> _countryList;
+
+  @override
+  void initState() {
+    _languageCode = I18n.language;
+    super.initState();
+  }
 
   // List of countries will not be translated if in `initState()`.
   @override
   Widget build(BuildContext context) {
-    if (_countryList == null || widget.selectableCountries != null) {
+    if (_countryList == null ||
+        widget.selectableCountries != null ||
+        _languageCode != I18n.language) {
       _countryList = _buildCountryList();
+      _languageCode = I18n.language;
     }
     // super.build(context);
     return super.buildInputField(
