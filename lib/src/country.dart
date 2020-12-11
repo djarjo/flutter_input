@@ -1,10 +1,7 @@
 // Copyright 2020 Hajo.Lemcke@gmail.com
 // Please see the LICENSE file for details.
 
-import 'package:i18n_extension/i18n_widget.dart';
-
 import 'country.csv.dart';
-import 'country.i18n.dart';
 
 /// Country data according to ISO-3166.
 ///
@@ -24,37 +21,46 @@ class Country {
   static final List<Country> countries = [];
 
   /// Constructor initializes list of countries once.
-  Country() {
+  Country(
+      {this.code2,
+      this.code3,
+      this.currency,
+      this.language,
+      this.name,
+      this.predial,
+      this.timezone,
+      this.translations}) {
     _initialize();
   }
 
-  /// ISO-3166 Alpha-2 code
-  String code2;
+  /// ISO-3166 Alpha-2 code. 2 char uppercase
+  final String code2;
 
-  /// ISO-3166 Alpha-3 code
-  String code3;
+  /// ISO-3166 Alpha-3 code. 3 char uppercase
+  final String code3;
 
-  /// Primary official language.
-  ///
-  /// ISO-639-1 two letter lowercase code as used for `Locale`.
-  String language;
+  /// Official currency. ISO-4217 currency code. 3 char uppercase
+  final String currency;
 
-  /// Country name by language
-  Map<String, String> _localizations;
+  /// Official language. ISO-639-1 code. 2 char lowercase.
+  final String language;
 
-  /// ISO-3166 Name in standard locale en_US
-  String name;
+  /// ISO-3166 Name in standard locale en
+  final String name;
 
   /// International phone predial code
-  int predial;
+  final int predial;
 
   /// Timezone of this country.
-  /// Returns the mean timezone if the country covers multiple lines of
-  /// latitude.
-  double timezone;
+  /// Returns mean timezone if the country covers multiple lines of latitude.
+  final double timezone;
+
+  /// Country name by language code
+  final Map<String, String> translations;
 
   /// Returns `null` if `code2 == null` or not found
   static Country findByCode2(String code2) {
+    _initialize();
     if ((code2 == null) || (code2.length != 2)) return null;
     code2 = code2.toUpperCase();
     return countries.firstWhere((country) => country.code2 == code2,
@@ -63,6 +69,7 @@ class Country {
 
   /// Returns `null` if `code3 == null` or not found
   static Country findByCode3(String code3) {
+    _initialize();
     if (code3 == null) return null;
     code3 = code3.toUpperCase();
     if (code3.length != 3) return null;
@@ -72,17 +79,17 @@ class Country {
 
   /// Returns `null` if `number == null` or not found
   static Country findByPredial(int number) {
+    _initialize();
     if (number == null) return null;
     return countries.firstWhere((country) => country.predial == number,
         orElse: () => null);
   }
 
-  /// Gets localized country name. Current locale is taken from I18n.
-  /// If no localized name found then the english name will be returned.
-  String getLocalizedName() {
-    String langCode = I18n.language;
-    if (langCode != 'en' && _localizations != null) {
-      return _localizations[langCode] ?? name;
+  /// Gets country name translated into given language.
+  /// If no translation found then the english name will be returned.
+  String getTranslation(String langCode) {
+    if (langCode != 'en' && translations != null) {
+      return translations[langCode] ?? name;
     }
     return name;
   }
@@ -100,41 +107,44 @@ class Country {
     }
     _initializing = true;
     //--- Load country data
+    List<String> languages = [];
     List<String> lines = csv_list_of_countries.split('\n');
     for (String line in lines) {
-      Country country = Country();
+      if (line.isEmpty) {
+        continue;
+      }
       List<String> parts = line.split(',');
-      country.code2 = parts[0];
-      country.code3 = parts[1];
-      country.language = parts[2];
-      country.name = parts[3];
-      country.predial = (parts[4] == null) ? null : int.tryParse(parts[4]);
-      country.timezone = (parts[5] == null) ? null : double.tryParse(parts[5]);
-      countries.add(country);
-    }
-    //--- Load translations of country names
-    List<String> languageCode;
-    List<String> translationLines = countryTranslations.split('\n');
-    for (String line in translationLines) {
-      if (line.isNotEmpty) {
-        List<String> cols = line.split(',');
-        //--- Extract language codes
-        if (cols[0] == 'code2') {
-          languageCode = cols;
-        } else {
-          Country country = findByCode2(cols[0]);
-          country._localizations ??= {};
-          for (int i = 1; i < languageCode.length; i++) {
-            country._localizations[languageCode[i]] = cols[i];
+      if (parts[0] == 'alpha-2') {
+        for (int i = 8; i < parts.length; i++) {
+          languages.add(parts[i]);
+        }
+      } else {
+        int _predial = (parts[6] == null) ? null : int.tryParse(parts[6]);
+        double _timezone =
+            (parts[7] == null) ? null : double.tryParse(parts[7]);
+        Map<String, String> _t10ns = {};
+        for (int i = 0; i < languages.length; i++) {
+          if (parts[8 + i].isNotEmpty) {
+            _t10ns[languages[i]] = parts[8 + i];
           }
         }
+        countries.add(Country(
+          code2: parts[0],
+          code3: parts[1],
+          name: parts[3],
+          currency: parts[4],
+          language: parts[5],
+          predial: _predial,
+          timezone: _timezone,
+          translations: _t10ns,
+        ));
       }
     }
-
     //--- Ready
     _initialized = true;
   }
 
+  /// Gets iterable list of all countries
   static List<Country> values() {
     _initialize();
     return countries;

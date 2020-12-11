@@ -2,16 +2,15 @@
 // Please see the LICENSE file for details.
 
 import 'package:flutter/material.dart';
-import 'package:i18n_extension/i18n_widget.dart';
 
 import 'country.dart';
 import 'input_form.dart';
 
 /// An input widget to select a country code from a sorted list of country names.
 ///
-/// Displays a text with flag, name of currently selected country and a trailing icon.
+/// Displays flag and name of country with a trailing icon.
 /// Selected value is two letter ISO-3166 code.
-/// Showing the flag can be suppressed with `showFlag = false`.
+/// Flag display can be suppressed with `showFlag = false`.
 class InputCountry extends InputField<String> {
   final bool autofocus;
   final Widget disabledHint;
@@ -93,28 +92,30 @@ class InputCountry extends InputField<String> {
 }
 
 class _InputCountryState extends InputFieldState<String> {
+  /// Cached list of translated countries
+  List<DropdownMenuItem<String>> _countryList;
+
   //--- Checks changes to rebuild country list
   String _languageCode;
-
-  List<DropdownMenuItem<String>> _countryList;
 
   @override
   InputCountry get widget => super.widget;
 
   @override
-  void initState() {
-    _languageCode = I18n.language;
-    super.initState();
-  }
-
-  // List of countries will not be translated if in `initState()`.
-  @override
   Widget build(BuildContext context) {
-    if (_countryList == null ||
-        widget.selectableCountries != null ||
-        _languageCode != I18n.language) {
-      _countryList = _buildCountryList();
-      _languageCode = I18n.language;
+    //--- Obtain currently active language
+    Locale activeLocale = Localizations.localeOf(context, nullOk: true);
+    String activeLangCode =
+        (activeLocale == null) ? 'en' : activeLocale.languageCode;
+    print(
+        'activeLocale=$activeLocale active=$activeLangCode langCode=$_languageCode');
+    //--- Check if list must be rebuilt
+    if ((_countryList == null) ||
+        (widget.selectableCountries != null) ||
+        (_languageCode != activeLangCode)) {
+      _languageCode = activeLangCode;
+      _buildCountryList(_languageCode);
+      print('${_countryList.length} countries');
     }
     // super.build(context);
     return super.buildInputField(
@@ -125,7 +126,8 @@ class _InputCountryState extends InputFieldState<String> {
             ? null
             : ClipRect(
                 child: Text(
-                  Country.findByCode2(value)?.getLocalizedName() ?? '$value',
+                  Country.findByCode2(value)?.getTranslation(_languageCode) ??
+                      '$value',
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
                 ),
@@ -154,20 +156,21 @@ class _InputCountryState extends InputFieldState<String> {
     );
   }
 
-  List<DropdownMenuItem<String>> _buildCountryList() {
+  void _buildCountryList(String langCode) {
     final String _imagePath = 'lib/assets/flags/';
-    List<Country> countryList = [];
+    List<Country> countries = [];
     for (Country country in Country.values()) {
       if ((widget.selectableCountries != null) &&
           (widget.selectableCountries.contains(country.code2) == false)) {
         continue;
       }
-      countryList.add(country);
+      countries.add(country);
     }
-    countryList.sort((country1, country2) =>
-        country1.getLocalizedName().compareTo(country2.getLocalizedName()));
+    countries.sort((country1, country2) => country1
+        .getTranslation(_languageCode)
+        .compareTo(country2.getTranslation(_languageCode)));
 
-    return countryList
+    _countryList = countries
         .map(
           (country) => DropdownMenuItem(
             value: country.code2,
@@ -182,7 +185,7 @@ class _InputCountryState extends InputFieldState<String> {
                     : SizedBox.shrink(),
                 Flexible(
                   child: Text(
-                    '  ' + country.getLocalizedName(),
+                    '  ' + country.getTranslation(_languageCode),
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
                   ),

@@ -1,252 +1,253 @@
 // Copyright 2020 Hajo.Lemcke@gmail.com
 // Please see the LICENSE file for details.
-/// Columns are: code2, code3, language, name, predial, codenum, timezone
 String csv_list_of_countries = '''
-AF,AFG,fa,Afghanistan,93,4,4.5
-AX,ALA,sv,Åland Islands,35818,248,2
-AL,ALB,en,Albania,355,8,1
-DZ,DZA,fr,Algeria,213,12,1
-AS,ASM,en,American Samoa,1684,16,-11
-AD,AND,en,Andorra,376,20,1
-AO,AGO,pt,Angola,244,24,1
-AI,AIA,en,Anguilla,1264,660,-4
-AQ,ATA,,Antarctica,,10,
-AG,ATG,en,Antigua and Barbuda,1268,28,-4
-AR,ARG,es,Argentina,54,32,-3
-AM,ARM,hy,Armenia,374,51,4
-AW,ABW,es,Aruba,297,533,-4
-AU,AUS,en,Australia,61,36,9
-AT,AUT,de,Austria,43,40,1
-AZ,AZE,az,Azerbaijan,994,31,4
-BS,BHS,es,Bahamas,1242,44,-5
-BH,BHR,ar,Bahrain,973,48,3
-BD,BGD,en,Bangladesh,880,50,6
-BB,BRB,en,Barbados,1246,52,-4
-BY,BLR,ru,Belarus,375,112,3
-BE,BEL,nl,Belgium,32,56,1
-BZ,BLZ,en,Belize,501,84,-6
-BJ,BEN,fr,Benin,229,204,1
-BM,BMU,en,Bermuda,1441,60,-4
-BT,BTN,dz,Bhutan,975,64,6
-BO,BOL,es,Bolivia,591,68,-4
-BQ,BES,,Bonaire,5997,535,-4
-BA,BIH,hr,Bosnia and Herzegovina,387,70,1
-BW,BWA,en,Botswana,267,72,2
-BV,BVT,,Bouvet Island,,74,
-BR,BRA,pt,Brazil,55,76,-4
-IO,IOT,en,British Indian Ocean Territory,246,86,6
-BN,BRN,ms,Brunei Darussalam,673,96,8
-BG,BGR,bg,Bulgaria,359,100,2
-BF,BFA,fr,Burkina Faso,226,854,0
-BI,BDI,fr,Burundi,257,108,2
-CV,CPV,,Cabo Verde,238,132,-1
-KH,KHM,km,Cambodia,855,116,7
-CM,CMR,en,Cameroon,237,120,1
-CA,CAN,en,Canada,1,124,-5
-KY,CYM,en,Cayman Islands,1345,136,-5
-CF,CAF,fr,Central African Republic,236,140,1
-TD,TCD,fr,Chad,235,148,1
-CL,CHL,es,Chile,56,152,-5
-CN,CHN,zh,China,86,156,8
-CX,CXR,en,Christmas Island,6189164,162,7
-CC,CCK,en,Cocos Keeling Islands,6189162,166,6.5
-CO,COL,es,Colombia,57,170,-5
-KM,COM,fr,Comoros,269,174,3
-CG,COG,fr,Congo,242,178,1
-CD,COD,fr,Congo Democratic Republic,243,180,1
-CK,COK,en,Cook Islands,682,184,-10
-CR,CRI,es,Costa Rica,506,188,-6
-CI,CIV,fr,Côte d'Ivoire,225,384,0
-HR,HRV,hr,Croatia,385,191,1
-CU,CUB,es,Cuba,53,192,-5
-CW,CUW,nl,Curaçao,5999,531,-4
-CY,CYP,en,Cyprus,357,196,2
-CZ,CZE,cs,Czechia,420,203,1
-DK,DNK,da,Denmark,45,208,1
-DJ,DJI,fr,Djibouti,253,262,2
-DM,DMA,es,Dominica,1767,212,-4
-DO,DOM,es,Dominican Republic,1809,214,-4
-EC,ECU,es,Ecuador,593,218,-6
-EG,EGY,ar,Egypt,20,818,2
-SV,SLV,es,El Salvador,503,222,-6
-GQ,GNQ,fr,Equatorial Guinea,240,226,1
-ER,ERI,en,Eritrea,291,232,3
-EE,EST,en,Estonia,372,233,2
-SZ,SWZ,en,Eswatini,,748,
-ET,ETH,so,Ethiopia,251,231,3
-FK,FLK,en,Falkland Islands,500,238,-3
-FO,FRO,fo,Faroe Islands,298,234,1
-FJ,FJI,en,Fiji,679,242,12
-FI,FIN,en,Finland,358,246,2
-FR,FRA,fr,France,33,250,1
-GF,GUF,fr,French Guiana,594,254,-3
-PF,PYF,fr,French Polynesia,689,258,-10
-TF,ATF,fr,French Southern Territories,,260,
-GA,GAB,fr,Gabon,241,266,1
-GM,GMB,en,Gambia,220,270,0
-GE,GEO,ka,Georgia,995,268,4
-DE,DEU,de,Germany,49,276,1
-GH,GHA,en,Ghana,233,288,0
-GI,GIB,en,Gibraltar,350,292,1
-GR,GRC,gr,Greece,30,300,2
-GL,GRL,da,Greenland,299,304,-2
-GD,GRD,en,Grenada,1473,308,-4
-GP,GLP,es,Guadeloupe,590,312,-4
-GU,GUM,en,Guam,1671,316,10
-GT,GTM,es,Guatemala,502,320,-6
-GG,GGY,en,Guernsey,44,831,1
-GN,GIN,pt,Guinea,224,324,0
-GW,GNB,pt,Guinea-Bissau,245,624,0
-GY,GUY,en,Guyana,592,328,-4
-HT,HTI,es,Haiti,509,332,-5
-HM,HMD,,Heard Island and McDonald Islands,,334,
-VA,VAT,,Holy See,,336,
-HN,HND,es,Honduras,504,340,-6
-HK,HKG,zh,Hong Kong,852,344,8
-HU,HUN,en,Hungary,36,348,1
-IS,ISL,en,Iceland,354,352,0
-IN,IND,en,India,91,356,5.5
-ID,IDN,en,Indonesia,62,360,8
-IR,IRN,ar,Iran,98,364,3.5
-IQ,IRQ,ar,Iraq,964,368,3
-IE,IRL,en,Ireland,353,372,0
-IM,IMN,en,Isle of Man,44,833,0
-IL,ISR,en,Israel,972,376,2
-IT,ITA,it,Italy,39,380,1
-JM,JAM,en,Jamaica,1876,388,-5
-JP,JPN,ja,Japan,81,392,9
-JE,JEY,en,Jersey,441534,832,0
-JO,JOR,ar,Jordan,962,400,2
-KZ,KAZ,ru,Kazakhstan,76,398,5
-KE,KEN,en,Kenya,254,404,3
-KI,KIR,en,Kiribati,686,296,13
-KP,PRK,,Korea - North,850,408,8.5
-KR,KOR,,Korea - South,82,410,9
-KW,KWT,ar,Kuwait,965,414,3
-KG,KGZ,ru,Kyrgyzstan,996,417,5
-LA,LAO,lo,Laos,856,418,7
-LV,LVA,lv,Latvia,371,428,2
-LB,LBN,ar,Lebanon,961,422,2
-LS,LSO,en,Lesotho,266,426,2
-LR,LBR,en,Liberia,231,430,0
-LY,LBY,ar,Libya,218,434,1
-LI,LIE,de,Liechtenstein,423,438,1
-LT,LTU,en,Lithuania,370,440,2
-LU,LUX,de,Luxembourg,352,442,1
-MO,MAC,zh,Macao,853,446,8
-MG,MDG,en,Madagascar,261,450,3
-MW,MWI,en,Malawi,265,454,2
-MY,MYS,en,Malaysia,60,458,8
-MV,MDV,en,Maldives,960,462,5
-ML,MLI,fr,Mali,223,466,0
-MT,MLT,en,Malta,356,470,1
-MH,MHL,en,Marshall Islands,692,584,12
-MQ,MTQ,fr,Martinique,596,474,-4
-MR,MRT,fr,Mauritania,222,478,0
-MU,MUS,en,Mauritius,230,480,4
-YT,MYT,fr,Mayotte,262269,175,3
-MX,MEX,es,Mexico,52,484,-7
-FM,FSM,en,Micronesia,691,583,10
-MD,MDA,ru,Moldova,373,498,2
-MC,MCO,fr,Monaco,377,492,1
-MN,MNG,mn,Mongolia,976,496,7
-ME,MNE,en,Montenegro,382,499,1
-MS,MSR,en,Montserrat,1664,500,-4
-MA,MAR,fr,Morocco,212,504,0
-MZ,MOZ,pt,Mozambique,258,508,2
-MM,MMR,en,Myanmar,95,104,6.5
-NA,NAM,en,Namibia,264,516,1
-NR,NRU,en,Nauru,674,520,12
-NP,NPL,ne,Nepal,977,524,5.75
-NL,NLD,nl,Netherlands,31,528,1
-NC,NCL,fr,New Caledonia,687,540,11
-NZ,NZL,en,New Zealand,64,554,12
-NI,NIC,es,Nicaragua,505,558,-6
-NE,NER,fr,Niger,227,562,1
-NG,NGA,en,Nigeria,234,566,1
-NU,NIU,en,Niue,683,570,-11
-NF,NFK,en,Norfolk Island,6723,574,11
-MK,MKD,sq,Macedonia,,807,
-MP,MNP,en,Mariana Islands,1670,580,10
-NO,NOR,se,Norway,47,578,2
-OM,OMN,ar,Oman,968,512,4
-PK,PAK,en,Pakistan,92,586,5
-PW,PLW,en,Palau,680,585,9
-PS,PSE,ar,Palestine,970,275,2
-PA,PAN,es,Panama,507,591,-5
-PG,PNG,en,Papua New Guinea,675,598,10
-PY,PRY,es,Paraguay,595,600,-4
-PE,PER,es,Peru,51,604,-5
-PH,PHL,es,Philippines,63,608,8
-PN,PCN,en,Pitcairn,64,612,-8
-PL,POL,pl,Poland,48,616,1
-PT,PRT,pt,Portugal,351,620,0
-PR,PRI,es,Puerto Rico,1787,630,-4
-QA,QAT,ar,Qatar,974,634,3
-RE,REU,fr,Réunion,262,638,4
-RO,ROU,en,Romania,40,642,2
-RU,RUS,ru,Russian Federation,7,643,7
-RW,RWA,en,Rwanda,250,646,2
-BL,BLM,fr,Saint Barthélemy,590,652,-4
-SH,SHN,en,Saint Helena,290,654,0
-KN,KNA,ees,Saint Kitts,1869,659,-4
-LC,LCA,es,Saint Lucia,1758,662,-4
-MF,MAF,fr,Saint Martin,590,663,-4
-PM,SPM,fr,Saint Pierre,508,666,-3
-VC,VCT,es,Saint Vincent,1784,670,-4
-WS,WSM,en,Samoa,685,882,13
-SM,SMR,it,San Marino,378,674,1
-ST,STP,pt,Sao Tome,239,678,0
-SA,SAU,ar,Saudi Arabia,966,682,3
-SN,SEN,fr,Senegal,221,686,0
-RS,SRB,sr,Serbia,381,688,1
-SC,SYC,fr,Seychelles,248,690,4
-SL,SLE,en,Sierra Leone,232,694,0
-SG,SGP,zh,Singapore,65,702,8
-SX,SXM,nl,Sint Maarten,1721,534,-4
-SK,SVK,sk,Slovakia,421,703,1
-SI,SVN,sl,Slovenia,386,705,1
-SB,SLB,en,Solomon Islands,677,90,11
-SO,SOM,ar,Somalia,252,706,3
-ZA,ZAF,af,South Africa,27,710,2
-GS,SGS,,South Georgia,500,239,-2
-SS,SSD,ar,South Sudan,211,728,3
-ES,ESP,es,Spain,34,724,1
-LK,LKA,ta,Sri Lanka,94,144,5.5
-SD,SDN,ar,Sudan,249,729,3
-SR,SUR,nl,Suriname,597,740,-3
-SJ,SJM,nb,Svalbard,4779,744,1
-SE,SWE,sv,Sweden,46,752,1
-CH,CHE,de,Switzerland,41,756,1
-SY,SYR,ar,Syrian,963,760,2
-TW,TWN,zh,Taiwan,886,158,8
-TJ,TJK,tg,Tajikistan,992,762,5
-TZ,TZA,sw,Tanzania,255,834,3
-TH,THA,th,Thailand,66,764,7
-TL,TLS,pt,Timor-Leste,,626,
-TG,TGO,fr,Togo,228,768,0
-TK,TKL,en,Tokelau,690,772,13
-TO,TON,en,Tonga,676,776,13
-TT,TTO,es,Trinidad,1868,780,-4
-TN,TUN,fr,Tunisia,216,788,1
-TR,TUR,tr,Turkey,90,792,3
-TM,TKM,tk,Turkmenistan,993,795,5
-TC,TCA,es,Turks Islands,1649,796,-5
-TV,TUV,en,Tuvalu,688,798,12
-UG,UGA,sw,Uganda,256,800,3
-UA,UKR,ru,Ukraine,380,804,2
-AE,ARE,ar,United Arab Emirates,971,784,4
-GB,GBR,en,United Kingdom,44,826,0
-US,USA,en,United States of America,1,840,-7
-UY,URY,es,Uruguay,598,858,-3
-UZ,UZB,uz,Uzbekistan,998,860,5
-VU,VUT,fr,Vanuatu,678,548,11
-VE,VEN,es,Venezuela,58,862,-4
-VN,VNM,vi,Vietnam,84,704,7
-VG,VGB,en,Virgin Islands - British,,92,
-VI,VIR,en,Virgin Islands - U.S.,1340,850,-4
-WF,WLF,fr,Wallis and Futuna,681,876,12
-EH,ESH,ar,Western Sahara,,732,
-YE,YEM,ar,Yemen,967,887,3
-ZM,ZMB,en,Zambia,260,894,2
-ZW,ZWE,sn,Zimbabwe,263,716,2''';
+alpha-2,alpha-3,num-3,name,currency,language,predial,timezone,de,es
+AD,AND,20,Andorra,EUR,en,376,1,Andorra,Andorra
+AE,ARE,784,United Arab Emirates,AED,ar,971,4,Vereinigte Arabische Emirate,Emiratos Árabes Unidos
+AF,AFG,4,Afghanistan,AFN,fa,93,4.5,Afghanistan,Afganistán
+AG,ATG,28,Antigua and Barbuda,XCD,en,1268,-4,Antigua und Barbuda,Antigua y Barbuda
+AI,AIA,660,Anguilla,XCD,en,1264,-4,,
+AL,ALB,8,Albania,ALL,en,355,1,Albanien,Albania
+AM,ARM,51,Armenia,AMD,hy,374,4,Armenien,Armenia
+AO,AGO,24,Angola,AOA,pt,244,1,Angola,Angola
+AQ,ATA,10,Antarctica,,,,,,
+AR,ARG,32,Argentina,ARS,es,54,-3,Argentinien,Argentina
+AS,ASM,16,American Samoa,USD,en,1684,-11,,
+AT,AUT,40,Austria,EUR,de,43,1,Österreich,Austria
+AU,AUS,36,Australia,AUD,en,61,9,Australien,Australia
+AW,ABW,533,Aruba,AWG,es,297,-4,,
+AX,ALA,248,Åland Islands,EUR,sv,35818,2,,
+AZ,AZE,31,Azerbaijan,AZN,az,994,4,Aserbaidschan,Azerbaiyán
+BA,BIH,70,Bosnia and Herzegovina,MA,hr,387,1,Bosnien und Herzegowina,Bosnia y Herzegovina
+BB,BRB,52,Barbados,BBD,en,1246,-4,Barbados,Barbados
+BD,BGD,50,Bangladesh,BDT,en,880,6,Bangladesch,Bangladés
+BE,BEL,56,Belgium,EUR,nl,32,1,Belgien,Bélgica
+BF,BFA,854,Burkina Faso,XOF,fr,226,0,Burkina Faso,Burkina Faso
+BG,BGR,100,Bulgaria,BGN,bg,359,2,Bulgarien,Bulgaria
+BH,BHR,48,Bahrain,BHD,ar,973,3,Bahrain,Baréin
+BI,BDI,108,Burundi,BIF,fr,257,2,Burundi,Burundi
+BJ,BEN,204,Benin,XOF,fr,229,1,Benin,Benín
+BL,BLM,652,Saint Barthélemy,EUR,fr,590,-4,,
+BM,BMU,60,Bermuda,BMD,en,1441,-4,,
+BN,BRN,96,Brunei Darussalam,BND,ms,673,8,Brunei,Brunéi
+BO,BOL,68,Bolivia,BOB,es,591,-4,Bolivien,Bolivia
+BQ,BES,535,Bonaire,USD,,5997,-4,,
+BR,BRA,76,Brazil,BRL,pt,55,-4,Brasilien,Brasil
+BS,BHS,44,Bahamas,BSD,es,1242,-5,Bahamas,Bahamas
+BT,BTN,64,Bhutan,BTN,dz,975,6,Bhutan,Bután
+BV,BVT,74,Bouvet Island,NOP,,,,,
+BW,BWA,72,Botswana,BWP,en,267,2,Botswana,Botsuana
+BY,BLR,112,Belarus,BYN,ru,375,3,Belarus,Bielorrusia
+BZ,BLZ,84,Belize,BZD,en,501,-6,Belize,Belice
+CA,CAN,124,Canada,CAD,en,1,-5,Kanada,Canadá
+CC,CCK,166,Cocos (Keeling) Islands,AUD,en,6189162,6.5,,
+CD,COD,180,Democratic Republic Congo,CDF,fr,243,1,Demokratische Republik Kongo,República Democrática del Congo
+CF,CAF,140,Central African Republic,XAF,fr,236,1,Zentral­afrikanische Republik,República Centroafricana
+CG,COG,178,Congo,XAF,fr,242,1,Kongo,República del Congo
+CH,CHE,756,Switzerland,CHF,de,41,1,Schweiz,Suiza
+CI,CIV,384,Côte d'Ivoire,XOF,fr,225,0,Elfenbeinküste,Costa de Marfil
+CK,COK,184,Cook Islands,NZD,en,682,-10,,
+CL,CHL,152,Chile,CLP,es,56,-5,Chile,Chile
+CM,CMR,120,Cameroon,XAF,en,237,1,Kamerun,Camerún
+CN,CHN,156,China,CNY,zh,86,8,China,China
+CO,COL,170,Colombia,COP,es,57,-5,Kolumbien,Colombia
+CR,CRI,188,Costa Rica,CRC,es,506,-6,Costa Rica,Costa Rica
+CU,CUB,192,Cuba,CUP,es,53,-5,Kuba,Cuba
+CV,CPV,132,Cabo Verde,CVE,,238,-1,Kap Verde,Cabo Verde
+CW,CUW,531,Curaçao,ANG,nl,5999,-4,,
+CX,CXR,162,Christmas Island,AUD,en,6189164,7,,
+CY,CYP,196,Cyprus,EUR,en,357,2,Zypern,Chipre
+CZ,CZE,203,Czechia,CZK,cs,420,1,Tschechien,República Checa
+DE,DEU,276,Germany,EUR,de,49,1,Deutschland,Alemania
+DJ,DJI,262,Djibouti,DJF,fr,253,2,Dschibuti,Yibuti
+DK,DNK,208,Denmark,DKK,da,45,1,Dänemark,Dinamarca
+DM,DMA,212,Dominica,XCD,es,1767,-4,Dominica,Dominica
+DO,DOM,214,Dominican Republic,DOP,es,1809,-4,Dominikanische Republik,República Dominicana
+DZ,DZA,12,Algeria,DZD,fr,213,1,Algerien,Argelia
+EC,ECU,218,Ecuador,USD,es,593,-6,Ecuador,Ecuador
+EE,EST,233,Estonia,EUR,en,372,2,Estland,Estonia
+EG,EGY,818,Egypt,EGP,ar,20,2,Ägypten,Egipto
+EH,ESH,732,Western Sahara,MAD,ar,,,,
+ER,ERI,232,Eritrea,ERN,en,291,3,Eritrea,Eritrea
+ES,ESP,724,Spain,EUR,es,34,1,Spanien,España
+ET,ETH,231,Ethiopia,ETB,so,251,3,Äthiopien,Etiopía
+FI,FIN,246,Finland,EUR,en,358,2,Finnland,Finlandia
+FJ,FJI,242,Fiji,FJD,en,679,12,Fidschi,Fiyi
+FK,FLK,238,Falkland Islands (Malvinas),FKP,en,500,-3,,
+FM,FSM,583,Micronesia (Federated States of),USD,en,691,10,Mikronesien,Micronesia
+FO,FRO,234,Faroe Islands,DKK,fo,298,1,,
+FR,FRA,250,France,EUR,fr,33,1,Frankreich,Francia
+GA,GAB,266,Gabon,XAF,fr,241,1,Gabun,Gabón
+GB,GBR,826,United Kingdom,GBP,en,44,0,England,Reino Unido
+GD,GRD,308,Grenada,XCD,en,1473,-4,Grenada,Granada
+GE,GEO,268,Georgia,GEL,ka,995,4,Georgien,Georgia
+GF,GUF,254,French Guiana,EUR,fr,594,-3,,
+GG,GGY,831,Guernsey,GBP,en,44,1,,
+GH,GHA,288,Ghana,GHS,en,233,0,Ghana,Ghana
+GI,GIB,292,Gibraltar,GIP,en,350,1,,
+GL,GRL,304,Greenland,DKK,da,299,-2,,
+GM,GMB,270,Gambia,GMD,en,220,0,Gambia,Gambia
+GN,GIN,324,Guinea,GNF,pt,224,0,Guinea,Guinea
+GP,GLP,312,Guadeloupe,EUR,es,590,-4,,
+GQ,GNQ,226,Equatorial Guinea,XAF,fr,240,1,Äquatorialguinea,Guinea Ecuatorial
+GR,GRC,300,Greece,EUR,gr,30,2,Griechenland,Grecia
+GS,SGS,239,South Georgia and Sandwich Islands,,,500,-2,,
+GT,GTM,320,Guatemala,GTQ,es,502,-6,Guatemala,Guatemala
+GU,GUM,316,Guam,USD,en,1671,10,,
+GW,GNB,624,Guinea-Bissau,XOF,pt,245,0,Guinea-Bissau,Guinea-Bisáu
+GY,GUY,328,Guyana,GYD,en,592,-4,Guyana,Guyana
+HK,HKG,344,Hong Kong,HKD,zh,852,8,,
+HM,HMD,334,Heard and McDonald Islands,AUD,,,,,
+HN,HND,340,Honduras,HNL,es,504,-6,Honduras,Honduras
+HR,HRV,191,Croatia,HRK,hr,385,1,Kroatien,Croacia
+HT,HTI,332,Haiti,HTG,es,509,-5,Haiti,Haití
+HU,HUN,348,Hungary,HUF,en,36,1,Ungarn,Hungría
+ID,IDN,360,Indonesia,IDR,en,62,8,Indonesien,Indonesia
+IE,IRL,372,Ireland,EUR,en,353,0,Irland,Irlanda
+IL,ISR,376,Israel,ILS,en,972,2,Israel,Israel
+IM,IMN,833,Isle of Man,GBP,en,44,0,,
+IN,IND,356,India,INR,en,91,5.5,Indien,India
+IO,IOT,86,British Indian Ocean Territory,USD,en,246,6,,
+IQ,IRQ,368,Iraq,IQD,ar,964,3,Irak,Irak
+IR,IRN,364,Iran,IRR,ar,98,3.5,Iran,Irán
+IS,ISL,352,Iceland,ISK,en,354,0,Island,Islandia
+IT,ITA,380,Italy,EUR,it,39,1,Italien,Italia
+JE,JEY,832,Jersey,GBP,en,441534,0,,
+JM,JAM,388,Jamaica,JMD,en,1876,-5,Jamaika,Jamaica
+JO,JOR,400,Jordan,JOD,ar,962,2,Jordanien,Jordania
+JP,JPN,392,Japan,JPY,ja,81,9,Japan,Japón
+KE,KEN,404,Kenya,KES,en,254,3,Kenia,Kenia
+KG,KGZ,417,Kyrgyzstan,KGS,ru,996,5,Kirgisistan,Kirguistán
+KH,KHM,116,Cambodia,KHR,km,855,7,Kambodscha,Camboya
+KI,KIR,296,Kiribati,AUD,en,686,13,Kiribati,Kiribati
+KM,COM,174,Comoros,KMF,fr,269,3,Komoren,Comoras
+KN,KNA,659,Saint Kitts and Nevis,XCD,ees,1869,-4,St. Kitts und Nevis,San Cristóbal y Nieves
+KP,PRK,408,North Korea,KPW,,850,8.5,Nord-Korea,Corea del Norte
+KR,KOR,410,South Korea,KRW,,82,9,Süd-Korea,Corea del Sur
+KW,KWT,414,Kuwait,KWD,ar,965,3,Kuwait,Kuwait
+KY,CYM,136,Cayman Islands,KYD,en,1345,-5,,
+KZ,KAZ,398,Kazakhstan,KZT,ru,76,5,Kasachstan,Kazajistán
+LA,LAO,418,Laos,LAK,lo,856,7,Laos,Laos
+LB,LBN,422,Lebanon,LBP,ar,961,2,Libanon,Líbano
+LC,LCA,662,Saint Lucia,XCD,es,1758,-4,St. Lucia,Santa Lucía
+LI,LIE,438,Liechtenstein,CHF,de,423,1,Liechtenstein,Liechtenstein
+LK,LKA,144,Sri Lanka,LKR,ta,94,5.5,Sri Lanka,Sri Lanka
+LR,LBR,430,Liberia,LRD,en,231,0,Liberia,Liberia
+LS,LSO,426,Lesotho,LSL,en,266,2,Lesotho,Lesoto
+LT,LTU,440,Lithuania,EUR,en,370,2,Litauen,Lituania
+LU,LUX,442,Luxembourg,EUR,de,352,1,Luxemburg,Luxemburgo
+LV,LVA,428,Latvia,EUR,lv,371,2,Lettland,Letonia
+LY,LBY,434,Libya,LYD,ar,218,1,Libyen,Libia
+MA,MAR,504,Morocco,MAD,fr,212,0,Marokko,Marruecos
+MC,MCO,492,Monaco,EUR,fr,377,1,Monaco,Mónaco
+MD,MDA,498,Moldova,MDL,ru,373,2,Moldau,Moldavia
+ME,MNE,499,Montenegro,EUR,en,382,1,Montenegro,Montenegro
+MF,MAF,663,Saint Martin (French part),EUR,fr,590,-4,,
+MG,MDG,450,Madagascar,MGA,en,261,3,Madagaskar,Madagascar
+MH,MHL,584,Marshall Islands,USD,en,692,12,Marshallinseln,Islas Marshall
+MK,MKD,807,North Macedonia,MKD,sq,,,Nordmazedonien,Macedonia del Norte
+ML,MLI,466,Mali,XOF,fr,223,0,Mali,Malí
+MM,MMR,104,Myanmar,MMK,en,95,6.5,Myanmar,Birmania
+MN,MNG,496,Mongolia,MNT,mn,976,7,Mongolei,Mongolia
+MO,MAC,446,Macao,MOP,zh,853,8,,
+MP,MNP,580,Northern Mariana Islands,NOK,en,1670,10,,
+MQ,MTQ,474,Martinique,EUR,fr,596,-4,,
+MR,MRT,478,Mauritania,MRU,fr,222,0,Mauretanien,Mauritania
+MS,MSR,500,Montserrat,XCD,en,1664,-4,,
+MT,MLT,470,Malta,EUR,en,356,1,Malta,Malta
+MU,MUS,480,Mauritius,MUR,en,230,4,Mauritius,Mauricio
+MV,MDV,462,Maldives,MVR,en,960,5,Malediven,Maldivas
+MW,MWI,454,Malawi,MWK,en,265,2,Malawi,Malaui
+MX,MEX,484,Mexico,MXN,es,52,-7,Mexiko,México
+MY,MYS,458,Malaysia,MYR,en,60,8,Malaysia,Malasia
+MZ,MOZ,508,Mozambique,MZN,pt,258,2,Mosambik,Mozambique
+NA,NAM,516,Namibia,NAD,en,264,1,Namibia,Namibia
+NC,NCL,540,New Caledonia,XPF,fr,687,11,,
+NE,NER,562,Niger,XOF,fr,227,1,Niger,Níger
+NF,NFK,574,Norfolk Island,AUD,en,6723,11,,
+NG,NGA,566,Nigeria,NGN,en,234,1,Nigeria,Nigeria
+NI,NIC,558,Nicaragua,NIO,es,505,-6,Nicaragua,Nicaragua
+NL,NLD,528,Netherlands,EUR,nl,31,1,Niederlande,Países Bajos
+NO,NOR,578,Norway,OMR,se,47,2,Norwegen,Noruega
+NP,NPL,524,Nepal,NPR,ne,977,5.75,Nepal,Nepal
+NR,NRU,520,Nauru,AUD,en,674,12,Nauru,Nauru
+NU,NIU,570,Niue,NZD,en,683,-11,,
+NZ,NZL,554,New Zealand,NZD,en,64,12,Neuseeland,Nueva Zelanda
+OM,OMN,512,Oman,PKR,ar,968,4,Oman,Omán
+PA,PAN,591,Panama,USD,es,507,-5,Panama,Panamá
+PE,PER,604,Peru,PEN,es,51,-5,Peru,Perú
+PF,PYF,258,French Polynesia,XPF,fr,689,-10,,
+PG,PNG,598,Papua New Guinea,PGK,en,675,10,Papua-Neuguinea,Papúa Nueva Guinea
+PH,PHL,608,Philippines,PHP,es,63,8,Philippinen,Filipinas
+PK,PAK,586,Pakistan,USD,en,92,5,Pakistan,Pakistán
+PL,POL,616,Poland,PLN,pl,48,1,Polen,Polonia
+PM,SPM,666,Saint Pierre and Miquelon,EUR,fr,508,-3,,
+PN,PCN,612,Pitcairn,NZD,en,64,-8,,
+PR,PRI,630,Puerto Rico,USD,es,1787,-4,,
+PS,PSE,275,Palestine,PAB,ar,970,2,Palästina,
+PT,PRT,620,Portugal,EUR,pt,351,0,Portugal,Portugal
+PW,PLW,585,Palau,,en,680,9,Palau,Palaos
+PY,PRY,600,Paraguay,PYG,es,595,-4,Paraguay,Paraguay
+QA,QAT,634,Qatar,QAR,ar,974,3,Katar,Catar
+RE,REU,638,Réunion,EUR,fr,262,4,,
+RO,ROU,642,Romania,RON,en,40,2,Rumänien,Rumania
+RS,SRB,688,Serbia,RSD,sr,381,1,Serbien,Serbia
+RU,RUS,643,Russian Federation,RUB,ru,7,7,Russland,Rusia
+RW,RWA,646,Rwanda,RWF,en,250,2,Ruanda,Ruanda
+SA,SAU,682,Saudi Arabia,SAR,ar,966,3,Saudi-Arabien,Arabia Saudita
+SB,SLB,90,Solomon Islands,SBD,en,677,11,Salomonen,Islas Salomón
+SC,SYC,690,Seychelles,SCR,fr,248,4,Seychellen,Seychelles
+SD,SDN,729,Sudan,SDG,ar,249,3,Sudan,Sudán
+SE,SWE,752,Sweden,SEK,sv,46,1,Schweden,Suecia
+SG,SGP,702,Singapore,SGD,zh,65,8,Singapur,Singapur
+SH,SHN,654,Saint Helena,SHP,en,290,0,St. Helena,
+SI,SVN,705,Slovenia,EUR,sl,386,1,Slowenien,Eslovenia
+SJ,SJM,744,Svalbard and Jan Mayen,NOK,nb,4779,1,,
+SK,SVK,703,Slovakia,EUR,sk,421,1,Slowakei,Eslovaquia
+SL,SLE,694,Sierra Leone,SLL,en,232,0,Sierra Leone,Sierra Leona
+SM,SMR,674,San Marino,EUR,it,378,1,San Marino,San Marino
+SN,SEN,686,Senegal,XOF,fr,221,0,Senegal,Senegal
+SO,SOM,706,Somalia,SOS,ar,252,3,Somalia,Somalia
+SR,SUR,740,Suriname,SRD,nl,597,-3,Suriname,Surinam
+SS,SSD,728,South Sudan,SSP,ar,211,3,Südsudan,Sudán del Sur
+ST,STP,678,Sao Tome and Principe,STN,pt,239,0,São Tomé und Príncipe,Santo Tomé y Príncipe
+SV,SLV,222,El Salvador,SVC,es,503,-6,El Salvador,El Salvador
+SX,SXM,534,Sint Maarten (Netherlands),ANG,nl,1721,-4,,
+SY,SYR,760,Syrian,SYP,ar,963,2,Syrien,Siria
+SZ,SWZ,748,Eswatini,SZL,en,,,Eswatini,Suazilandia
+TC,TCA,796,Turks and Caicos Islands,USD,es,1649,-5,,
+TD,TCD,148,Chad,XAF,fr,235,1,Tschad,Chad
+TF,ATF,260,French Southern Territories,EUR,fr,,,,
+TG,TGO,768,Togo,XOF,fr,228,0,Togo,Togo
+TH,THA,764,Thailand,THB,th,66,7,Thailand,Tailandia
+TJ,TJK,762,Tajikistan,TJS,tg,992,5,Tadschikistan,Tayikistán
+TK,TKL,772,Tokelau,NZD,en,690,13,,
+TL,TLS,626,Timor-Leste,USD,pt,,,Osttimor,Timor Oriental
+TM,TKM,795,Turkmenistan,TMT,tk,993,5,Turkmenistan,Turkmenistán
+TN,TUN,788,Tunisia,TND,fr,216,1,Tunesien,Túnez
+TO,TON,776,Tonga,TOP,en,676,13,Tonga,Tonga
+TR,TUR,792,Turkey,TRY,tr,90,3,Türkei,Turquía
+TT,TTO,780,Trinidad and Tobago,TTD,es,1868,-4,Trinidad und Tobago,Trinidad y Tobago
+TV,TUV,798,Tuvalu,AUD,en,688,12,Tuvalu,Tuvalu
+TW,TWN,158,Taiwan,TWD,zh,886,8,Taiwan,
+TZ,TZA,834,Tanzania,TZS,sw,255,3,Tansania,Tanzania
+UA,UKR,804,Ukraine,UAH,ru,380,2,Ukraine,Ucrania
+UG,UGA,800,Uganda,UGX,sw,256,3,Uganda,Uganda
+US,USA,840,United States of America,USD,en,1,-7,U.S.A.,Estados Unidos
+UY,URY,858,Uruguay,UYU,es,598,-3,Uruguay,Uruguay
+UZ,UZB,860,Uzbekistan,UZS,uz,998,5,Usbekistan,Uzbekistán
+VA,VAT,336,Holy See,EUR,,,,Vatikan,
+VC,VCT,670,Saint Vincent and the Grenadines,XCD,es,1784,-4,St. Vincent und die Grenadinen,San Vicente y las Granadinas
+VE,VEN,862,Venezuela,VES,es,58,-4,Venezuela,Venezuela
+VG,VGB,92,Virgin Islands (British),USD,en,,,Jungferninseln (England),
+VI,VIR,850,Virgin Islands (U.S.),USD,en,1340,-4,Jungferninseln (U.S.),
+VN,VNM,704,Vietnam,VND,vi,84,7,Vietnam,Vietnam
+VU,VUT,548,Vanuatu,VUV,fr,678,11,Vanuatu,Vanuatu
+WF,WLF,876,Wallis and Futuna,XPF,fr,681,12,,
+WS,WSM,882,Samoa,WST,en,685,13,Samoa,Samoa
+YE,YEM,887,Yemen,YER,ar,967,3,Jemen,Yemen
+YT,MYT,175,Mayotte,EUR,fr,262269,3,,
+ZA,ZAF,710,South Africa,ZAR,af,27,2,Südafrika,Sudáfrica
+ZM,ZMB,894,Zambia,ZMW,en,260,2,Sambia,Zambia
+ZW,ZWE,716,Zimbabwe,ZWL,sn,263,2,Simbabwe,Zimbabue
+''';
