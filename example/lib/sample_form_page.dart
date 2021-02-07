@@ -189,7 +189,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
             onTap: () {
               showDialog(
                 context: context,
-                child: _buildSettingsForm(context),
+                builder: (BuildContext ctx) => _buildSettingsForm(context),
               ).then((value) {
                 print('$value, settings=$sampleSettings');
                 Navigator.of(context).pop(77);
@@ -202,7 +202,7 @@ class _SampleFormPageState extends State<SampleFormPage> {
             onTap: () {
               showDialog(
                 context: context,
-                child: _buildDataDisplay(context),
+                builder: (BuildContext ctx) => _buildDataDisplay(context),
               ).then((value) {
                 Navigator.of(context).pop(88);
               });

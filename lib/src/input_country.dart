@@ -104,7 +104,7 @@ class _InputCountryState extends InputFieldState<String> {
   @override
   Widget build(BuildContext context) {
     //--- Obtain currently active language
-    Locale activeLocale = Localizations.localeOf(context, nullOk: true);
+    Locale activeLocale = Localizations.maybeLocaleOf(context);
     String activeLangCode =
         (activeLocale == null) ? 'en' : activeLocale.languageCode;
     print(
